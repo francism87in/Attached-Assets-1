@@ -18,6 +18,7 @@ import {
   ArrowLeft, Edit, Globe, Sparkles, RefreshCw,
   MapPin, Calendar, IndianRupee, Maximize2, Share2, ChevronRight
 } from "lucide-react";
+import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts";
 
 type Tab = "overview" | "scores" | "ai-summary" | "api";
 
@@ -299,6 +300,44 @@ export function ProjectDetail() {
                       </div>
                     </div>
                   ))}
+                </div>
+
+                {/* Radar Chart */}
+                <div className="border-t border-border pt-6 pb-2">
+                  <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-4">Score Radar</div>
+                  <ResponsiveContainer width="100%" height={260}>
+                    <RadarChart data={[
+                      { subject: "Value", score: scorecard.valueScore },
+                      { subject: "Location", score: scorecard.locationScore },
+                      { subject: "Lifestyle", score: lifestyleScore },
+                      { subject: "Investment", score: investmentScore },
+                      { subject: "Trust", score: scorecard.trustScore },
+                    ]}>
+                      <PolarGrid stroke="hsl(var(--border))" />
+                      <PolarAngleAxis
+                        dataKey="subject"
+                        tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11 }}
+                      />
+                      <Radar
+                        name="Score"
+                        dataKey="score"
+                        stroke="hsl(var(--primary))"
+                        fill="hsl(var(--primary))"
+                        fillOpacity={0.15}
+                        strokeWidth={2}
+                      />
+                      <RechartsTooltip
+                        contentStyle={{
+                          background: "hsl(var(--popover))",
+                          border: "1px solid hsl(var(--border))",
+                          borderRadius: "8px",
+                          fontSize: "12px",
+                          color: "hsl(var(--popover-foreground))",
+                        }}
+                        formatter={(v: number) => [`${v}/100`, "Score"]}
+                      />
+                    </RadarChart>
+                  </ResponsiveContainer>
                 </div>
 
                 {/* Breakdown */}

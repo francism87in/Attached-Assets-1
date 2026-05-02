@@ -1,10 +1,13 @@
 import { Link, useLocation } from "wouter";
 import {
   LayoutDashboard, Building2, PlusCircle, FileBarChart2,
-  Terminal, BarChart3, Users, Settings, Menu, X, Activity, ChevronRight
+  Terminal, BarChart3, Users, Settings, Menu, X, Activity,
+  ChevronRight, LogOut
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -26,11 +29,22 @@ const secondaryNav = [
 export function Layout({ children }: LayoutProps) {
   const [location] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const { toast } = useToast();
 
   function isActive(href: string) {
-    if (href === "/") return location === "/";
+    if (href === "/dashboard") return location === "/dashboard" || location === "/";
     return location.startsWith(href);
   }
+
+  async function handleLogout() {
+    await logout();
+    toast({ title: "Signed out" });
+  }
+
+  const initials = user?.name
+    ? user.name.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase()
+    : "U";
 
   return (
     <div className="min-h-screen bg-background flex flex-col md:flex-row font-sans text-sm">
@@ -120,16 +134,23 @@ export function Layout({ children }: LayoutProps) {
         </nav>
 
         {/* User Profile */}
-        <div className="px-3 py-3 border-t border-sidebar-border">
+        <div className="px-3 py-3 border-t border-sidebar-border space-y-1">
           <div className="flex items-center gap-3 px-3 py-2.5 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
             <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-primary text-[11px] font-bold shrink-0">
-              A
+              {initials}
             </div>
-            <div className="min-w-0">
-              <div className="text-[12px] font-medium text-sidebar-foreground leading-none">Amit Sharma</div>
-              <div className="text-[10px] text-sidebar-foreground/40 mt-0.5">Admin</div>
+            <div className="min-w-0 flex-1">
+              <div className="text-[12px] font-medium text-sidebar-foreground leading-none truncate">{user?.name ?? "User"}</div>
+              <div className="text-[10px] text-sidebar-foreground/40 mt-0.5 capitalize">{user?.role ?? "developer"}</div>
             </div>
           </div>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-2 px-3 py-1.5 rounded-md text-sidebar-foreground/40 hover:text-red-400 hover:bg-red-500/10 transition-colors text-[12px]"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            Sign out
+          </button>
         </div>
       </aside>
 

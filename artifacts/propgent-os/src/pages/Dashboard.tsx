@@ -13,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Building2, Activity, Globe, FileText, ArrowRight, Plus, TrendingUp, TrendingDown } from "lucide-react";
 import { format } from "date-fns";
+import { PageWrapper } from "@/components/PageWrapper";
+import { useAuth } from "@/context/AuthContext";
 
 export function Dashboard() {
   const { data: stats, isLoading: isStatsLoading } = useGetDashboardStats({
@@ -27,16 +29,19 @@ export function Dashboard() {
     query: { queryKey: getGetRecentActivityQueryKey() }
   });
 
+  const { user } = useAuth();
+  const firstName = user?.name?.split(" ")[0] ?? "there";
   const today = new Date();
   const greeting = today.getHours() < 12 ? "Good morning" : today.getHours() < 17 ? "Good afternoon" : "Good evening";
 
   return (
+    <PageWrapper>
     <div className="space-y-7">
       {/* Welcome Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h1 className="text-[22px] font-bold tracking-tight">
-            {greeting}, Amit 👋
+            {greeting}, {firstName} 👋
           </h1>
           <p className="text-muted-foreground text-sm mt-0.5">
             Here's what's happening with your projects today.
@@ -188,6 +193,7 @@ export function Dashboard() {
         </div>
       </div>
     </div>
+    </PageWrapper>
   );
 }
 
