@@ -9,6 +9,8 @@ import { ProjectList } from "@/pages/ProjectList";
 import { ProjectForm } from "@/pages/ProjectForm";
 import { ProjectDetail } from "@/pages/ProjectDetail";
 import { ApiExplorer } from "@/pages/ApiExplorer";
+import { AIReports } from "@/pages/AIReports";
+import { GlobalApiConsole } from "@/pages/GlobalApiConsole";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +28,8 @@ function Router() {
         </Route>
         <Route path="/projects/:id/api" component={ApiExplorer} />
         <Route path="/projects/:id" component={ProjectDetail} />
+        <Route path="/ai-reports" component={AIReports} />
+        <Route path="/api-console" component={GlobalApiConsole} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
