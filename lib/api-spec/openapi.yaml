@@ -3,13 +3,17 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: PropAgent OS API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: projects
+    description: Real estate project operations
+  - name: dashboard
+    description: Dashboard and analytics
 paths:
   /healthz:
     get:
@@ -24,6 +28,275 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /projects:
+    get:
+      operationId: listProjects
+      tags: [projects]
+      summary: List all projects
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [draft, active, archived]
+      responses:
+        "200":
+          description: List of projects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+    post:
+      operationId: createProject
+      tags: [projects]
+      summary: Create a new project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProjectBody"
+      responses:
+        "201":
+          description: Project created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+
+  /projects/{id}:
+    get:
+      operationId: getProject
+      tags: [projects]
+      summary: Get a project by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Project details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectDetail"
+        "404":
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateProject
+      tags: [projects]
+      summary: Update a project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProjectBody"
+      responses:
+        "200":
+          description: Project updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Project"
+        "404":
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteProject
+      tags: [projects]
+      summary: Delete a project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Project deleted
+        "404":
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /projects/{id}/generate-summary:
+    post:
+      operationId: generateProjectSummary
+      tags: [projects]
+      summary: Generate AI summary for a project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: AI summary generated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AiSummary"
+        "404":
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /projects/{id}/scorecard:
+    get:
+      operationId: getProjectScorecard
+      tags: [projects]
+      summary: Get scorecard for a project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Project scorecard
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scorecard"
+        "404":
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /projects/{id}/recalculate-scores:
+    post:
+      operationId: recalculateScores
+      tags: [projects]
+      summary: Recalculate scores for a project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Scores recalculated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Scorecard"
+        "404":
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /projects/{id}/api-endpoint:
+    get:
+      operationId: getProjectApiEndpoint
+      tags: [projects]
+      summary: Get the public API endpoint info for a project
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: API endpoint info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiEndpointInfo"
+        "404":
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /public/projects/{id}:
+    get:
+      operationId: getPublicProject
+      tags: [projects]
+      summary: Public AI-ready project endpoint
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Public AI-ready project data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicProjectData"
+        "404":
+          description: Project not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /dashboard/stats:
+    get:
+      operationId: getDashboardStats
+      tags: [dashboard]
+      summary: Get dashboard statistics
+      responses:
+        "200":
+          description: Dashboard statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+  /dashboard/recent-activity:
+    get:
+      operationId: getRecentActivity
+      tags: [dashboard]
+      summary: Get recent project activity
+      responses:
+        "200":
+          description: Recent activity list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityItem"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +307,354 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    UnitType:
+      type: object
+      properties:
+        type:
+          type: string
+        count:
+          type: integer
+        priceMin:
+          type: number
+        priceMax:
+          type: number
+        carpetAreaMin:
+          type: number
+        carpetAreaMax:
+          type: number
+      required:
+        - type
+
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        developerName:
+          type: string
+        location:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        priceMin:
+          type: number
+        priceMax:
+          type: number
+        carpetAreaMin:
+          type: number
+        carpetAreaMax:
+          type: number
+        possessionDate:
+          type: string
+        unitTypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnitType"
+        amenities:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum: [draft, active, archived]
+        overallScore:
+          type: number
+          nullable: true
+        valueScore:
+          type: number
+          nullable: true
+        locationScore:
+          type: number
+          nullable: true
+        trustScore:
+          type: number
+          nullable: true
+        hasSummary:
+          type: boolean
+        apiCallCount:
+          type: integer
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      required:
+        - id
+        - name
+        - developerName
+        - location
+        - status
+        - hasSummary
+        - apiCallCount
+        - createdAt
+        - updatedAt
+
+    ProjectDetail:
+      allOf:
+        - $ref: "#/components/schemas/Project"
+        - type: object
+          properties:
+            aiSummary:
+              type: string
+              nullable: true
+            investmentAngle:
+              type: string
+              nullable: true
+            idealBuyerPersona:
+              type: string
+              nullable: true
+
+    CreateProjectBody:
+      type: object
+      properties:
+        name:
+          type: string
+        developerName:
+          type: string
+        location:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        priceMin:
+          type: number
+        priceMax:
+          type: number
+        carpetAreaMin:
+          type: number
+        carpetAreaMax:
+          type: number
+        possessionDate:
+          type: string
+        unitTypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnitType"
+        amenities:
+          type: array
+          items:
+            type: string
+        trustScore:
+          type: number
+          description: Manual trust score (0-100)
+        locationScore:
+          type: number
+          description: Manual location score (0-100)
+      required:
+        - name
+        - developerName
+        - location
+
+    UpdateProjectBody:
+      type: object
+      properties:
+        name:
+          type: string
+        developerName:
+          type: string
+        location:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        priceMin:
+          type: number
+        priceMax:
+          type: number
+        carpetAreaMin:
+          type: number
+        carpetAreaMax:
+          type: number
+        possessionDate:
+          type: string
+        unitTypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnitType"
+        amenities:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum: [draft, active, archived]
+        trustScore:
+          type: number
+        locationScore:
+          type: number
+
+    AiSummary:
+      type: object
+      properties:
+        summary:
+          type: string
+        investmentAngle:
+          type: string
+        idealBuyerPersona:
+          type: string
+      required:
+        - summary
+        - investmentAngle
+        - idealBuyerPersona
+
+    Scorecard:
+      type: object
+      properties:
+        projectId:
+          type: integer
+        valueScore:
+          type: number
+        locationScore:
+          type: number
+        trustScore:
+          type: number
+        overallScore:
+          type: number
+        breakdown:
+          type: object
+          properties:
+            valueExplanation:
+              type: string
+            locationExplanation:
+              type: string
+            trustExplanation:
+              type: string
+          required:
+            - valueExplanation
+            - locationExplanation
+            - trustExplanation
+      required:
+        - projectId
+        - valueScore
+        - locationScore
+        - trustScore
+        - overallScore
+        - breakdown
+
+    ApiEndpointInfo:
+      type: object
+      properties:
+        projectId:
+          type: integer
+        endpointUrl:
+          type: string
+        callCount:
+          type: integer
+        sampleResponse:
+          type: object
+      required:
+        - projectId
+        - endpointUrl
+        - callCount
+        - sampleResponse
+
+    PublicProjectData:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        developerName:
+          type: string
+        location:
+          type: string
+        priceRange:
+          type: object
+          properties:
+            min:
+              type: number
+            max:
+              type: number
+          required:
+            - min
+            - max
+        carpetArea:
+          type: object
+          properties:
+            min:
+              type: number
+            max:
+              type: number
+          required:
+            - min
+            - max
+        unitTypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/UnitType"
+        amenities:
+          type: array
+          items:
+            type: string
+        possessionDate:
+          type: string
+        scorecard:
+          $ref: "#/components/schemas/Scorecard"
+        aiSummary:
+          $ref: "#/components/schemas/AiSummary"
+        generatedAt:
+          type: string
+      required:
+        - id
+        - name
+        - developerName
+        - location
+        - scorecard
+        - generatedAt
+
+    DashboardStats:
+      type: object
+      properties:
+        totalProjects:
+          type: integer
+        activeProjects:
+          type: integer
+        totalApiCalls:
+          type: integer
+        avgOverallScore:
+          type: number
+        projectsWithSummary:
+          type: integer
+        topScoringProject:
+          $ref: "#/components/schemas/Project"
+          nullable: true
+      required:
+        - totalProjects
+        - activeProjects
+        - totalApiCalls
+        - avgOverallScore
+        - projectsWithSummary
+
+    ActivityItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        projectId:
+          type: integer
+        projectName:
+          type: string
+        action:
+          type: string
+        timestamp:
+          type: string
+      required:
+        - id
+        - projectId
+        - projectName
+        - action
+        - timestamp

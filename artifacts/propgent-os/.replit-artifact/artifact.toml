@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "PropAgent OS"
+version = "1.0.0"
+id = "artifacts/propgent-os"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21783
+
+[services.development]
+run = "pnpm --filter @workspace/propgent-os run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/propgent-os", "run", "build" ]
+publicDir = "artifacts/propgent-os/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21783"
+BASE_PATH = "/"

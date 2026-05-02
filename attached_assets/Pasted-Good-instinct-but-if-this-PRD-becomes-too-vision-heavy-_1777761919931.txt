@@ -1,0 +1,307 @@
+Good instinct—but if this PRD becomes too “vision-heavy,” no-code tools won’t execute it.
+So I’ll keep this **tight, buildable, and MVP-first**, aligned to tools like Bubble, Glide, or Retool.
+
+---
+
+# 🚀 PRODUCT REQUIREMENTS DOCUMENT (PRD)
+
+## Product Name: **PropAgent OS (MVP)**
+
+**Tagline:** Make your real estate project AI-discoverable
+
+---
+
+# 🎯 1. Objective (VERY CLEAR)
+
+Build a **no-code SaaS tool** where developers can:
+
+* Upload project data (Excel / manual form)
+* Convert it into **AI-readable structured data**
+* Generate:
+
+  * API endpoint
+  * AI scorecard
+  * Shareable AI-ready listing
+
+👉 Goal:
+**Make any project “AI-consumable” in <15 minutes**
+
+---
+
+# 👤 2. Target User
+
+### Primary:
+
+* Real estate developers (mid to large)
+* Sales/marketing heads (your persona)
+
+### Secondary:
+
+* Channel partners
+* Proptech startups
+
+---
+
+# 🔥 3. Core Use Case
+
+> “I want my project to be easily understood and recommended by AI tools.”
+
+---
+
+# 🧩 4. MVP FEATURES (NO-CODE FRIENDLY)
+
+## 🟢 Feature 1: Project Upload
+
+### Input Methods:
+
+* Excel upload (primary)
+* Manual form (backup)
+
+### Fields (keep it tight):
+
+* Project Name
+* Location
+* Unit Types (1BHK, 2BHK…)
+* Price Range
+* Carpet Area
+* Possession Date
+* Amenities (multi-select)
+* Developer Name
+
+👉 No over-engineering. Start simple.
+
+---
+
+## 🟢 Feature 2: Data Structuring Engine
+
+System converts raw input into:
+
+* Clean structured format (JSON)
+* Standardized naming
+* Categorized attributes
+
+👉 No-code logic:
+
+* Use workflows + backend DB (Bubble)
+
+---
+
+## 🟢 Feature 3: AI Scorecard (KEY DIFFERENTIATOR)
+
+Auto-generate:
+
+* 💰 Value Score (price vs area)
+* 📍 Location Score (basic logic for MVP)
+* 🏢 Trust Score (manual for now)
+* ⭐ Overall Score
+
+👉 Simple formula-based (no AI needed initially)
+
+---
+
+## 🟢 Feature 4: API Generator
+
+Each project gets:
+
+* Unique API endpoint
+  Example:
+
+```
+/api/project/{project-id}
+```
+
+Returns:
+
+* Structured JSON
+* Scores
+* Key highlights
+
+👉 This is your “AI-ready layer”
+
+---
+
+## 🟢 Feature 5: Shareable AI Page
+
+Auto-generated page:
+
+* Clean UI (like mini landing page)
+* Structured info
+* Scorecard
+* “AI Summary”
+
+👉 Built using:
+
+* Dynamic page (Bubble / Glide)
+
+---
+
+## 🟢 Feature 6: AI Summary Generator
+
+Use:
+
+* OpenAI API
+
+Generate:
+
+* 3-line project summary
+* Investment angle
+* Ideal buyer persona
+
+---
+
+# 🧱 5. SYSTEM ARCHITECTURE (NO-CODE)
+
+### Stack:
+
+* Frontend + Backend → Bubble
+* Database → Bubble DB
+* AI → OpenAI API
+* Optional → Zapier for automation
+
+---
+
+## 🏗️ Data Flow
+
+1. User uploads Excel
+2. Data stored in DB
+3. Backend workflow:
+
+   * Clean → structure → score
+4. API endpoint auto-created
+5. UI page rendered
+6. AI summary generated
+
+---
+
+# 🖥️ 6. UI / UX FLOW
+
+## Screen 1: Dashboard
+
+* “Add New Project”
+* List of projects
+
+---
+
+## Screen 2: Upload Page
+
+* Upload Excel OR fill form
+* CTA: “Generate AI Listing”
+
+---
+
+## Screen 3: Output Page
+
+Sections:
+
+* Project Overview
+* Unit Table
+* Scorecard
+* AI Summary
+* API Link (copy button)
+
+---
+
+## Screen 4: API Page
+
+* Endpoint URL
+* JSON preview
+* “Test API” button
+
+---
+
+# 📊 7. SUCCESS METRICS
+
+### MVP Metrics:
+
+* # of projects uploaded
+* Time to create listing (<15 mins)
+* API usage count
+* Repeat users
+
+---
+
+# 💰 8. MONETIZATION (MVP)
+
+### Free:
+
+* 1 project
+* Limited API calls
+
+### Paid:
+
+* ₹4,999 – ₹19,999/month
+* Multiple projects
+* Unlimited API access
+* Priority AI scoring
+
+---
+
+# ⚠️ 9. WHAT NOT TO BUILD (IMPORTANT)
+
+Don’t add:
+
+* Advanced AI recommendations
+* Complex maps / GIS
+* CRM
+* Lead management
+
+👉 Stay focused:
+**Data → Structure → API → AI visibility**
+
+---
+
+# 🧠 10. FUTURE ROADMAP
+
+After MVP works:
+
+* AI agent integrations
+* Real-time inventory sync
+* Broker marketplace
+* AI negotiation layer
+
+---
+
+# 🔥 11. BUILD PLAN (14 DAYS SPRINT)
+
+### Day 1–3:
+
+* DB structure
+* Upload system
+
+### Day 4–6:
+
+* Data structuring workflows
+
+### Day 7–9:
+
+* Scorecard logic
+* API endpoint
+
+### Day 10–12:
+
+* UI pages
+
+### Day 13–14:
+
+* OpenAI integration
+* Testing
+
+---
+
+# 💥 FINAL POSITIONING
+
+You are NOT building a tool.
+
+You are building:
+
+> **“The first AI-discoverability layer for real estate in India.”**
+
+---
+
+If you want next step, I can build:
+
+* Exact **Bubble database schema**
+* API response structure (ready JSON)
+* UI wireframe screens (so dev can directly build)
+
+Just say: **“Build schema”** or **“Build UI”** 🚀

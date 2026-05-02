@@ -1,0 +1,48 @@
+import { Switch, Route, Router as WouterRouter } from "wouter";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import NotFound from "@/pages/not-found";
+import { Layout } from "@/components/Layout";
+import { Dashboard } from "@/pages/Dashboard";
+import { ProjectList } from "@/pages/ProjectList";
+import { ProjectForm } from "@/pages/ProjectForm";
+import { ProjectDetail } from "@/pages/ProjectDetail";
+import { ApiExplorer } from "@/pages/ApiExplorer";
+
+const queryClient = new QueryClient();
+
+function Router() {
+  return (
+    <Layout>
+      <Switch>
+        <Route path="/" component={Dashboard} />
+        <Route path="/projects" component={ProjectList} />
+        <Route path="/projects/new">
+          {() => <ProjectForm mode="create" />}
+        </Route>
+        <Route path="/projects/:id/edit">
+          {() => <ProjectForm mode="edit" />}
+        </Route>
+        <Route path="/projects/:id/api" component={ApiExplorer} />
+        <Route path="/projects/:id" component={ProjectDetail} />
+        <Route component={NotFound} />
+      </Switch>
+    </Layout>
+  );
+}
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+          <Router />
+        </WouterRouter>
+        <Toaster />
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
+
+export default App;
