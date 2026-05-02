@@ -11,7 +11,7 @@ interface LayoutProps {
 }
 
 const mainNav = [
-  { name: "Dashboard", href: "/", icon: LayoutDashboard },
+  { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Projects", href: "/projects", icon: Building2 },
   { name: "AI Reports", href: "/ai-reports", icon: FileBarChart2 },
   { name: "API Console", href: "/api-console", icon: Terminal },
