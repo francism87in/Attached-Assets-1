@@ -17,6 +17,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import {
   AlertDialog,
@@ -28,12 +29,55 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Building2, Plus, Search, MoreHorizontal, Edit, Trash2, Eye, Globe, ArrowUpRight } from "lucide-react";
+import {
+  Building2, Plus, Search, MoreHorizontal, Edit, Trash2, Eye,
+  Globe, Download, Filter, BarChart2, X,
+} from "lucide-react";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 
+type StatusFilter = "all" | "active" | "draft" | "inactive";
+
+function exportCsv(projects: any[]) {
+  const headers = [
+    "ID", "Name", "Developer", "Location", "City", "Status",
+    "Overall Score", "Value Score", "Location Score", "Trust Score",
+    "Price Min (Cr)", "Price Max (Cr)", "Carpet Min (sqft)", "Carpet Max (sqft)",
+    "Possession", "API Calls", "Has AI Summary", "Created At",
+  ];
+  const rows = projects.map(p => [
+    p.id,
+    `"${(p.name ?? "").replace(/"/g, '""')}"`,
+    `"${(p.developerName ?? "").replace(/"/g, '""')}"`,
+    `"${(p.location ?? "").replace(/"/g, '""')}"`,
+    `"${(p.city ?? "").replace(/"/g, '""')}"`,
+    p.status ?? "",
+    p.overallScore ? p.overallScore.toFixed(1) : "",
+    p.valueScore ? p.valueScore.toFixed(1) : "",
+    p.locationScore ? p.locationScore.toFixed(1) : "",
+    p.trustScore ? p.trustScore.toFixed(1) : "",
+    p.priceMin ?? "",
+    p.priceMax ?? "",
+    p.carpetAreaMin ?? "",
+    p.carpetAreaMax ?? "",
+    `"${p.possessionDate ?? ""}"`,
+    p.apiCallCount ?? 0,
+    p.hasSummary ? "Yes" : "No",
+    p.createdAt ? format(new Date(p.createdAt), "yyyy-MM-dd") : "",
+  ]);
+  const csv = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `propgent-projects-${format(new Date(), "yyyy-MM-dd")}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 export function ProjectList() {
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -53,12 +97,23 @@ export function ProjectList() {
     },
   });
 
+  const filtered = projects?.filter(p =>
+    statusFilter === "all" ? true : p.status === statusFilter
+  ) ?? [];
+
   function scoreColor(score?: number | null) {
     if (!score) return "text-muted-foreground";
     if (score >= 75) return "text-green-600";
     if (score >= 55) return "text-yellow-600";
     return "text-red-500";
   }
+
+  const STATUS_OPTIONS: { value: StatusFilter; label: string }[] = [
+    { value: "all", label: "All" },
+    { value: "active", label: "Active" },
+    { value: "draft", label: "Draft" },
+    { value: "inactive", label: "Inactive" },
+  ];
 
   return (
     <PageWrapper>
@@ -68,24 +123,82 @@ export function ProjectList() {
           <h1 className="text-2xl font-bold font-serif tracking-tight">Projects</h1>
           <p className="text-muted-foreground text-sm">All real estate listings in your portfolio.</p>
         </div>
-        <Link href="/projects/new">
-          <Button data-testid="button-new-project" className="gap-2">
-            <Plus className="w-4 h-4" />
-            New Project
-          </Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          {projects && projects.length > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2 h-9 text-[13px]"
+              onClick={() => {
+                exportCsv(projects);
+                toast({ title: "Exported to CSV" });
+              }}
+            >
+              <Download className="w-3.5 h-3.5" />
+              Export
+            </Button>
+          )}
+          {projects && projects.length >= 2 && (
+            <Link href="/compare">
+              <Button variant="outline" size="sm" className="gap-2 h-9 text-[13px]">
+                <BarChart2 className="w-3.5 h-3.5" />
+                Compare
+              </Button>
+            </Link>
+          )}
+          <Link href="/projects/new">
+            <Button data-testid="button-new-project" className="gap-2 h-9 text-[13px]">
+              <Plus className="w-4 h-4" />
+              New Project
+            </Button>
+          </Link>
+        </div>
       </div>
 
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <Input
-          data-testid="input-search"
-          placeholder="Search projects, developers, locations..."
-          className="pl-9"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+      {/* Search + Filter Row */}
+      <div className="flex gap-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Input
+            data-testid="input-search"
+            placeholder="Search projects, developers, locations..."
+            className="pl-9"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <div className="flex items-center gap-1 bg-muted/50 rounded-md border border-border px-1">
+          <Filter className="w-3.5 h-3.5 text-muted-foreground ml-1.5" />
+          {STATUS_OPTIONS.map(opt => (
+            <button
+              key={opt.value}
+              onClick={() => setStatusFilter(opt.value)}
+              className={`px-2.5 py-1 rounded-sm text-[12px] font-medium transition-colors ${
+                statusFilter === opt.value
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
       </div>
+
+      {/* Active filter indicator */}
+      {statusFilter !== "all" && (
+        <div className="flex items-center gap-2">
+          <Badge variant="secondary" className="gap-1.5 text-[11px]">
+            Status: {statusFilter}
+            <button onClick={() => setStatusFilter("all")} className="hover:opacity-70">
+              <X className="w-3 h-3" />
+            </button>
+          </Badge>
+          {!isLoading && (
+            <span className="text-[12px] text-muted-foreground">{filtered.length} result{filtered.length !== 1 ? "s" : ""}</span>
+          )}
+        </div>
+      )}
 
       <Card className="border-border overflow-hidden">
         <div className="divide-y divide-border">
@@ -99,14 +212,18 @@ export function ProjectList() {
                 <Skeleton className="h-8 w-[80px]" />
               </div>
             ))
-          ) : projects?.length === 0 ? (
+          ) : filtered.length === 0 ? (
             <div className="p-16 text-center">
               <Building2 className="w-10 h-10 text-muted-foreground mx-auto mb-4" />
               <p className="text-muted-foreground font-medium">No projects found</p>
               <p className="text-sm text-muted-foreground mt-1">
-                {search ? "Try a different search term." : "Create your first project to get started."}
+                {search
+                  ? "Try a different search term."
+                  : statusFilter !== "all"
+                  ? `No ${statusFilter} projects.`
+                  : "Create your first project to get started."}
               </p>
-              {!search && (
+              {!search && statusFilter === "all" && (
                 <Link href="/projects/new">
                   <Button className="mt-4 gap-2" variant="outline" data-testid="button-create-first">
                     <Plus className="w-4 h-4" /> Create Project
@@ -115,7 +232,7 @@ export function ProjectList() {
               )}
             </div>
           ) : (
-            projects?.map((project) => (
+            filtered.map((project) => (
               <div key={project.id} data-testid={`row-project-${project.id}`} className="p-4 flex items-center justify-between hover:bg-muted/30 transition-colors">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
@@ -174,6 +291,7 @@ export function ProjectList() {
                           <Globe className="w-4 h-4" /> API Explorer
                         </Link>
                       </DropdownMenuItem>
+                      <DropdownMenuSeparator />
                       <DropdownMenuItem
                         className="text-destructive focus:text-destructive gap-2"
                         onClick={() => setDeleteId(project.id)}

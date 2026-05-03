@@ -18,6 +18,7 @@ import { GlobalApiConsole } from "@/pages/GlobalApiConsole";
 import { Analytics } from "@/pages/Analytics";
 import { Team } from "@/pages/Team";
 import { Settings } from "@/pages/Settings";
+import { Compare } from "@/pages/Compare";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ function AuthenticatedApp() {
         <Route path="/ai-reports" component={AIReports} />
         <Route path="/api-console" component={GlobalApiConsole} />
         <Route path="/analytics" component={Analytics} />
+        <Route path="/compare" component={Compare} />
         <Route path="/team" component={Team} />
         <Route path="/settings" component={Settings} />
         <Route component={NotFound} />

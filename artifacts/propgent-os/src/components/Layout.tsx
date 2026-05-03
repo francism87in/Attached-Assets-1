@@ -2,12 +2,14 @@ import { Link, useLocation } from "wouter";
 import {
   LayoutDashboard, Building2, PlusCircle, FileBarChart2,
   Terminal, BarChart3, Users, Settings, Menu, X, Activity,
-  ChevronRight, LogOut
+  ChevronRight, LogOut, BarChart2, Search,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { NotificationBell } from "@/components/NotificationBell";
+import { CommandPalette, useCommandPaletteShortcut } from "@/components/CommandPalette";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -22,6 +24,7 @@ const mainNav = [
 
 const secondaryNav = [
   { name: "Analytics", href: "/analytics", icon: BarChart3 },
+  { name: "Compare", href: "/compare", icon: BarChart2 },
   { name: "Team", href: "/team", icon: Users },
   { name: "Settings", href: "/settings", icon: Settings },
 ];
@@ -29,8 +32,11 @@ const secondaryNav = [
 export function Layout({ children }: LayoutProps) {
   const [location] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [cmdOpen, setCmdOpen] = useState(false);
   const { user, logout } = useAuth();
   const { toast } = useToast();
+
+  useCommandPaletteShortcut(useCallback(() => setCmdOpen(true), []));
 
   function isActive(href: string) {
     if (href === "/dashboard") return location === "/dashboard" || location === "/";
@@ -56,9 +62,12 @@ export function Layout({ children }: LayoutProps) {
           </div>
           <span className="font-bold text-white tracking-tight text-base">PropAgent OS</span>
         </div>
-        <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-1.5 text-sidebar-foreground/60 hover:text-sidebar-foreground">
-          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        <div className="flex items-center gap-2">
+          <NotificationBell />
+          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-1.5 text-sidebar-foreground/60 hover:text-sidebar-foreground">
+            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* Sidebar */}
@@ -161,10 +170,26 @@ export function Layout({ children }: LayoutProps) {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-screen overflow-hidden">
+        {/* Topbar */}
+        <div className="hidden md:flex items-center justify-end gap-2 px-6 py-2.5 border-b border-border bg-background/80 backdrop-blur-sm shrink-0">
+          <button
+            onClick={() => setCmdOpen(true)}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-border bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors text-[12px] group"
+          >
+            <Search className="w-3.5 h-3.5" />
+            <span>Search…</span>
+            <kbd className="ml-2 text-[10px] px-1.5 py-0.5 rounded bg-background border border-border font-mono">⌘K</kbd>
+          </button>
+          <NotificationBell />
+        </div>
+
         <main className="flex-1 overflow-y-auto p-4 md:p-8">
           <div className="max-w-6xl mx-auto">{children}</div>
         </main>
       </div>
+
+      {/* Command Palette */}
+      <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
     </div>
   );
 }
