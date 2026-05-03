@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { PageWrapper } from "@/components/PageWrapper";
 import { useLocation, useParams } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -172,6 +173,7 @@ export function ProjectForm({ mode }: ProjectFormProps) {
   const isPending = createProject.isPending || updateProject.isPending;
 
   return (
+    <PageWrapper>
     <div className="space-y-6 max-w-3xl">
       <div className="flex items-center gap-3">
         <Link href={mode === "edit" ? `/projects/${projectId}` : "/projects"}>
@@ -460,5 +462,6 @@ export function ProjectForm({ mode }: ProjectFormProps) {
         </form>
       </Form>
     </div>
+    </PageWrapper>
   );
 }

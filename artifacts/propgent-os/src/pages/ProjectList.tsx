@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
+import { PageWrapper } from "@/components/PageWrapper";
 import {
   useListProjects,
   getListProjectsQueryKey,
@@ -60,6 +61,7 @@ export function ProjectList() {
   }
 
   return (
+    <PageWrapper>
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
@@ -209,5 +211,6 @@ export function ProjectList() {
         </AlertDialogContent>
       </AlertDialog>
     </div>
+    </PageWrapper>
   );
 }

@@ -1,6 +1,6 @@
 # PropAgent OS
 
-A full-stack SaaS tool for real estate developers in India to manage project listings with AI-powered scorecards and public API endpoints.
+A full-stack SaaS tool for real estate developers in India to manage project listings with AI-powered scorecards and public API endpoints. Each user sees only their own projects (per-user data isolation).
 
 ## Architecture
 
@@ -17,19 +17,24 @@ A full-stack SaaS tool for real estate developers in India to manage project lis
 
 ## Stack
 
-- **Frontend**: React 19, Vite, TailwindCSS v4, shadcn/ui, Wouter, React Query, react-hook-form + zod
+- **Frontend**: React 19, Vite, TailwindCSS v4, shadcn/ui, Wouter, React Query, react-hook-form + zod, Framer Motion, Recharts
 - **Backend**: Express 5, Drizzle ORM, PostgreSQL, Pino logging
+- **Auth**: Session-based auth with `express-session` + `connect-pg-simple` (PostgreSQL-backed sessions, persisted across restarts), bcryptjs password hashing
 - **AI**: OpenAI via Replit AI Integrations (`AI_INTEGRATIONS_OPENAI_BASE_URL`, `AI_INTEGRATIONS_OPENAI_API_KEY`)
-- **Auth**: None (MVP scope)
 
 ## Features
 
-- **Dashboard** (`/`) — Portfolio stats (total projects, active, API calls, avg score), recent projects, system activity log
-- **Projects List** (`/projects`) — Searchable table with scores, API call counts, status badges, dropdown actions
+- **Landing Page** (`/`) — Public marketing page, no auth required
+- **Register** (`/register`) — Create account with name, email, password, company
+- **Login** (`/login`) — Session-based login
+- **Dashboard** (`/dashboard`) — Portfolio stats, recent projects, activity log, real user greeting
+- **Projects List** (`/projects`) — Searchable table, scores, status badges, delete with confirmation
 - **New Project** (`/projects/new`) — Full form: basic info, pricing, carpet area, possession, unit types, amenities, location/trust score sliders
 - **Edit Project** (`/projects/:id/edit`) — Same form pre-filled from DB
-- **Project Detail** (`/projects/:id`) — Overview cards, unit types, amenities, AI scorecard with progress bars, AI summary (generate/regenerate), API access shortcut
-- **API Explorer** (`/projects/:id/api`) — Public endpoint URL, live Test API button, sample JSON response, cURL/JS/Python integration snippets
+- **Project Detail** (`/projects/:id`) — 4 tabs: Overview, Scores (RadarChart + progress bars), AI Summary, API tab
+- **API Explorer** (`/projects/:id/api`) — Public endpoint URL, live Test API button, cURL/JS/Python snippets
+- **AI Reports** (`/ai-reports`) — AI readiness status across all user projects
+- **Global API Console** (`/api-console`) — Live API console, request log, multi-endpoint testing
 
 ## Score Logic
 
@@ -37,28 +42,43 @@ A full-stack SaaS tool for real estate developers in India to manage project lis
 - **Location Score**: Manual slider (0–100), stored in DB
 - **Trust Score**: Manual slider (0–100), stored in DB
 - **Overall Score**: `value×0.4 + location×0.35 + trust×0.25`
+- **Lifestyle Score** (frontend only): `min(100, amenities.length × 7.5 + 10)`
+- **Investment Score** (frontend only): `valueScore×0.35 + locationScore×0.45 + trustScore×0.2`
 
 ## API Routes
 
-| Method | Path | Description |
-|---|---|---|
-| GET | `/api/projects` | List all projects (with optional `?search=`) |
-| POST | `/api/projects` | Create project |
-| GET | `/api/projects/:id` | Get project detail |
-| PUT | `/api/projects/:id` | Update project |
-| DELETE | `/api/projects/:id` | Delete project |
-| POST | `/api/projects/:id/generate-summary` | Generate AI summary (OpenAI) |
-| GET | `/api/projects/:id/scorecard` | Get full scorecard breakdown |
-| POST | `/api/projects/:id/recalculate-scores` | Recalculate all scores |
-| GET | `/api/projects/:id/api-endpoint` | Get public endpoint info + call count |
-| GET | `/api/public/projects/:id` | Public AI-ready listing endpoint |
-| GET | `/api/dashboard/stats` | Portfolio stats |
-| GET | `/api/dashboard/recent-activity` | Recent activity log |
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| POST | `/api/auth/register` | Public | Create account |
+| POST | `/api/auth/login` | Public | Login |
+| POST | `/api/auth/logout` | Auth | Logout |
+| GET | `/api/auth/me` | Auth | Current user info |
+| GET | `/api/projects` | Auth | List user's projects |
+| POST | `/api/projects` | Auth | Create project (assigned to user) |
+| GET | `/api/projects/:id` | Auth (owner) | Get project |
+| PUT | `/api/projects/:id` | Auth (owner) | Update project |
+| DELETE | `/api/projects/:id` | Auth (owner) | Delete project |
+| POST | `/api/projects/:id/generate-summary` | Auth (owner) | Generate AI summary |
+| GET | `/api/projects/:id/scorecard` | Auth (owner) | Full scorecard breakdown |
+| POST | `/api/projects/:id/recalculate-scores` | Auth (owner) | Recalculate scores |
+| GET | `/api/projects/:id/api-endpoint` | Auth (owner) | Public endpoint info |
+| GET | `/api/public/projects/:id` | **Public** | AI-ready listing (no auth, increments call count) |
+| GET | `/api/dashboard/stats` | Auth | Portfolio stats |
+| GET | `/api/dashboard/recent-activity` | Auth | Activity log |
 
 ## DB Schema
 
-- `projects` table: all project fields, scores, AI summary fields, `apiCallCount`, `hasSummary`
+- `users` table: `id`, `name`, `email`, `password_hash`, `role`, `company`, `created_at`, `updated_at`
+- `projects` table: all project fields + `user_id` (FK → users), scores, AI summary fields, `api_call_count`
 - `activityLog` table: project activity feed
+- `session` table: auto-created by `connect-pg-simple` for persistent sessions
+
+## Auth Notes
+
+- Sessions stored in PostgreSQL (`session` table) via `connect-pg-simple` — survive server restarts
+- Session secret from `SESSION_SECRET` env var (set in Replit secrets)
+- All `/api/projects/*` routes require auth and enforce ownership via `userId` check
+- Public endpoint `/api/public/projects/:id` is intentionally open (no auth)
 
 ## Codegen
 
@@ -73,10 +93,9 @@ Regenerates `lib/api-client-react/src/generated/api.ts` and `lib/api-zod/src/gen
 - Google Fonts loaded via `<link>` in `index.html` (NOT `@import url()` in CSS — PostCSS will error)
 - Fonts: Space Grotesk (headings), Inter (body), JetBrains Mono (mono/code)
 - Wouter `<Link>` renders as `<a>` — do NOT wrap in another `<a>` tag
+- `zod/v4` import works in lib packages but NOT in api-server (esbuild) — always use `import { z } from "zod"` in server code
 
-## Seeded Data
+## Pending / Future
 
-3 example projects seeded in the database:
-- Prestige Lakeside Habitat (Bengaluru) — has AI summary
-- Godrej Meridien (Gurugram)
-- Tata Serein (Thane)
+- PDF export for AI Reports (button visible, marked "Coming Soon")
+- User profile / settings page

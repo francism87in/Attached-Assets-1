@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { PageWrapper } from "@/components/PageWrapper";
 import { useListProjects, getListProjectsQueryKey } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +31,7 @@ export function AIReports() {
   }
 
   return (
+    <PageWrapper>
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
@@ -181,5 +183,6 @@ export function AIReports() {
         </CardContent>
       </Card>
     </div>
+    </PageWrapper>
   );
 }

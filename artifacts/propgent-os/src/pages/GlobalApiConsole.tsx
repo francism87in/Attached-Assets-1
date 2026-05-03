@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { PageWrapper } from "@/components/PageWrapper";
 import { useListProjects, getListProjectsQueryKey } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -80,6 +81,7 @@ export function GlobalApiConsole() {
   const latestLog = logs[0];
 
   return (
+    <PageWrapper>
     <div className="space-y-5">
       <div>
         <h1 className="text-[22px] font-bold tracking-tight">API Console</h1>
@@ -247,5 +249,6 @@ export function GlobalApiConsole() {
         </div>
       </div>
     </div>
+    </PageWrapper>
   );
 }

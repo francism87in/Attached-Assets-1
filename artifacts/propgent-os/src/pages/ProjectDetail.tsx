@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "wouter";
+import { PageWrapper } from "@/components/PageWrapper";
 import {
   useGetProject,
   useGetProjectScorecard,
@@ -99,6 +100,7 @@ export function ProjectDetail() {
   }
 
   return (
+    <PageWrapper>
     <div className="space-y-5 max-w-5xl">
       {/* Breadcrumb + Header */}
       <div>
@@ -477,6 +479,7 @@ export function ProjectDetail() {
         </div>
       )}
     </div>
+    </PageWrapper>
   );
 }
 

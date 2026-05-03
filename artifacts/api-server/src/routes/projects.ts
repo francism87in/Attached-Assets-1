@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db, projectsTable, activityTable } from "@workspace/db";
-import { eq, desc, ilike, or, count, avg, sum } from "drizzle-orm";
+import { eq, desc, ilike, or, and } from "drizzle-orm";
 import {
   CreateProjectBody,
   UpdateProjectBody,
@@ -15,6 +15,7 @@ import {
   GetPublicProjectParams,
 } from "@workspace/api-zod";
 import { openai } from "@workspace/integrations-openai-ai-server";
+import { requireAuth } from "../middlewares/auth.js";
 
 const router = Router();
 
@@ -28,10 +29,8 @@ function calcValueScore(priceMin?: string | null, priceMax?: string | null, carp
 
   const avgPrice = pa ? (pm + pa) / 2 : pm;
   const avgArea = cb ? (ca + cb) / 2 : ca;
-
   const pricePerSqft = avgPrice / avgArea;
 
-  // Indian real estate: <5000/sqft = excellent, 5000-10000 = good, 10000-20000 = fair, >20000 = expensive
   if (pricePerSqft < 5000) return 90;
   if (pricePerSqft < 8000) return 75;
   if (pricePerSqft < 12000) return 60;
@@ -47,32 +46,8 @@ async function logActivity(projectId: number, projectName: string, action: strin
   await db.insert(activityTable).values({ projectId, projectName, action });
 }
 
-// List projects
-router.get("/projects", async (req, res) => {
-  const parseResult = ListProjectsQueryParams.safeParse(req.query);
-  if (!parseResult.success) {
-    res.status(400).json({ error: "Invalid query params" });
-    return;
-  }
-  const { search, status } = parseResult.data;
-
-  let query = db.select().from(projectsTable).orderBy(desc(projectsTable.createdAt)).$dynamic();
-
-  if (status) {
-    query = query.where(eq(projectsTable.status, status));
-  }
-  if (search) {
-    query = query.where(
-      or(
-        ilike(projectsTable.name, `%${search}%`),
-        ilike(projectsTable.developerName, `%${search}%`),
-        ilike(projectsTable.location, `%${search}%`)
-      )
-    );
-  }
-
-  const projects = await query;
-  const result = projects.map((p) => ({
+function projectOut(p: typeof projectsTable.$inferSelect) {
+  return {
     ...p,
     priceMin: p.priceMin ? parseFloat(p.priceMin) : undefined,
     priceMax: p.priceMax ? parseFloat(p.priceMax) : undefined,
@@ -84,13 +59,46 @@ router.get("/projects", async (req, res) => {
     overallScore: p.overallScore ? parseFloat(p.overallScore) : undefined,
     hasSummary: !!p.aiSummary,
     apiCallCount: p.apiCallCount,
-  }));
+  };
+}
 
-  res.json(result);
+// List projects — scoped to current user
+router.get("/projects", requireAuth, async (req, res) => {
+  const parseResult = ListProjectsQueryParams.safeParse(req.query);
+  if (!parseResult.success) {
+    res.status(400).json({ error: "Invalid query params" });
+    return;
+  }
+  const { search, status } = parseResult.data;
+  const userId = req.session.userId!;
+
+  let query = db.select().from(projectsTable)
+    .where(eq(projectsTable.userId, userId))
+    .orderBy(desc(projectsTable.createdAt))
+    .$dynamic();
+
+  if (status) {
+    query = query.where(and(eq(projectsTable.userId, userId), eq(projectsTable.status, status)));
+  }
+  if (search) {
+    query = query.where(
+      and(
+        eq(projectsTable.userId, userId),
+        or(
+          ilike(projectsTable.name, `%${search}%`),
+          ilike(projectsTable.developerName, `%${search}%`),
+          ilike(projectsTable.location, `%${search}%`)
+        )
+      )
+    );
+  }
+
+  const projects = await query;
+  res.json(projects.map(projectOut));
 });
 
-// Create project
-router.post("/projects", async (req, res) => {
+// Create project — associate with current user
+router.post("/projects", requireAuth, async (req, res) => {
   const parseResult = CreateProjectBody.safeParse(req.body);
   if (!parseResult.success) {
     res.status(400).json({ error: "Invalid body", details: parseResult.error.issues });
@@ -109,6 +117,7 @@ router.post("/projects", async (req, res) => {
   const overallScore = calcOverallScore(valueScore, locationScore, trustScore);
 
   const [project] = await db.insert(projectsTable).values({
+    userId: req.session.userId,
     name: body.name,
     developerName: body.developerName,
     location: body.location,
@@ -128,53 +137,30 @@ router.post("/projects", async (req, res) => {
   }).returning();
 
   await logActivity(project.id, project.name, "Project created");
-
-  const out = {
-    ...project,
-    priceMin: project.priceMin ? parseFloat(project.priceMin) : undefined,
-    priceMax: project.priceMax ? parseFloat(project.priceMax) : undefined,
-    carpetAreaMin: project.carpetAreaMin ? parseFloat(project.carpetAreaMin) : undefined,
-    carpetAreaMax: project.carpetAreaMax ? parseFloat(project.carpetAreaMax) : undefined,
-    valueScore: project.valueScore ? parseFloat(project.valueScore) : undefined,
-    locationScore: project.locationScore ? parseFloat(project.locationScore) : undefined,
-    trustScore: project.trustScore ? parseFloat(project.trustScore) : undefined,
-    overallScore: project.overallScore ? parseFloat(project.overallScore) : undefined,
-    hasSummary: !!project.aiSummary,
-  };
-
-  res.status(201).json(out);
+  res.status(201).json(projectOut(project));
 });
 
-// Get project
-router.get("/projects/:id", async (req, res) => {
+// Get project — must belong to current user
+router.get("/projects/:id", requireAuth, async (req, res) => {
   const parseResult = GetProjectParams.safeParse({ id: parseInt(req.params.id) });
   if (!parseResult.success) {
     res.status(400).json({ error: "Invalid id" });
     return;
   }
 
-  const [project] = await db.select().from(projectsTable).where(eq(projectsTable.id, parseResult.data.id));
+  const [project] = await db.select().from(projectsTable).where(
+    and(eq(projectsTable.id, parseResult.data.id), eq(projectsTable.userId, req.session.userId!))
+  );
   if (!project) {
     res.status(404).json({ error: "Project not found" });
     return;
   }
 
-  res.json({
-    ...project,
-    priceMin: project.priceMin ? parseFloat(project.priceMin) : undefined,
-    priceMax: project.priceMax ? parseFloat(project.priceMax) : undefined,
-    carpetAreaMin: project.carpetAreaMin ? parseFloat(project.carpetAreaMin) : undefined,
-    carpetAreaMax: project.carpetAreaMax ? parseFloat(project.carpetAreaMax) : undefined,
-    valueScore: project.valueScore ? parseFloat(project.valueScore) : undefined,
-    locationScore: project.locationScore ? parseFloat(project.locationScore) : undefined,
-    trustScore: project.trustScore ? parseFloat(project.trustScore) : undefined,
-    overallScore: project.overallScore ? parseFloat(project.overallScore) : undefined,
-    hasSummary: !!project.aiSummary,
-  });
+  res.json(projectOut(project));
 });
 
-// Update project
-router.put("/projects/:id", async (req, res) => {
+// Update project — ownership required
+router.put("/projects/:id", requireAuth, async (req, res) => {
   const idParse = UpdateProjectParams.safeParse({ id: parseInt(req.params.id) });
   if (!idParse.success) {
     res.status(400).json({ error: "Invalid id" });
@@ -187,7 +173,9 @@ router.put("/projects/:id", async (req, res) => {
     return;
   }
 
-  const [existing] = await db.select().from(projectsTable).where(eq(projectsTable.id, idParse.data.id));
+  const [existing] = await db.select().from(projectsTable).where(
+    and(eq(projectsTable.id, idParse.data.id), eq(projectsTable.userId, req.session.userId!))
+  );
   if (!existing) {
     res.status(404).json({ error: "Project not found" });
     return;
@@ -226,50 +214,47 @@ router.put("/projects/:id", async (req, res) => {
   if (body.amenities !== undefined) updateData.amenities = body.amenities;
   if (body.status !== undefined) updateData.status = body.status;
 
-  const [updated] = await db.update(projectsTable).set(updateData).where(eq(projectsTable.id, idParse.data.id)).returning();
-  await logActivity(updated.id, updated.name, "Project updated");
+  const [updated] = await db.update(projectsTable).set(updateData)
+    .where(and(eq(projectsTable.id, idParse.data.id), eq(projectsTable.userId, req.session.userId!)))
+    .returning();
 
-  res.json({
-    ...updated,
-    priceMin: updated.priceMin ? parseFloat(updated.priceMin) : undefined,
-    priceMax: updated.priceMax ? parseFloat(updated.priceMax) : undefined,
-    carpetAreaMin: updated.carpetAreaMin ? parseFloat(updated.carpetAreaMin) : undefined,
-    carpetAreaMax: updated.carpetAreaMax ? parseFloat(updated.carpetAreaMax) : undefined,
-    valueScore: updated.valueScore ? parseFloat(updated.valueScore) : undefined,
-    locationScore: updated.locationScore ? parseFloat(updated.locationScore) : undefined,
-    trustScore: updated.trustScore ? parseFloat(updated.trustScore) : undefined,
-    overallScore: updated.overallScore ? parseFloat(updated.overallScore) : undefined,
-    hasSummary: !!updated.aiSummary,
-  });
+  await logActivity(updated.id, updated.name, "Project updated");
+  res.json(projectOut(updated));
 });
 
-// Delete project
-router.delete("/projects/:id", async (req, res) => {
+// Delete project — ownership required
+router.delete("/projects/:id", requireAuth, async (req, res) => {
   const parseResult = DeleteProjectParams.safeParse({ id: parseInt(req.params.id) });
   if (!parseResult.success) {
     res.status(400).json({ error: "Invalid id" });
     return;
   }
 
-  const [existing] = await db.select().from(projectsTable).where(eq(projectsTable.id, parseResult.data.id));
+  const [existing] = await db.select().from(projectsTable).where(
+    and(eq(projectsTable.id, parseResult.data.id), eq(projectsTable.userId, req.session.userId!))
+  );
   if (!existing) {
     res.status(404).json({ error: "Project not found" });
     return;
   }
 
-  await db.delete(projectsTable).where(eq(projectsTable.id, parseResult.data.id));
+  await db.delete(projectsTable).where(
+    and(eq(projectsTable.id, parseResult.data.id), eq(projectsTable.userId, req.session.userId!))
+  );
   res.status(204).send();
 });
 
-// Generate AI summary
-router.post("/projects/:id/generate-summary", async (req, res) => {
+// Generate AI summary — ownership required
+router.post("/projects/:id/generate-summary", requireAuth, async (req, res) => {
   const parseResult = GenerateProjectSummaryParams.safeParse({ id: parseInt(req.params.id) });
   if (!parseResult.success) {
     res.status(400).json({ error: "Invalid id" });
     return;
   }
 
-  const [project] = await db.select().from(projectsTable).where(eq(projectsTable.id, parseResult.data.id));
+  const [project] = await db.select().from(projectsTable).where(
+    and(eq(projectsTable.id, parseResult.data.id), eq(projectsTable.userId, req.session.userId!))
+  );
   if (!project) {
     res.status(404).json({ error: "Project not found" });
     return;
@@ -295,7 +280,7 @@ Return ONLY a JSON object with these three fields (no markdown, no extra text):
 }`;
 
   const completion = await openai.chat.completions.create({
-    model: "gpt-5-mini",
+    model: "gpt-4o-mini",
     max_completion_tokens: 500,
     messages: [{ role: "user", content: prompt }],
   });
@@ -318,22 +303,23 @@ Return ONLY a JSON object with these three fields (no markdown, no extra text):
     investmentAngle: parsed.investmentAngle,
     idealBuyerPersona: parsed.idealBuyerPersona,
     updatedAt: new Date(),
-  }).where(eq(projectsTable.id, parseResult.data.id));
+  }).where(and(eq(projectsTable.id, parseResult.data.id), eq(projectsTable.userId, req.session.userId!)));
 
   await logActivity(project.id, project.name, "AI summary generated");
-
   res.json(parsed);
 });
 
-// Get scorecard
-router.get("/projects/:id/scorecard", async (req, res) => {
+// Get scorecard — ownership required
+router.get("/projects/:id/scorecard", requireAuth, async (req, res) => {
   const parseResult = GetProjectScorecardParams.safeParse({ id: parseInt(req.params.id) });
   if (!parseResult.success) {
     res.status(400).json({ error: "Invalid id" });
     return;
   }
 
-  const [project] = await db.select().from(projectsTable).where(eq(projectsTable.id, parseResult.data.id));
+  const [project] = await db.select().from(projectsTable).where(
+    and(eq(projectsTable.id, parseResult.data.id), eq(projectsTable.userId, req.session.userId!))
+  );
   if (!project) {
     res.status(404).json({ error: "Project not found" });
     return;
@@ -364,15 +350,17 @@ router.get("/projects/:id/scorecard", async (req, res) => {
   });
 });
 
-// Recalculate scores
-router.post("/projects/:id/recalculate-scores", async (req, res) => {
+// Recalculate scores — ownership required
+router.post("/projects/:id/recalculate-scores", requireAuth, async (req, res) => {
   const parseResult = RecalculateScoresParams.safeParse({ id: parseInt(req.params.id) });
   if (!parseResult.success) {
     res.status(400).json({ error: "Invalid id" });
     return;
   }
 
-  const [project] = await db.select().from(projectsTable).where(eq(projectsTable.id, parseResult.data.id));
+  const [project] = await db.select().from(projectsTable).where(
+    and(eq(projectsTable.id, parseResult.data.id), eq(projectsTable.userId, req.session.userId!))
+  );
   if (!project) {
     res.status(404).json({ error: "Project not found" });
     return;
@@ -387,7 +375,7 @@ router.post("/projects/:id/recalculate-scores", async (req, res) => {
     valueScore: valueScore.toString(),
     overallScore: overallScore.toString(),
     updatedAt: new Date(),
-  }).where(eq(projectsTable.id, parseResult.data.id));
+  }).where(and(eq(projectsTable.id, parseResult.data.id), eq(projectsTable.userId, req.session.userId!)));
 
   const pricePerSqft = project.priceMin && project.carpetAreaMin
     ? parseFloat(project.priceMin) / parseFloat(project.carpetAreaMin)
@@ -409,15 +397,17 @@ router.post("/projects/:id/recalculate-scores", async (req, res) => {
   });
 });
 
-// Get API endpoint info
-router.get("/projects/:id/api-endpoint", async (req, res) => {
+// Get API endpoint info — ownership required
+router.get("/projects/:id/api-endpoint", requireAuth, async (req, res) => {
   const parseResult = GetProjectApiEndpointParams.safeParse({ id: parseInt(req.params.id) });
   if (!parseResult.success) {
     res.status(400).json({ error: "Invalid id" });
     return;
   }
 
-  const [project] = await db.select().from(projectsTable).where(eq(projectsTable.id, parseResult.data.id));
+  const [project] = await db.select().from(projectsTable).where(
+    and(eq(projectsTable.id, parseResult.data.id), eq(projectsTable.userId, req.session.userId!))
+  );
   if (!project) {
     res.status(404).json({ error: "Project not found" });
     return;
@@ -447,7 +437,7 @@ router.get("/projects/:id/api-endpoint", async (req, res) => {
   });
 });
 
-// Public AI-ready endpoint
+// Public AI-ready endpoint — open, no auth
 router.get("/public/projects/:id", async (req, res) => {
   const parseResult = GetPublicProjectParams.safeParse({ id: parseInt(req.params.id) });
   if (!parseResult.success) {
@@ -461,7 +451,6 @@ router.get("/public/projects/:id", async (req, res) => {
     return;
   }
 
-  // Increment API call count
   await db.update(projectsTable).set({
     apiCallCount: project.apiCallCount + 1,
   }).where(eq(projectsTable.id, parseResult.data.id));

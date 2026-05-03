@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { PageWrapper } from "@/components/PageWrapper";
 import { useParams, Link } from "wouter";
 import {
   useGetProjectApiEndpoint,
@@ -57,6 +58,7 @@ export function ApiExplorer() {
   const endpointUrl = apiInfo?.endpointUrl ?? `${window.location.origin}/api/public/projects/${projectId}`;
 
   return (
+    <PageWrapper>
     <div className="space-y-6 max-w-4xl">
       <div className="flex items-center gap-3">
         <Link href={`/projects/${projectId}`}>
@@ -228,5 +230,6 @@ export function ApiExplorer() {
         </CardContent>
       </Card>
     </div>
+    </PageWrapper>
   );
 }
