@@ -104,6 +104,74 @@ router.post("/auth/login", async (req, res) => {
   }
 });
 
+// PATCH /api/auth/profile
+router.patch("/auth/profile", requireAuth, async (req, res) => {
+  const schema = z.object({
+    name: z.string().min(2).optional(),
+    company: z.string().optional(),
+  });
+  const parsed = schema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Invalid data" });
+    return;
+  }
+  const { name, company } = parsed.data;
+  try {
+    const updateData: Record<string, any> = { updatedAt: new Date() };
+    if (name) updateData.name = name;
+    if (company !== undefined) updateData.company = company || null;
+
+    const [updated] = await db.update(usersTable).set(updateData)
+      .where(eq(usersTable.id, req.session.userId!)).returning();
+
+    if (name) req.session.userName = updated.name;
+
+    res.json({
+      id: updated.id,
+      name: updated.name,
+      email: updated.email,
+      role: updated.role,
+      company: updated.company,
+    });
+  } catch (err) {
+    req.log.error(err, "Failed to update profile");
+    res.status(500).json({ error: "Failed to update profile" });
+  }
+});
+
+// PATCH /api/auth/password
+router.patch("/auth/password", requireAuth, async (req, res) => {
+  const schema = z.object({
+    currentPassword: z.string().min(1),
+    newPassword: z.string().min(8),
+  });
+  const parsed = schema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Invalid data" });
+    return;
+  }
+  const { currentPassword, newPassword } = parsed.data;
+  try {
+    const [user] = await db.select().from(usersTable).where(eq(usersTable.id, req.session.userId!)).limit(1);
+    if (!user) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+    const valid = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!valid) {
+      res.status(401).json({ error: "Current password is incorrect" });
+      return;
+    }
+    const passwordHash = await bcrypt.hash(newPassword, 12);
+    await db.update(usersTable).set({ passwordHash, updatedAt: new Date() })
+      .where(eq(usersTable.id, req.session.userId!));
+    res.json({ success: true });
+  } catch (err) {
+    req.log.error(err, "Failed to change password");
+    res.status(500).json({ error: "Failed to change password" });
+  }
+});
+
 // POST /api/auth/logout
 router.post("/auth/logout", (req, res) => {
   req.session.destroy(() => {

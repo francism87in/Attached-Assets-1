@@ -15,6 +15,9 @@ import { ProjectDetail } from "@/pages/ProjectDetail";
 import { ApiExplorer } from "@/pages/ApiExplorer";
 import { AIReports } from "@/pages/AIReports";
 import { GlobalApiConsole } from "@/pages/GlobalApiConsole";
+import { Analytics } from "@/pages/Analytics";
+import { Team } from "@/pages/Team";
+import { Settings } from "@/pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -52,6 +55,9 @@ function AuthenticatedApp() {
         <Route path="/projects/:id" component={ProjectDetail} />
         <Route path="/ai-reports" component={AIReports} />
         <Route path="/api-console" component={GlobalApiConsole} />
+        <Route path="/analytics" component={Analytics} />
+        <Route path="/team" component={Team} />
+        <Route path="/settings" component={Settings} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
