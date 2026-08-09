@@ -1,5 +1,6 @@
 import { Link, useParams } from "wouter";
 import { ArrowRight, Check, Clock3, ShieldCheck, X } from "lucide-react";
+import { SectionLink } from "@/components/SectionLink";
 import { Badge, ButtonLink, Section, SectionHead } from "@/components/ui";
 import { liveCities, steps } from "@/data/content";
 import { serviceBySlug, services } from "@/data/services";
@@ -16,9 +17,12 @@ export function ServiceDetail() {
           title="We don't offer that yet"
           body="Pick one of our live services instead — or tell us what you need in the app."
         />
-        <ButtonLink href="/#services" className="mt-8">
+        <SectionLink
+          section="services"
+          className="mt-8 inline-flex h-11 items-center rounded-full bg-brand-600 px-5 font-semibold text-white"
+        >
           See all services
-        </ButtonLink>
+        </SectionLink>
       </Section>
     );
   }
@@ -36,9 +40,9 @@ export function ServiceDetail() {
                 Home
               </Link>
               <span className="px-2">/</span>
-              <Link href="/#services" className="hover:text-ink-900">
+              <SectionLink section="services" className="hover:text-ink-900">
                 Services
-              </Link>
+              </SectionLink>
               <span className="px-2">/</span>
               <span className="text-ink-900">{service.name}</span>
             </nav>
@@ -59,7 +63,7 @@ export function ServiceDetail() {
             </div>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <ButtonLink href={`/book?service=${service.slug}`} size="lg">
+              <ButtonLink href={`/book/${service.slug}`} size="lg">
                 Book for {rupees(service.rate)}/hr
                 <ArrowRight className="size-4" aria-hidden />
               </ButtonLink>

@@ -23,16 +23,7 @@ export function App() {
   const [location] = useLocation();
   const isAppRoute = APP_ROUTES.some((r) => location.startsWith(r));
 
-  // Restore scroll on navigation, honouring "/#section" links.
   useEffect(() => {
-    const hash = window.location.hash.replace("#", "");
-    if (hash) {
-      const el = document.getElementById(hash);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-        return;
-      }
-    }
     window.scrollTo(0, 0);
   }, [location]);
 
@@ -40,6 +31,7 @@ export function App() {
     return (
       <Switch>
         <Route path="/book" component={Book} />
+        <Route path="/book/:service" component={Book} />
         <Route path="/track/:id" component={Track} />
         <Route path="/bookings" component={Bookings} />
         <Route path="/account" component={Account} />

@@ -10,13 +10,23 @@ Bookings are created in the browser and persisted to `localStorage`.
 ## Run it
 
 ```bash
-pnpm --filter @workspace/spark run dev     # http://localhost:5000 (override with PORT)
+pnpm --filter @workspace/spark run dev           # http://localhost:5000 (override with PORT)
 pnpm --filter @workspace/spark run build
+pnpm --filter @workspace/spark run build:single  # one self-contained HTML file
 pnpm --filter @workspace/spark run typecheck
 ```
 
 `PORT` and `BASE_PATH` are read from the environment when present (Replit sets both); locally
 they default to `5000` and `/`.
+
+### Single-file build
+
+`build:single` writes `dist/spark-prototype.html` — the whole prototype in one file, with CSS,
+JS and both webfaces inlined as data URIs, so it runs from any static host or sandboxed frame
+with no network access. That build sets `VITE_HASH_ROUTER=1`, which switches wouter to hash
+routing (`#/book`, `#/track/:id`) since pushState paths can't be relied on there. The output is
+an HTML fragment with no `<html>`/`<body>` wrapper; add a doctype and a viewport meta around it
+to open it directly.
 
 ## What's in it
 

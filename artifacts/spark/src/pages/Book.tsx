@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useLocation } from "wouter";
+import { useLocation, useParams } from "wouter";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   BadgeCheck,
@@ -53,15 +53,18 @@ export function Book() {
   const [, navigate] = useLocation();
   const { prefs, setPrefs } = usePrefs();
   const { createBooking } = useBookings();
-  const search = typeof window !== "undefined" ? window.location.search : "";
-  const preselected = new URLSearchParams(search).get("service");
+  // /book/:service jumps straight past the service picker.
+  const { service: routeService } = useParams<{ service?: string }>();
+  const preselected = routeService && serviceBySlug(routeService) ? routeService : null;
 
   const [step, setStep] = useState(preselected ? 2 : 0);
   const [city, setCity] = useState(prefs.city);
   const [area, setArea] = useState("");
   const [address, setAddress] = useState(prefs.address);
   const [serviceSlug, setServiceSlug] = useState(preselected ?? "");
-  const [hours, setHours] = useState(1);
+  const [hours, setHours] = useState(
+    () => (preselected ? serviceBySlug(preselected)?.suggestedHours : 1) ?? 1,
+  );
   const [instant, setInstant] = useState(true);
   const [day, setDay] = useState(() => nextDays()[0]);
   const [slot, setSlot] = useState("");

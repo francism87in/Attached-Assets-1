@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { ChevronDown, MapPin, Menu, X } from "lucide-react";
+import { SectionLink } from "@/components/SectionLink";
 import { Button, ButtonLink, Logo } from "@/components/ui";
 import { liveCities } from "@/data/content";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { label: "Services", href: "/#services" },
-  { label: "How it works", href: "/#how" },
-  { label: "Why SPARK", href: "/#why" },
-  { label: "Cities", href: "/#cities" },
-  { label: "FAQ", href: "/#faq" },
+  { label: "Services", section: "services" },
+  { label: "How it works", section: "how" },
+  { label: "Why SPARK", section: "why" },
+  { label: "Cities", section: "cities" },
+  { label: "FAQ", section: "faq" },
 ];
 
 export function SiteNav({
@@ -47,13 +48,13 @@ export function SiteNav({
 
         <nav className="hidden items-center gap-1 lg:flex">
           {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
+            <SectionLink
+              key={l.section}
+              section={l.section}
               className="rounded-full px-3.5 py-2 text-sm font-medium text-ink-600 transition-colors hover:bg-ink-900/5 hover:text-ink-900"
             >
               {l.label}
-            </a>
+            </SectionLink>
           ))}
         </nav>
 
@@ -112,14 +113,14 @@ export function SiteNav({
         <div className="border-t border-ink-900/10 bg-cream lg:hidden">
           <div className="shell flex flex-col gap-1 py-4">
             {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
+              <SectionLink
+                key={l.section}
+                section={l.section}
                 onClick={() => setMenuOpen(false)}
                 className="rounded-xl px-3 py-2.5 font-medium text-ink-600 hover:bg-white"
               >
                 {l.label}
-              </a>
+              </SectionLink>
             ))}
             <ButtonLink href="/book" className="mt-2" onClick={() => setMenuOpen(false)}>
               Book in 10 min

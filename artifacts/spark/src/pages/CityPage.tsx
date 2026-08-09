@@ -1,5 +1,6 @@
 import { Link, useParams } from "wouter";
 import { ArrowRight, MapPin } from "lucide-react";
+import { SectionLink } from "@/components/SectionLink";
 import { Badge, ButtonLink, Section, SectionHead, StarRating } from "@/components/ui";
 import { cityBySlug, stats, testimonials } from "@/data/content";
 import { services } from "@/data/services";
@@ -17,9 +18,12 @@ export function CityPage() {
           title="We're not in that city yet"
           body="SPARK is live in six cities and launching in two more. Check the list on the home page."
         />
-        <ButtonLink href="/#cities" className="mt-8">
+        <SectionLink
+          section="cities"
+          className="mt-8 inline-flex h-11 items-center rounded-full bg-brand-600 px-5 font-semibold text-white"
+        >
           See our cities
-        </ButtonLink>
+        </SectionLink>
       </Section>
     );
   }
