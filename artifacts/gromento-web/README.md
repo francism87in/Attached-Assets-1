@@ -76,3 +76,43 @@ on hover, animations are transform/opacity only, and a global
 `sections/Closing.tsx` has no backend yet — it composes the brief into a
 `mailto:` to `brand.email`. Field names already match a CRM intake payload;
 swap the handler for the endpoint when one exists.
+
+## Deploying to Cloudflare Pages
+
+Three routes, fastest first.
+
+**A. Drag and drop (no CLI, no repo access) — ~60 seconds**
+
+1. Build: `pnpm --filter @workspace/gromento-web build` (output: `artifacts/gromento-web/dist/public`).
+   Or use the prebuilt `gromento-cloudflare.zip` handed over with this change.
+2. Cloudflare dashboard → **Workers & Pages → Create → Pages → Upload assets**.
+3. Project name `gromento`, drop the folder (or the zip's contents), **Deploy**.
+4. Live at `https://gromento.pages.dev`.
+
+**B. Wrangler CLI**
+
+```bash
+npx wrangler login                                   # once
+pnpm --filter @workspace/gromento-web build
+pnpm --filter @workspace/gromento-web deploy         # → wrangler pages deploy
+```
+
+`wrangler.toml` already pins the project name and `pages_build_output_dir`.
+
+**C. Git-connected (auto-deploy on push)**
+
+Cloudflare Pages → **Connect to Git** → this repo, then:
+
+| Setting | Value |
+|---|---|
+| Framework preset | None |
+| Build command | `pnpm install && pnpm --filter @workspace/gromento-web build` |
+| Build output directory | `artifacts/gromento-web/dist/public` |
+| Root directory | *(repo root)* |
+| Env var | `NODE_VERSION` = `22` |
+
+Every push to the production branch then redeploys; other branches get preview URLs.
+
+**Custom domain**: Pages project → *Custom domains* → add `gromento.com`; Cloudflare
+issues the certificate. `public/_headers` already sets cache and security headers —
+hashed assets get a one-year immutable cache, HTML stays revalidated.
