@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------
+   Gromento brand system
+   Electric Purple #7B2FFF · Neon Lime #D4FF00 · Deep Violet #4B0FA6
+   Charcoal #0D0D12 · Cool Gray #A6A8B3
+   Headline: Poppins · Body: Inter
+--------------------------------------------------------------- */
+@theme {
+  --color-ink: #0d0d12;
+  --color-ink-raised: #131319;
+  --color-ink-sunken: #08080c;
+  --color-purple: #7b2fff;
+  --color-lime: #d4ff00;
+  --color-violet: #4b0fa6;
+  --color-gray-cool: #a6a8b3;
+  --color-line: rgba(255, 255, 255, 0.09);
+
+  --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: #ffffff;
+    font-family: var(--font-sans);
+    font-feature-settings: "cv02", "cv03", "cv04";
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-lime);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-lime);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+}
+
+/* Section eyebrow / numbered label, mirrors the brand-kit index style */
+@utility eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* Marquee track — CSS driven so it keeps running off the main thread */
+@keyframes gromento-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@utility marquee-track {
+  animation: gromento-marquee var(--marquee-duration, 40s) linear infinite;
+  will-change: transform;
+}
+
+/* Grain + grid textures used behind dark sections */
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 72px 72px;
+}

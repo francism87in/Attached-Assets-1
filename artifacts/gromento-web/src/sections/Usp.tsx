@@ -1,0 +1,76 @@
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { useRef } from "react";
+import { Section, SectionHeading, Lede } from "@/components/Section";
+import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
+import { usp } from "@/data/site";
+
+export function Usp() {
+  const reduced = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  // Slow counter-drift on the right rail gives the block a sense of depth.
+  const railY = useTransform(scrollYProgress, [0, 1], ["8%", "-8%"]);
+
+  return (
+    <Section id="usp">
+      <SectionHeading
+        index="01"
+        eyebrow={usp.eyebrow}
+        title={usp.title}
+        highlight={["buyer", "before"]}
+      />
+
+      <div ref={ref} className="mt-16 grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
+        <div>
+          <RevealGroup className="flex flex-col gap-3">
+            {usp.lead.map((line, index) => (
+              <RevealItem
+                key={line}
+                as="p"
+                className={
+                  index === usp.lead.length - 1
+                    ? "font-display text-2xl font-semibold tracking-tight text-lime sm:text-3xl"
+                    : "font-display text-2xl font-semibold tracking-tight text-white/45 sm:text-3xl"
+                }
+              >
+                {line}
+              </RevealItem>
+            ))}
+          </RevealGroup>
+
+          <Reveal delay={0.1} className="mt-8">
+            <Lede>{usp.body}</Lede>
+          </Reveal>
+
+          <Reveal delay={0.15} className="mt-8">
+            <Lede>{usp.motivations}</Lede>
+          </Reveal>
+        </div>
+
+        <motion.div style={reduced ? undefined : { y: railY }} className="lg:pt-4">
+          <RevealGroup className="flex flex-col divide-y divide-white/10 border-y border-white/10">
+            {usp.contrasts.map((row) => (
+              <RevealItem
+                key={row.label}
+                className="group flex items-baseline justify-between gap-6 py-5 transition-colors duration-300 hover:bg-white/[0.03]"
+              >
+                <span className="font-display text-lg font-medium text-white">{row.label}</span>
+                <span className="text-right text-sm text-gray-cool transition-colors duration-300 group-hover:text-lime">
+                  {row.value}
+                </span>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+
+          <Reveal delay={0.2} className="mt-10 rounded-2xl border border-lime/25 bg-lime/[0.04] p-6">
+            <p className="text-base leading-relaxed text-white/85">{usp.outro}</p>
+            <p className="mt-4 font-display text-lg font-semibold text-lime">{usp.kicker}</p>
+          </Reveal>
+        </motion.div>
+      </div>
+    </Section>
+  );
+}
