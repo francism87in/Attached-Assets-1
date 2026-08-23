@@ -91,8 +91,8 @@ export function Hero() {
             variants={pick(reduced, fadeUp)}
             className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center"
           >
-            <Button href="#contact">{hero.primaryCta}</Button>
-            <Button href="#contact" variant="secondary">
+            <Button href="/contact">{hero.primaryCta}</Button>
+            <Button href="/contact" variant="secondary">
               {hero.secondaryCta}
             </Button>
           </motion.div>

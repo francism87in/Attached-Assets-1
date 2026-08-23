@@ -4,7 +4,7 @@ import { Section, SectionHeading, Lede } from "@/components/Section";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { usp } from "@/data/site";
 
-export function Usp() {
+export function Usp({ headless = false }: { headless?: boolean }) {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -16,14 +16,16 @@ export function Usp() {
 
   return (
     <Section id="usp">
-      <SectionHeading
-        index="01"
-        eyebrow={usp.eyebrow}
-        title={usp.title}
-        highlight={["buyer", "before"]}
-      />
+      {headless ? null : (
+        <SectionHeading
+          index="01"
+          eyebrow={usp.eyebrow}
+          title={usp.title}
+          highlight={["buyer", "before"]}
+        />
+      )}
 
-      <div ref={ref} className="mt-16 grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
+      <div ref={ref} className="grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
         <div>
           <RevealGroup className="flex flex-col gap-3">
             {usp.lead.map((line, index) => (

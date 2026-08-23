@@ -13,6 +13,7 @@ import {
 import { Section, SectionHeading } from "@/components/Section";
 import { RevealGroup, RevealItem } from "@/components/Reveal";
 import { services } from "@/data/site";
+import { cn } from "@/lib/utils";
 import { easeBrand } from "@/lib/motion";
 
 const icons: Record<string, LucideIcon> = {
@@ -26,21 +27,26 @@ const icons: Record<string, LucideIcon> = {
   ticket: Ticket,
 };
 
-export function Services() {
+export function Services({ headless = false }: { headless?: boolean }) {
   const reduced = useReducedMotion();
 
   return (
     <Section id="services">
-      <SectionHeading
-        index="05"
-        eyebrow={services.eyebrow}
-        title={services.title}
-        highlight={["end", "to", "end."]}
-      />
+      {headless ? null : (
+        <SectionHeading
+          index="05"
+          eyebrow={services.eyebrow}
+          title={services.title}
+          highlight={["end", "to", "end."]}
+        />
+      )}
 
       <RevealGroup
         gap={0.06}
-        className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4"
+        className={cn(
+          !headless && "mt-16",
+          "grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4",
+        )}
       >
         {services.items.map((service, index) => {
           const Icon = icons[service.icon] ?? Zap;

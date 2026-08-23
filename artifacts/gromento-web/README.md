@@ -12,6 +12,41 @@ pnpm --filter @workspace/gromento-web typecheck
 `PORT` and `BASE_PATH` are honoured when the platform sets them; they default to
 `21784` and `/` so the package also runs standalone.
 
+## Pages
+
+Six routes, defined once in [`src/routes.ts`](src/routes.ts) — the menu, the
+header nav, the footer and each page's title card all read from that list.
+
+| Route | Page | Sections |
+|---|---|---|
+| `/` | Home | Hero · USP · Positioning · Difference · Core message |
+| `/approach` | Approach | Difference · Content engine · Philosophy |
+| `/what-we-do` | What We Do | Services · Content engine |
+| `/nri-markets` | NRI Markets | Markets · For developers |
+| `/why-gromento` | Why Gromento | USP · Six reasons · Positioning · Core message |
+| `/contact` | Contact | Brief form · direct contact |
+
+Unmatched paths render a 404 page. Sections shared between a page and its title
+card take a `headless` prop so the heading isn't printed twice.
+
+**Routing mode** is chosen at startup in `src/main.tsx`: path routing
+(`/approach`) when served normally, hash routing (`#/approach`) when the page is
+opened from a file or embedded in a sandboxed iframe, where `pushState` would
+throw or escape the frame. `public/_redirects` gives Cloudflare Pages the SPA
+fallback that path routing needs.
+
+## Navigation
+
+The header carries the logo, inline links from `xl` up, the contact CTA and a
+labelled **Menu** pill that opens a full-screen overlay at every breakpoint.
+
+The overlay replaced an earlier icon-only dropdown pinned to the top-right
+corner. A full-bleed layer can't be covered by anything painted over that corner
+(browser or host UI), the trigger is a large labelled target instead of a 40px
+icon, and the menu became the site's main navigation moment: curtain drop,
+staggered routes, hover-dims-the-rest. It locks background scroll and closes on
+Escape, on route change and via the Close button.
+
 ## Where the content comes from
 
 Every string lives in [`src/data/site.ts`](src/data/site.ts), transcribed from
@@ -58,8 +93,14 @@ Built on [Motion for React](https://motion.dev) (`motion/react`). The shared
 language lives in [`src/lib/motion.ts`](src/lib/motion.ts) and the wrappers in
 `src/components/Reveal.tsx`:
 
-- **Scroll-linked**: hero parallax + dim, aurora drift, the demand-chain in
-  *The Gromento Difference* that fills as you read it, the read-progress rail.
+- **Cinematic route change**: violet and charcoal curtains sweep the viewport
+  while the mark and the incoming page name hold the gap; scroll resets behind
+  the cover so the jump is never seen. Headline legible ~0.9s after navigation.
+- **Scroll-linked**: hero parallax + dim, aurora drift, page title cards that
+  recede as you scroll, the demand-chain in *The Gromento Difference* that fills
+  as you read it, the read-progress rail.
+- **Atmosphere**: a fixed film-grain tile and vignette over the whole site
+  (`components/Grain.tsx`) — one static SVG, no per-frame cost.
 - **In-view**: one `whileInView` reveal per block with `once: true`, staggered
   children, word-by-word headline reveals.
 - **Pointer**: magnetic CTAs, glass cards with a pointer-tracked light source.

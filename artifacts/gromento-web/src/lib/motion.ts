@@ -13,6 +13,13 @@ import type { Transition, Variants } from "motion/react";
 /** Brand easing — the same curve as `--ease-brand` in index.css. */
 export const easeBrand = [0.22, 1, 0.36, 1] as const;
 
+/**
+ * Cinematic easing: a longer, heavier settle than `easeBrand`. Used for
+ * page-level moves — curtains, title cards, the menu — where the motion should
+ * feel like a camera rather than a UI transition.
+ */
+export const easeCine = [0.83, 0, 0.17, 1] as const;
+
 export const springSoft: Transition = {
   type: "spring",
   stiffness: 120,
@@ -65,12 +72,12 @@ export function stagger(staggerChildren = 0.08, delayChildren = 0): Variants {
 
 /** Word-by-word headline reveal (used by <SplitText />). */
 export const wordReveal: Variants = {
-  hidden: { opacity: 0, y: "0.6em", rotate: 3 },
+  hidden: { opacity: 0, y: "0.55em", rotate: 2 },
   show: {
     opacity: 1,
     y: 0,
     rotate: 0,
-    transition: { duration: 0.75, ease: easeBrand },
+    transition: { duration: 0.55, ease: easeBrand },
   },
 };
 

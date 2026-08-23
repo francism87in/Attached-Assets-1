@@ -7,29 +7,31 @@ import { markets } from "@/data/site";
 import { easeBrand } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-export function Markets() {
+export function Markets({ headless = false }: { headless?: boolean }) {
   const reduced = useReducedMotion();
   const [active, setActive] = useState(0);
   const region = markets.regions[active]!;
 
   return (
     <Section id="markets" className="border-y border-white/[0.07] bg-ink-sunken/40">
-      <SectionHeading
-        index="06"
-        eyebrow={markets.eyebrow}
-        title={markets.title}
-        highlight={["different", "markets.", "motivations."]}
-      >
-        <RevealGroup className="flex flex-col gap-3">
-          {markets.lead.map((line) => (
-            <RevealItem key={line} as="p">
-              <Lede>{line}</Lede>
-            </RevealItem>
-          ))}
-        </RevealGroup>
-      </SectionHeading>
+      {headless ? null : (
+        <SectionHeading
+          index="06"
+          eyebrow={markets.eyebrow}
+          title={markets.title}
+          highlight={["different", "markets.", "motivations."]}
+        >
+          <RevealGroup className="flex flex-col gap-3">
+            {markets.lead.map((line) => (
+              <RevealItem key={line} as="p">
+                <Lede>{line}</Lede>
+              </RevealItem>
+            ))}
+          </RevealGroup>
+        </SectionHeading>
+      )}
 
-      <Reveal className="mt-12">
+      <Reveal className={headless ? "" : "mt-12"}>
         <p className="eyebrow text-gray-cool">{markets.body}</p>
       </Reveal>
 

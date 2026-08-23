@@ -11,15 +11,6 @@ export const brand = {
   email: "hello@gromento.com",
 } as const;
 
-export const nav = [
-  { label: "USP", href: "#usp" },
-  { label: "Positioning", href: "#positioning" },
-  { label: "Difference", href: "#difference" },
-  { label: "What We Do", href: "#services" },
-  { label: "Markets", href: "#markets" },
-  { label: "Why Gromento", href: "#why" },
-] as const;
-
 export const hero = {
   eyebrow: "Real estate marketing · NRI demand",
   title: "Grow Louder. Move Upward.",

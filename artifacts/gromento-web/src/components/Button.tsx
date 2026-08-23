@@ -1,5 +1,6 @@
 import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
-import type { PointerEvent, ReactNode } from "react";
+import type { MouseEvent, PointerEvent, ReactNode } from "react";
+import { useLocation } from "wouter";
 import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { springSnappy } from "@/lib/motion";
@@ -39,6 +40,7 @@ export function Button({
   type?: "button" | "submit";
 }) {
   const reduced = useReducedMotion();
+  const [, navigate] = useLocation();
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
   const x = useSpring(pointerX, springSnappy);
@@ -49,6 +51,14 @@ export function Button({
     const bounds = event.currentTarget.getBoundingClientRect();
     pointerX.set((event.clientX - (bounds.left + bounds.width / 2)) * 0.22);
     pointerY.set((event.clientY - (bounds.top + bounds.height / 2)) * 0.3);
+  }
+
+  /** Internal links navigate through the router; hashes and mailto fall through. */
+  function handleClick(event: MouseEvent<HTMLAnchorElement>) {
+    onClick?.();
+    if (!href?.startsWith("/") || event.metaKey || event.ctrlKey || event.shiftKey) return;
+    event.preventDefault();
+    navigate(href);
   }
 
   function reset() {
@@ -85,7 +95,7 @@ export function Button({
 
   if (href) {
     return (
-      <motion.a {...shared} href={href} onClick={onClick}>
+      <motion.a {...shared} href={href} onClick={handleClick}>
         {content}
       </motion.a>
     );

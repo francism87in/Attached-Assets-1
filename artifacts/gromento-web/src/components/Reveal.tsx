@@ -141,7 +141,7 @@ export function SplitText({
         initial="hidden"
         whileInView="show"
         viewport={viewportOnce}
-        variants={reduced ? undefined : stagger(0.055, delay)}
+        variants={reduced ? undefined : stagger(0.038, delay)}
         aria-label={text}
       >
         {words.map((word, index) => (

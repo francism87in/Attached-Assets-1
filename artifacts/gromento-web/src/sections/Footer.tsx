@@ -1,6 +1,8 @@
+import { Link } from "wouter";
 import { Logo } from "@/components/Logo";
 import { Marquee } from "@/components/Marquee";
-import { brand, nav } from "@/data/site";
+import { brand } from "@/data/site";
+import { routes } from "@/routes";
 
 export function Footer() {
   return (
@@ -25,7 +27,9 @@ export function Footer() {
 
       <div className="mx-auto grid w-full max-w-6xl gap-10 px-6 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr] lg:px-8">
         <div>
-          <Logo />
+          <Link href="/" aria-label="Gromento — home">
+            <Logo />
+          </Link>
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-gray-cool">
             Real estate marketing built for global Indian buyers — market intelligence, content,
             creative, performance and conversion in one system.
@@ -33,16 +37,16 @@ export function Footer() {
         </div>
 
         <nav aria-label="Footer">
-          <p className="eyebrow text-white/35">Sections</p>
+          <p className="eyebrow text-white/35">Pages</p>
           <ul className="mt-5 flex flex-col gap-3">
-            {nav.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
+            {routes.map((route) => (
+              <li key={route.path}>
+                <Link
+                  href={route.path}
                   className="text-sm text-white/65 transition-colors hover:text-lime"
                 >
-                  {item.label}
-                </a>
+                  {route.label}
+                </Link>
               </li>
             ))}
           </ul>
@@ -60,9 +64,9 @@ export function Footer() {
               </a>
             </li>
             <li>
-              <a href="#contact" className="text-white/65 transition-colors hover:text-lime">
+              <Link href="/contact" className="text-white/65 transition-colors hover:text-lime">
                 Talk to Gromento
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

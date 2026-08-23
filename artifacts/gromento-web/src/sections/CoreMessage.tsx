@@ -40,7 +40,7 @@ export function CoreMessage() {
         </RevealGroup>
 
         <Reveal delay={0.1} className="mt-12">
-          <Button href="#contact">{coreMessage.cta}</Button>
+          <Button href="/contact">{coreMessage.cta}</Button>
         </Reveal>
       </div>
     </Section>

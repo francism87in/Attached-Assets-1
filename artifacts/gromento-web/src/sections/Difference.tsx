@@ -11,6 +11,7 @@ import { ArrowRight } from "lucide-react";
 import { Section, SectionHeading } from "@/components/Section";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { difference } from "@/data/site";
+import { cn } from "@/lib/utils";
 
 /**
  * One node of the demand chain. It lights up as the section's scroll progress
@@ -51,7 +52,7 @@ function FunnelStep({
   );
 }
 
-export function Difference() {
+export function Difference({ headless = false }: { headless?: boolean }) {
   const reduced = useReducedMotion() ?? false;
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -62,14 +63,16 @@ export function Difference() {
 
   return (
     <Section id="difference">
-      <SectionHeading
-        index="03"
-        eyebrow={difference.eyebrow}
-        title={difference.title}
-        highlight={["demand."]}
-      />
+      {headless ? null : (
+        <SectionHeading
+          index="03"
+          eyebrow={difference.eyebrow}
+          title={difference.title}
+          highlight={["demand."]}
+        />
+      )}
 
-      <div className="mt-16 grid gap-6 lg:grid-cols-2">
+      <div className={cn("grid gap-6 lg:grid-cols-2", !headless && "mt-16")}>
         {/* The old way */}
         <Reveal className="rounded-2xl border border-white/10 bg-white/[0.02] p-8">
           <p className="eyebrow text-white/35">{difference.oldWayLabel}</p>

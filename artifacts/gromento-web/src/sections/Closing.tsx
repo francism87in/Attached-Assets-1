@@ -10,7 +10,7 @@ import { easeBrand } from "@/lib/motion";
 const fieldClass =
   "w-full rounded-xl border border-white/12 bg-white/[0.03] px-4 py-3.5 text-sm text-white placeholder:text-white/35 transition-colors duration-200 focus:border-lime/60 focus:outline-none";
 
-export function Closing() {
+export function Closing({ headless = false }: { headless?: boolean }) {
   const reduced = useReducedMotion();
   const [sent, setSent] = useState(false);
 
@@ -41,22 +41,26 @@ export function Closing() {
     <Section id="contact" className="pb-32">
       <div className="grid gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-20">
         <div>
-          <Reveal className="flex items-center gap-3">
-            <span className="eyebrow text-lime">11</span>
-            <span className="eyebrow text-gray-cool">{closing.eyebrow}</span>
-          </Reveal>
+          {headless ? null : (
+            <>
+              <Reveal className="flex items-center gap-3">
+                <span className="eyebrow text-lime">11</span>
+                <span className="eyebrow text-gray-cool">{closing.eyebrow}</span>
+              </Reveal>
 
-          <SplitText
-            text={closing.title}
-            highlight={["already", "online."]}
-            className="mt-8 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl"
-          />
+              <SplitText
+                text={closing.title}
+                highlight={["already", "online."]}
+                className="mt-8 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl"
+              />
 
-          <Reveal delay={0.1} className="mt-8">
-            <p className="max-w-xl text-lg leading-relaxed text-gray-cool">{closing.body}</p>
-          </Reveal>
+              <Reveal delay={0.1} className="mt-8">
+                <p className="max-w-xl text-lg leading-relaxed text-gray-cool">{closing.body}</p>
+              </Reveal>
+            </>
+          )}
 
-          <Reveal delay={0.15} className="mt-10">
+          <Reveal delay={0.15} className={headless ? "" : "mt-10"}>
             <p className="font-display text-3xl font-semibold tracking-tight text-lime sm:text-4xl">
               {closing.kicker}
             </p>
