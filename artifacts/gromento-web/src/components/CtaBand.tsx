@@ -30,7 +30,11 @@ export function CtaBand({
   const shift = useTransform(scrollYProgress, [0, 1], ["6%", "-6%"]);
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-20 sm:py-28">
+    <section
+      ref={ref}
+      data-tone="dark"
+      className="relative overflow-hidden bg-surface py-20 text-fg sm:py-28"
+    >
       <motion.span
         aria-hidden="true"
         style={reduced ? { opacity: 0.22 } : { opacity: glow, y: shift }}
@@ -41,11 +45,11 @@ export function CtaBand({
         <SplitText
           text={title}
           highlight={highlight}
-          className="text-balance text-[clamp(2.25rem,6vw,4rem)] font-semibold leading-[1.02] tracking-[-0.03em] text-white"
+          className="text-balance text-[clamp(2.25rem,6vw,4rem)] font-semibold leading-[1.02] tracking-[-0.03em] text-fg"
         />
 
         <Reveal delay={0.1} className="mt-8">
-          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-gray-cool">{body}</p>
+          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-fg-muted">{body}</p>
         </Reveal>
 
         <Reveal delay={0.15} className="mt-10 flex flex-wrap justify-center gap-3">
@@ -56,7 +60,7 @@ export function CtaBand({
         </Reveal>
 
         <Reveal delay={0.2} className="mt-10">
-          <p className="font-display text-sm font-medium tracking-tight text-white/45">
+          <p className="font-display text-sm font-medium tracking-tight text-fg/45">
             {closing.tagline}
           </p>
         </Reveal>

@@ -11,10 +11,10 @@ const base =
   "group relative inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-6 py-3.5 font-display text-sm font-semibold tracking-tight transition-colors duration-200 disabled:pointer-events-none disabled:opacity-60";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-lime text-ink hover:bg-white",
+  primary: "bg-lime text-ink hover:bg-surface-raised",
   secondary:
-    "border border-white/15 bg-white/[0.04] text-white hover:border-lime/60 hover:text-lime",
-  ghost: "text-white/70 hover:text-lime",
+    "border border-fg/15 bg-fg/[0.04] text-fg hover:border-accent/60 hover:text-accent",
+  ghost: "text-fg/70 hover:text-accent",
 };
 
 /**

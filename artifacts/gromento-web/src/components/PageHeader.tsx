@@ -27,23 +27,23 @@ export function PageHeader({ route }: { route: RouteDef }) {
         className="mx-auto w-full max-w-6xl px-6 lg:px-8"
       >
         <div className="flex items-center gap-3">
-          <span className="eyebrow text-lime">{route.index}</span>
-          <span className="eyebrow text-gray-cool">{route.eyebrow}</span>
-          <span aria-hidden="true" className="h-px flex-1 bg-line" />
+          <span className="eyebrow text-accent">{route.index}</span>
+          <span className="eyebrow text-fg-muted">{route.eyebrow}</span>
+          <span aria-hidden="true" className="h-px flex-1 bg-hairline" />
         </div>
 
         <SplitText
           as="h1"
           text={route.title}
           highlight={route.highlight}
-          className="mt-8 max-w-5xl text-balance text-[clamp(2.5rem,7vw,5rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-white"
+          className="mt-8 max-w-5xl text-balance text-[clamp(2.5rem,7vw,5rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-fg"
         />
 
         <motion.p
           initial={reduced ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: reduced ? 0 : 0.6, delay: reduced ? 0 : 0.22 }}
-          className="mt-8 max-w-2xl text-lg leading-relaxed text-gray-cool"
+          className="mt-8 max-w-2xl text-lg leading-relaxed text-fg-muted"
         >
           {route.lede}
         </motion.p>

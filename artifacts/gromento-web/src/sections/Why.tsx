@@ -16,13 +16,13 @@ export function Why() {
         {why.reasons.map((reason, index) => (
           <RevealItem key={reason.title} as="article" className="h-full">
             <GlowCard glow="rgba(212,255,0,0.16)" className="flex h-full flex-col p-7">
-              <span className="font-display text-5xl font-semibold leading-none tracking-tight text-white/10">
+              <span className="font-display text-5xl font-semibold leading-none tracking-tight text-fg/10">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <h3 className="mt-6 font-display text-xl font-semibold tracking-tight text-lime">
+              <h3 className="mt-6 font-display text-xl font-semibold tracking-tight text-accent">
                 {reason.title}
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-gray-cool">{reason.body}</p>
+              <p className="mt-3 text-sm leading-relaxed text-fg-muted">{reason.body}</p>
             </GlowCard>
           </RevealItem>
         ))}

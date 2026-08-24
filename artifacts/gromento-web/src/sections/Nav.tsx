@@ -17,6 +17,9 @@ export function Nav() {
 
   useMotionValueEvent(scrollY, "change", (latest) => setCondensed(latest > 40));
 
+  // Only Home opens on the dark hero; once the bar condenses it sits on paper.
+  const overHero = location === "/" && !condensed;
+
   return (
     <>
       <header className="fixed inset-x-0 top-0 z-40">
@@ -24,6 +27,7 @@ export function Nav() {
           initial={reduced ? false : { y: -80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: easeCine, delay: 0.2 }}
+          data-tone={overHero ? "dark" : undefined}
           className={cn(
             "relative mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 transition-all duration-300 lg:px-10",
             condensed ? "py-3" : "py-5",
@@ -34,7 +38,7 @@ export function Nav() {
             className={cn(
               "absolute inset-0 -z-10 border-b transition-all duration-300",
               condensed
-                ? "border-white/10 bg-ink/70 backdrop-blur-xl"
+                ? "border-hairline bg-surface/80 backdrop-blur-xl"
                 : "border-transparent bg-transparent",
             )}
           />
@@ -52,7 +56,7 @@ export function Nav() {
                   href={route.path}
                   className={cn(
                     "group relative font-display text-sm font-medium transition-colors duration-200",
-                    active ? "text-lime" : "text-white/70 hover:text-white",
+                    active ? "text-accent" : "text-fg/70 hover:text-fg",
                   )}
                 >
                   {route.label}
@@ -85,14 +89,14 @@ export function Nav() {
               onClick={() => setMenuOpen(true)}
               aria-expanded={menuOpen}
               aria-haspopup="dialog"
-              className="group relative inline-flex cursor-pointer items-center gap-2.5 rounded-full border border-white/15 bg-white/[0.04] px-4 py-2.5 backdrop-blur-sm transition-colors duration-200 hover:border-lime/60"
+              className="group relative inline-flex cursor-pointer items-center gap-2.5 rounded-full border border-fg/15 bg-fg/[0.04] px-4 py-2.5 backdrop-blur-sm transition-colors duration-200 hover:border-accent/60"
             >
               <span className="flex flex-col gap-[3px]" aria-hidden="true">
-                <span className="block h-px w-4 bg-white transition-colors duration-200 group-hover:bg-lime" />
-                <span className="block h-px w-4 bg-white transition-colors duration-200 group-hover:bg-lime" />
-                <span className="block h-px w-2.5 bg-white transition-all duration-200 group-hover:w-4 group-hover:bg-lime" />
+                <span className="block h-px w-4 bg-surface-raised transition-colors duration-200 group-hover:bg-accent" />
+                <span className="block h-px w-4 bg-surface-raised transition-colors duration-200 group-hover:bg-accent" />
+                <span className="block h-px w-2.5 bg-surface-raised transition-all duration-200 group-hover:w-4 group-hover:bg-accent" />
               </span>
-              <span className="font-display text-sm font-semibold text-white transition-colors duration-200 group-hover:text-lime">
+              <span className="font-display text-sm font-semibold text-fg transition-colors duration-200 group-hover:text-accent">
                 Menu
               </span>
             </button>

@@ -44,13 +44,13 @@ export function Services({ headless = false }: { headless?: boolean }) {
         gap={0.06}
         className={cn(
           !headless && "mt-16",
-          "grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4",
+          "grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-fg/10 bg-fg/10 sm:grid-cols-2 lg:grid-cols-4",
         )}
       >
         {services.items.map((service, index) => {
           const Icon = icons[service.icon] ?? Zap;
           return (
-            <RevealItem key={service.title} as="article" className="bg-ink">
+            <RevealItem key={service.title} as="article" className="bg-surface">
               <motion.div
                 whileHover={reduced ? undefined : { backgroundColor: "rgba(255,255,255,0.03)" }}
                 transition={{ duration: 0.3, ease: easeBrand }}
@@ -62,17 +62,17 @@ export function Services({ headless = false }: { headless?: boolean }) {
                 />
                 <div className="flex items-center justify-between">
                   <Icon
-                    className="h-5 w-5 text-lime transition-transform duration-300 group-hover:scale-110"
+                    className="h-5 w-5 text-accent transition-transform duration-300 group-hover:scale-110"
                     aria-hidden="true"
                   />
-                  <span className="eyebrow text-white/20">
+                  <span className="eyebrow text-fg/20">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                 </div>
-                <h3 className="mt-8 font-display text-base font-semibold leading-snug tracking-tight text-white">
+                <h3 className="mt-8 font-display text-base font-semibold leading-snug tracking-tight text-fg">
                   {service.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-cool">{service.body}</p>
+                <p className="mt-3 text-sm leading-relaxed text-fg-muted">{service.body}</p>
               </motion.div>
             </RevealItem>
           );

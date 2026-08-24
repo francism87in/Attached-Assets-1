@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { MapPin } from "lucide-react";
 import { Section, SectionHeading, Lede } from "@/components/Section";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
+import { Figure } from "@/components/Figure";
 import { markets } from "@/data/site";
 import { easeBrand } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -13,7 +14,7 @@ export function Markets({ headless = false }: { headless?: boolean }) {
   const region = markets.regions[active]!;
 
   return (
-    <Section id="markets" className="border-y border-white/[0.07] bg-ink-sunken/40">
+    <Section id="markets" className="border-y border-hairline bg-surface-sunken/40">
       {headless ? null : (
         <SectionHeading
           eyebrow={markets.eyebrow}
@@ -31,7 +32,16 @@ export function Markets({ headless = false }: { headless?: boolean }) {
       )}
 
       <Reveal className={headless ? "" : "mt-12"}>
-        <p className="eyebrow text-gray-cool">{markets.body}</p>
+        <Figure
+          src="/media/routes-map.svg"
+          alt="Demand routes running from New York, Dallas, London, Dubai and Singapore into a single Indian project"
+          caption="Five markets, five narratives, one project at the centre."
+          imageClassName="bg-surface-raised"
+        />
+      </Reveal>
+
+      <Reveal delay={0.1} className="mt-12">
+        <p className="eyebrow text-fg-muted">{markets.body}</p>
       </Reveal>
 
       <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,22rem)_1fr] lg:gap-14">
@@ -46,8 +56,8 @@ export function Markets({ headless = false }: { headless?: boolean }) {
                   onClick={() => setActive(index)}
                   aria-pressed={selected}
                   className={cn(
-                    "group relative flex w-full cursor-pointer items-center justify-between gap-4 border-b border-white/10 py-5 text-left transition-colors duration-300",
-                    selected ? "text-white" : "text-white/50 hover:text-white/80",
+                    "group relative flex w-full cursor-pointer items-center justify-between gap-4 border-b border-fg/10 py-5 text-left transition-colors duration-300",
+                    selected ? "text-fg" : "text-fg/50 hover:text-fg/80",
                   )}
                 >
                   {selected ? (
@@ -57,13 +67,13 @@ export function Markets({ headless = false }: { headless?: boolean }) {
                       transition={
                         reduced ? { duration: 0 } : { duration: 0.4, ease: easeBrand }
                       }
-                      className="absolute inset-y-0 -left-4 w-0.5 bg-lime"
+                      className="absolute inset-y-0 -left-4 w-0.5 bg-accent"
                     />
                   ) : null}
                   <span className="font-display text-lg font-medium tracking-tight sm:text-xl">
                     {item.name}
                   </span>
-                  <span className="eyebrow shrink-0 text-white/25">
+                  <span className="eyebrow shrink-0 text-fg/25">
                     {item.cities.length > 0 ? `${item.cities.length} cities` : "Market"}
                   </span>
                 </button>
@@ -73,7 +83,7 @@ export function Markets({ headless = false }: { headless?: boolean }) {
         </RevealGroup>
 
         {/* Region detail */}
-        <div className="relative min-h-[18rem] rounded-2xl border border-white/10 bg-white/[0.02] p-8">
+        <div className="relative min-h-[18rem] rounded-2xl border border-fg/10 bg-fg/[0.02] p-8">
           <AnimatePresence mode="wait">
             <motion.div
               key={region.name}
@@ -82,8 +92,8 @@ export function Markets({ headless = false }: { headless?: boolean }) {
               exit={reduced ? { opacity: 1 } : { opacity: 0, y: -10 }}
               transition={{ duration: reduced ? 0 : 0.35, ease: easeBrand }}
             >
-              <span className="eyebrow text-lime">Market focus</span>
-              <h3 className="mt-4 font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              <span className="eyebrow text-accent">Market focus</span>
+              <h3 className="mt-4 font-display text-3xl font-semibold tracking-tight text-fg sm:text-4xl">
                 {region.name}
               </h3>
 
@@ -99,25 +109,25 @@ export function Markets({ headless = false }: { headless?: boolean }) {
                         ease: easeBrand,
                         delay: reduced ? 0 : 0.05 * index,
                       }}
-                      className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-4 py-2"
+                      className="inline-flex items-center gap-2 rounded-full border border-fg/12 bg-fg/[0.04] px-4 py-2"
                     >
-                      <MapPin className="h-3.5 w-3.5 text-lime" aria-hidden="true" />
-                      <span className="font-display text-sm font-medium text-white/85">
+                      <MapPin className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
+                      <span className="font-display text-sm font-medium text-fg/85">
                         {city}
                       </span>
                     </motion.li>
                   ))}
                 </ul>
               ) : (
-                <p className="mt-8 max-w-md text-base leading-relaxed text-gray-cool">
+                <p className="mt-8 max-w-md text-base leading-relaxed text-fg-muted">
                   Positioning, content and campaigns are rebuilt for this market rather than
                   translated from another one.
                 </p>
               )}
 
-              <div className="mt-10 border-t border-white/10 pt-6">
-                <p className="text-base text-white/80">{markets.outro}</p>
-                <p className="mt-2 font-display text-lg font-semibold text-lime">
+              <div className="mt-10 border-t border-fg/10 pt-6">
+                <p className="text-base text-fg/80">{markets.outro}</p>
+                <p className="mt-2 font-display text-lg font-semibold text-accent">
                   {markets.kicker}
                 </p>
               </div>

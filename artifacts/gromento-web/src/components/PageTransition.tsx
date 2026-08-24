@@ -60,7 +60,7 @@ export function PageTransition({
               style={{ transformOrigin: "top" }}
             />
             <motion.span
-              className="absolute inset-0 origin-top bg-ink"
+              className="absolute inset-0 origin-top bg-surface"
               initial={{ scaleY: 1 }}
               animate={{ scaleY: 0 }}
               transition={{ duration: 0.55, ease: easeCine, delay: 0.12 }}
@@ -72,8 +72,8 @@ export function PageTransition({
               animate={{ opacity: 0 }}
               transition={{ duration: 0.25, ease: easeCine, delay: 0.1 }}
             >
-              <LogoMark className="h-10 w-10 text-lime" />
-              <span className="eyebrow text-white/70">{route.label}</span>
+              <LogoMark className="h-10 w-10 text-accent" />
+              <span className="eyebrow text-fg/70">{route.label}</span>
             </motion.div>
           </motion.div>
         ) : null}

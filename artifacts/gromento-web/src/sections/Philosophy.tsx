@@ -19,22 +19,22 @@ export function Philosophy() {
     <Section id="philosophy">
       <div ref={ref} className="mx-auto max-w-4xl text-center">
         <Reveal className="flex items-center justify-center gap-3">
-          <span aria-hidden="true" className="h-px w-8 bg-lime" />
-          <span className="eyebrow text-gray-cool">{philosophy.eyebrow}</span>
+          <span aria-hidden="true" className="h-px w-8 bg-accent" />
+          <span className="eyebrow text-fg-muted">{philosophy.eyebrow}</span>
         </Reveal>
 
         <SplitText
           text={philosophy.title}
           highlight={["preference."]}
-          className="mt-8 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl"
+          className="mt-8 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-tight text-fg sm:text-5xl lg:text-6xl"
         />
 
         <Reveal delay={0.1} className="mt-8">
-          <p className="text-lg leading-relaxed text-gray-cool">{philosophy.body}</p>
+          <p className="text-lg leading-relaxed text-fg-muted">{philosophy.body}</p>
         </Reveal>
 
         <Reveal delay={0.15} className="mt-10">
-          <p className="text-base text-white/70">{philosophy.lead}</p>
+          <p className="text-base text-fg/70">{philosophy.lead}</p>
         </Reveal>
 
         <motion.figure
@@ -46,19 +46,22 @@ export function Philosophy() {
             style={reduced ? { opacity: 0.25 } : { opacity: glow }}
             className="absolute inset-0 -z-10 rounded-3xl bg-purple/30 blur-3xl"
           />
-          <blockquote className="rounded-3xl border border-white/12 bg-white/[0.03] px-8 py-12 backdrop-blur-sm">
-            <p className="text-balance font-display text-2xl font-semibold leading-snug tracking-tight text-white sm:text-3xl">
+          <blockquote
+            data-tone="dark"
+            className="rounded-3xl border border-fg/12 bg-surface px-8 py-12"
+          >
+            <p className="text-balance font-display text-2xl font-semibold leading-snug tracking-tight text-fg sm:text-3xl">
               “{philosophy.quote}”
             </p>
           </blockquote>
         </motion.figure>
 
         <Reveal delay={0.1} className="mt-10">
-          <p className="font-display text-xl font-medium text-lime">{philosophy.outro}</p>
+          <p className="font-display text-xl font-medium text-accent">{philosophy.outro}</p>
         </Reveal>
 
         <Reveal delay={0.15} className="mx-auto mt-6 max-w-2xl">
-          <p className="text-base leading-relaxed text-gray-cool">{philosophy.kicker}</p>
+          <p className="text-base leading-relaxed text-fg-muted">{philosophy.kicker}</p>
         </Reveal>
       </div>
     </Section>

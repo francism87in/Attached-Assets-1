@@ -31,7 +31,7 @@ export function GlowCard({
     <div
       onPointerMove={handlePointerMove}
       className={cn(
-        "group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm transition-colors duration-300 hover:border-white/20",
+        "group relative overflow-hidden rounded-2xl border border-fg/10 bg-fg/[0.03] backdrop-blur-sm transition-colors duration-300 hover:border-fg/20",
         className,
       )}
     >

@@ -30,11 +30,11 @@ export function Logo({
 }) {
   return (
     <span className={cn("flex items-center gap-1.5", className)}>
-      <LogoMark className={cn("h-7 w-7 text-lime", markClassName)} />
+      <LogoMark className={cn("h-7 w-7 text-accent", markClassName)} />
       <span
         aria-hidden="true"
         className={cn(
-          "font-display text-xl font-semibold tracking-tight text-white",
+          "font-display text-xl font-semibold tracking-tight text-fg",
           wordmarkClassName,
         )}
       >

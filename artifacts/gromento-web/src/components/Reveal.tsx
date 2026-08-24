@@ -30,6 +30,8 @@ type RevealProps = {
   delay?: number;
   variants?: Variants;
   as?: MotionTag;
+  /** Lets a caller stamp a tone (or any data attribute) on the wrapper. */
+  "data-tone"?: "dark";
 };
 
 /** Single element that eases up into view once. */
@@ -39,12 +41,14 @@ export function Reveal({
   delay = 0,
   variants = fadeUp,
   as = "div",
+  ...rest
 }: RevealProps) {
   const reduced = useReducedMotion();
   const Component = resolve(as);
 
   return (
     <Component
+      {...rest}
       className={className}
       initial="hidden"
       whileInView="show"
@@ -154,7 +158,7 @@ export function SplitText({
             <motion.span
               className={cn(
                 "inline-block whitespace-pre",
-                highlighted.has(normalise(word)) && "text-lime",
+                highlighted.has(normalise(word)) && "text-accent",
                 wordClassName,
               )}
               variants={pick(reduced, wordReveal)}

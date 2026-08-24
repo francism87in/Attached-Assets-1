@@ -5,22 +5,22 @@ import { coreMessage } from "@/data/site";
 
 export function CoreMessage() {
   return (
-    <Section id="core" className="border-y border-white/[0.07] bg-ink-sunken/40">
+    <Section id="core" className="border-y border-hairline bg-surface-sunken/40">
       <div className="mx-auto max-w-4xl">
         <Reveal className="flex items-center gap-3">
-          <span aria-hidden="true" className="h-px w-8 bg-lime" />
-          <span className="eyebrow text-gray-cool">{coreMessage.eyebrow}</span>
-          <span aria-hidden="true" className="h-px flex-1 bg-line" />
+          <span aria-hidden="true" className="h-px w-8 bg-accent" />
+          <span className="eyebrow text-fg-muted">{coreMessage.eyebrow}</span>
+          <span aria-hidden="true" className="h-px flex-1 bg-hairline" />
         </Reveal>
 
         <SplitText
           text={coreMessage.title}
           highlight={["one", "growth", "partner."]}
-          className="mt-8 text-balance font-display text-3xl font-semibold leading-[1.08] tracking-tight text-white sm:text-4xl lg:text-5xl"
+          className="mt-8 text-balance font-display text-3xl font-semibold leading-[1.08] tracking-tight text-fg sm:text-4xl lg:text-5xl"
         />
 
         <Reveal delay={0.1} className="mt-8">
-          <p className="max-w-2xl text-lg leading-relaxed text-gray-cool">{coreMessage.body}</p>
+          <p className="max-w-2xl text-lg leading-relaxed text-fg-muted">{coreMessage.body}</p>
         </Reveal>
 
         <RevealGroup gap={0.12} className="mt-10 flex flex-col gap-1">
@@ -30,8 +30,8 @@ export function CoreMessage() {
               as="p"
               className={
                 index === coreMessage.lines.length - 1
-                  ? "font-display text-2xl font-semibold tracking-tight text-lime sm:text-3xl"
-                  : "font-display text-2xl font-semibold tracking-tight text-white/35 sm:text-3xl"
+                  ? "font-display text-2xl font-semibold tracking-tight text-accent sm:text-3xl"
+                  : "font-display text-2xl font-semibold tracking-tight text-fg/35 sm:text-3xl"
               }
             >
               {line}

@@ -31,19 +31,19 @@ export function Developers() {
 
         <motion.div style={reduced ? undefined : { y: plateY }}>
           <Reveal className="mb-6">
-            <p className="eyebrow text-gray-cool">{developers.body}</p>
+            <p className="eyebrow text-fg-muted">{developers.body}</p>
           </Reveal>
           <RevealGroup gap={0.05} as="ul" className="grid gap-2 sm:grid-cols-2">
             {developers.partners.map((partner) => (
               <RevealItem
                 key={partner}
                 as="li"
-                className="group flex items-center gap-3 rounded-xl border border-white/[0.08] bg-white/[0.02] px-4 py-3.5 transition-colors duration-300 hover:border-lime/35 hover:bg-lime/[0.03]"
+                className="group flex items-center gap-3 rounded-xl border border-fg/10 bg-fg/[0.02] px-4 py-3.5 transition-colors duration-300 hover:border-accent/35 hover:bg-accent/[0.03]"
               >
-                <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-lime/40 text-lime transition-colors duration-300 group-hover:bg-lime group-hover:text-ink">
+                <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-accent/40 text-accent transition-colors duration-300 group-hover:bg-accent group-hover:text-ink">
                   <Check className="h-3 w-3" aria-hidden="true" />
                 </span>
-                <span className="text-sm text-white/80">{partner}</span>
+                <span className="text-sm text-fg/80">{partner}</span>
               </RevealItem>
             ))}
           </RevealGroup>

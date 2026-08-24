@@ -42,10 +42,10 @@ function FunnelStep({
   return (
     <motion.li
       style={reduced ? undefined : { opacity, y, borderColor }}
-      className="flex items-center gap-3 rounded-full border border-white/10 bg-ink-raised/70 px-5 py-3 backdrop-blur-sm"
+      className="flex items-center gap-3 rounded-full border border-fg/10 bg-surface-raised/70 px-5 py-3 backdrop-blur-sm"
     >
-      <span className="eyebrow text-lime">{String(index + 1).padStart(2, "0")}</span>
-      <span className="font-display text-sm font-medium tracking-tight text-white sm:text-base">
+      <span className="eyebrow text-accent">{String(index + 1).padStart(2, "0")}</span>
+      <span className="font-display text-sm font-medium tracking-tight text-fg sm:text-base">
         {label}
       </span>
     </motion.li>
@@ -80,19 +80,19 @@ export function Difference({
 
       <div className={cn("grid gap-6 lg:grid-cols-2", !headless && "mt-16")}>
         {/* The old way */}
-        <Reveal className="rounded-2xl border border-white/10 bg-white/[0.02] p-8">
-          <p className="eyebrow text-white/35">{difference.oldWayLabel}</p>
+        <Reveal className="rounded-2xl border border-fg/10 bg-fg/[0.02] p-8">
+          <p className="eyebrow text-fg/35">{difference.oldWayLabel}</p>
           <ul className="mt-6 flex flex-col gap-3">
             {difference.oldWay.map((line) => (
-              <li key={line} className="flex items-center gap-3 text-white/45">
-                <span aria-hidden="true" className="h-px w-5 bg-white/20" />
-                <span className="font-display text-base line-through decoration-white/25">
+              <li key={line} className="flex items-center gap-3 text-fg/45">
+                <span aria-hidden="true" className="h-px w-5 bg-fg/20" />
+                <span className="font-display text-base line-through decoration-fg/25">
                   {line}
                 </span>
               </li>
             ))}
           </ul>
-          <p className="mt-8 text-sm leading-relaxed text-gray-cool">
+          <p className="mt-8 text-sm leading-relaxed text-fg-muted">
             {difference.oldWayKicker}
           </p>
         </Reveal>
@@ -100,13 +100,13 @@ export function Difference({
         {/* The Gromento way */}
         <Reveal
           delay={0.1}
-          className="rounded-2xl border border-lime/25 bg-gradient-to-br from-purple/12 via-transparent to-lime/[0.06] p-8"
+          className="rounded-2xl border border-accent/25 bg-gradient-to-br from-purple/12 via-transparent to-lime/[0.06] p-8"
         >
-          <p className="eyebrow text-lime">{difference.newWayLabel}</p>
-          <p className="mt-6 font-display text-xl font-semibold leading-snug tracking-tight text-white sm:text-2xl">
+          <p className="eyebrow text-accent">{difference.newWayLabel}</p>
+          <p className="mt-6 font-display text-xl font-semibold leading-snug tracking-tight text-fg sm:text-2xl">
             {difference.outro}
           </p>
-          <p className="mt-6 text-sm leading-relaxed text-gray-cool">{difference.kicker}</p>
+          <p className="mt-6 text-sm leading-relaxed text-fg-muted">{difference.kicker}</p>
         </Reveal>
       </div>
 
@@ -115,13 +115,13 @@ export function Difference({
       <div ref={ref} className="mt-16">
         <RevealGroup className="flex flex-wrap items-center gap-2">
           <RevealItem className="flex items-center gap-2">
-            <ArrowRight className="h-4 w-4 text-lime" aria-hidden="true" />
-            <span className="eyebrow text-gray-cool">The chain we build</span>
+            <ArrowRight className="h-4 w-4 text-accent" aria-hidden="true" />
+            <span className="eyebrow text-fg-muted">The chain we build</span>
           </RevealItem>
         </RevealGroup>
 
         <div className="relative mt-6 pt-6">
-          <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-white/10" />
+          <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-fg/10" />
           <motion.div
             aria-hidden="true"
             style={reduced ? { scaleX: 1 } : { scaleX: progress }}

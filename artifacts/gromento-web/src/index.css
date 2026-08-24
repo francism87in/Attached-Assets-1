@@ -5,16 +5,40 @@
    Electric Purple #7B2FFF · Neon Lime #D4FF00 · Deep Violet #4B0FA6
    Charcoal #0D0D12 · Cool Gray #A6A8B3
    Headline: Poppins · Body: Inter
+
+   The site is light-led: paper is the default ground, and a handful of
+   blocks (hero, menu, CTA band, the philosophy quote, footer) opt into the
+   charcoal ground with `data-tone="dark"`. Components never hard-code a
+   surface or text colour — they use the tone tokens below, so the same
+   component reads correctly on either ground.
 --------------------------------------------------------------- */
 @theme {
+  /* Fixed brand colours */
   --color-ink: #0d0d12;
-  --color-ink-raised: #131319;
-  --color-ink-sunken: #08080c;
   --color-purple: #7b2fff;
   --color-lime: #d4ff00;
   --color-violet: #4b0fa6;
   --color-gray-cool: #a6a8b3;
-  --color-line: rgba(255, 255, 255, 0.09);
+
+  /*
+    Tone-aware roles. These hold the LIGHT values here; `[data-tone="dark"]`
+    below redeclares the same custom properties, and because a utility's
+    `var(--color-…)` is resolved in the element's own context, everything
+    inside a dark block picks up the charcoal set automatically.
+
+    Note: the values must be literal here — a `var()` written inside a custom
+    property declaration is substituted at the declaration site (:root), not at
+    the point of use, so indirecting through a second variable would freeze
+    every section on the light palette.
+  */
+  --color-surface: #f4f3f7;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #ebe9f2;
+  --color-fg: #14131a;
+  --color-fg-muted: #56536a;
+  --color-hairline: rgba(20, 19, 26, 0.12);
+  /* Lime is unreadable as text on paper — violet carries the accent here. */
+  --color-accent: #4b0fa6;
 
   --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
@@ -22,19 +46,26 @@
   --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@layer base {
-  * {
-    border-color: var(--color-line);
-  }
+/* Charcoal ground for the cinematic blocks */
+[data-tone="dark"] {
+  --color-surface: #0d0d12;
+  --color-surface-raised: #16151d;
+  --color-surface-sunken: #08080c;
+  --color-fg: #ffffff;
+  --color-fg-muted: #a6a8b3;
+  --color-hairline: rgba(255, 255, 255, 0.14);
+  --color-accent: #d4ff00;
+}
 
+@layer base {
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
 
   body {
-    background-color: var(--color-ink);
-    color: #ffffff;
+    background-color: var(--color-surface);
+    color: var(--color-fg);
     font-family: var(--font-sans);
     font-feature-settings: "cv02", "cv03", "cv04";
     -webkit-font-smoothing: antialiased;
@@ -47,9 +78,13 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-lime);
+    outline: 2px solid var(--color-purple);
     outline-offset: 3px;
     border-radius: 4px;
+  }
+
+  [data-tone="dark"] :focus-visible {
+    outline-color: var(--color-lime);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -71,7 +106,7 @@
   font-family: var(--font-display);
 }
 
-/* Section eyebrow / numbered label, mirrors the brand-kit index style */
+/* Section eyebrow / label, mirrors the brand-kit index style */
 @utility eyebrow {
   font-family: var(--font-display);
   font-size: 0.6875rem;
@@ -95,10 +130,10 @@
   will-change: transform;
 }
 
-/* Grain + grid textures used behind dark sections */
+/* Faint grid, tinted by the current tone */
 @utility bg-grid {
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, var(--color-hairline) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-hairline) 1px, transparent 1px);
   background-size: 72px 72px;
 }

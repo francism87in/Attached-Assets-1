@@ -71,6 +71,49 @@ Connective microcopy that the document does not specify (nav labels, the
 `Why Gromento` section title, form labels and helper text) is written to match
 the document's voice and is equally editable from `site.ts` or the component.
 
+## Theme
+
+The site is **light-led**: paper is the default ground and a few blocks opt into
+charcoal — the hero, the philosophy quote plate, the CTA band that closes each
+page, the footer's tagline marquee and the contact brief panel. Measured across
+the six pages that lands at **~77% light**.
+
+Tone is a token swap, not a second stylesheet. `:root` holds the light values
+for `--color-surface`, `--color-fg`, `--color-accent` and friends;
+`[data-tone="dark"]` redeclares the same properties, and because a utility's
+`var(--color-…)` resolves in the element's own context, everything inside a dark
+block picks up the charcoal set automatically. Components never hard-code a
+surface or text colour — `bg-surface`, `text-fg`, `text-fg-muted`,
+`border-hairline`, `text-accent` — so the same component reads correctly on
+either ground.
+
+Two rules worth keeping:
+
+- **Never indirect a token through another custom property.** A `var()` written
+  inside a custom-property declaration is substituted at the declaration site
+  (`:root`), not at the point of use, which silently freezes every section on
+  the light palette.
+- **Lime is not a text colour on paper** (`#D4FF00` on white fails contrast
+  badly). The accent token resolves to deep violet `#4B0FA6` on light and lime
+  on dark; lime stays a fill — CTA buttons, rules, the hero's live dot.
+
+The header follows the same rule dynamically: it stamps the dark tone only while
+it sits over Home's hero, and reverts to paper once it condenses on scroll.
+
+## Imagery
+
+Original SVG artwork in [`public/media`](public/media) — no stock photography:
+
+| File | Where | What it shows |
+|---|---|---|
+| `skyline.svg` | Hero base plate | Towers and a crane — the market being built |
+| `routes-map.svg` | NRI Markets | Demand routes from five markets into one project |
+| `engine.svg` | What We Do | The content engine ringed by the formats it produces |
+
+`components/Figure.tsx` wraps them with a light scroll parallax and a caption.
+Vector keeps them a few KB each, lossless at any size, and on brand — recolour
+by editing the fills rather than re-exporting.
+
 ## Brand system
 
 Tokens are declared once in [`src/index.css`](src/index.css) under `@theme`, so

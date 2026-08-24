@@ -21,10 +21,15 @@ export function Hero() {
   const markRotate = useTransform(scrollYProgress, [0, 1], [0, 24]);
 
   return (
-    <div id="top" ref={ref} className="relative min-h-[100svh] overflow-hidden pt-32">
+    <div
+      id="top"
+      ref={ref}
+      data-tone="dark"
+      className="relative min-h-[100svh] overflow-hidden bg-surface pt-32 text-fg"
+    >
       <motion.div
         style={reduced ? undefined : { y: contentY, opacity: contentOpacity }}
-        className="mx-auto flex w-full max-w-6xl flex-col px-6 pb-24 lg:px-8"
+        className="relative z-10 mx-auto flex w-full max-w-6xl flex-col px-6 pb-24 lg:px-8"
       >
         <motion.div
           initial="hidden"
@@ -34,21 +39,21 @@ export function Hero() {
         >
           <motion.span
             variants={pick(reduced, fadeUp)}
-            className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-4 py-2 backdrop-blur-sm"
+            className="inline-flex items-center gap-2 rounded-full border border-fg/12 bg-fg/[0.04] px-4 py-2 backdrop-blur-sm"
           >
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-70" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-lime" />
             </span>
-            <span className="eyebrow text-gray-cool">{hero.eyebrow}</span>
+            <span className="eyebrow text-fg-muted">{hero.eyebrow}</span>
           </motion.span>
 
-          <h1 className="mt-8 max-w-4xl font-display text-[clamp(2.75rem,8vw,5.75rem)] font-semibold leading-[0.95] tracking-[-0.03em] text-white">
+          <h1 className="mt-8 max-w-4xl font-display text-[clamp(2.75rem,8vw,5.75rem)] font-semibold leading-[0.95] tracking-[-0.03em] text-fg">
             <SplitText as="span" text="Grow Louder." className="block" highlight={["louder"]} />
             <SplitText
               as="span"
               text="Move Upward."
-              className="block text-white/60"
+              className="block text-fg/60"
               highlight={["upward"]}
               delay={0.15}
             />
@@ -56,24 +61,24 @@ export function Hero() {
 
           <motion.p
             variants={pick(reduced, fadeUp)}
-            className="mt-8 max-w-2xl font-display text-xl font-medium leading-snug text-white sm:text-2xl"
+            className="mt-8 max-w-2xl font-display text-xl font-medium leading-snug text-fg sm:text-2xl"
           >
             {hero.subtitle}
           </motion.p>
 
           <motion.p
             variants={pick(reduced, fadeUp)}
-            className="mt-5 max-w-2xl text-base leading-relaxed text-gray-cool sm:text-lg"
+            className="mt-5 max-w-2xl text-base leading-relaxed text-fg-muted sm:text-lg"
           >
             {hero.body}
           </motion.p>
 
           <motion.ul
             variants={pick(reduced, fadeUp)}
-            className="mt-8 flex flex-col gap-2 border-l-2 border-lime/60 pl-5"
+            className="mt-8 flex flex-col gap-2 border-l-2 border-accent/60 pl-5"
           >
             {hero.negations.map((line) => (
-              <li key={line} className="font-display text-sm font-medium text-white/55 sm:text-base">
+              <li key={line} className="font-display text-sm font-medium text-fg/55 sm:text-base">
                 {line}
               </li>
             ))}
@@ -81,10 +86,10 @@ export function Hero() {
 
           <motion.p
             variants={pick(reduced, fadeUp)}
-            className="mt-8 max-w-2xl font-display text-lg font-medium text-white sm:text-xl"
+            className="mt-8 max-w-2xl font-display text-lg font-medium text-fg sm:text-xl"
           >
             Gromento is built around one audience:{" "}
-            <span className="text-lime">the global Indian property buyer.</span>
+            <span className="text-accent">the global Indian property buyer.</span>
           </motion.p>
 
           <motion.div
@@ -103,20 +108,34 @@ export function Hero() {
       <motion.div
         aria-hidden="true"
         style={reduced ? undefined : { rotate: markRotate }}
-        className="pointer-events-none absolute -right-10 bottom-24 hidden text-purple/15 xl:block"
+        className="pointer-events-none absolute -right-10 bottom-32 hidden text-purple/10 xl:block"
       >
         <LogoMark className="h-[22rem] w-[22rem]" />
       </motion.div>
 
+      {/* Skyline plate — the market the campaigns are built for. It sits low
+          and under a scrim so the hero copy never competes with it. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 select-none"
+      >
+        <img
+          src="/media/skyline.svg"
+          alt=""
+          className="h-[17vh] w-full object-cover object-bottom opacity-55 sm:h-[21vh]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-surface/50 to-surface" />
+      </div>
+
       <div className="absolute inset-x-0 bottom-0">
-        <div className="border-y border-white/10 bg-ink/40 py-4 backdrop-blur-sm">
+        <div className="border-y border-fg/10 bg-surface/40 py-4 backdrop-blur-sm">
           <Marquee duration={48}>
             {tickerMarkets.map((market) => (
               <span key={market} className="flex items-center gap-6 px-6">
-                <span className="font-display text-sm font-medium tracking-tight text-white/70">
+                <span className="font-display text-sm font-medium tracking-tight text-fg/70">
                   {market}
                 </span>
-                <span aria-hidden="true" className="h-1 w-1 rounded-full bg-lime/70" />
+                <span aria-hidden="true" className="h-1 w-1 rounded-full bg-accent/70" />
               </span>
             ))}
           </Marquee>

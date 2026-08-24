@@ -8,7 +8,7 @@ import { brand, closing, markets } from "@/data/site";
 import { easeBrand } from "@/lib/motion";
 
 const fieldClass =
-  "w-full rounded-xl border border-white/12 bg-white/[0.03] px-4 py-3.5 text-sm text-white placeholder:text-white/35 transition-colors duration-200 focus:border-lime/60 focus:outline-none";
+  "w-full rounded-xl border border-fg/12 bg-fg/[0.03] px-4 py-3.5 text-sm text-fg placeholder:text-fg/35 transition-colors duration-200 focus:border-accent/60 focus:outline-none";
 
 export function Closing({ headless = false }: { headless?: boolean }) {
   const reduced = useReducedMotion();
@@ -44,27 +44,27 @@ export function Closing({ headless = false }: { headless?: boolean }) {
           {headless ? null : (
             <>
               <Reveal className="flex items-center gap-3">
-                <span aria-hidden="true" className="h-px w-8 bg-lime" />
-                <span className="eyebrow text-gray-cool">{closing.eyebrow}</span>
+                <span aria-hidden="true" className="h-px w-8 bg-accent" />
+                <span className="eyebrow text-fg-muted">{closing.eyebrow}</span>
               </Reveal>
 
               <SplitText
                 text={closing.title}
                 highlight={["already", "online."]}
-                className="mt-8 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl"
+                className="mt-8 text-balance font-display text-4xl font-semibold leading-[1.05] tracking-tight text-fg sm:text-5xl"
               />
 
               <Reveal delay={0.1} className="mt-8">
-                <p className="max-w-xl text-lg leading-relaxed text-gray-cool">{closing.body}</p>
+                <p className="max-w-xl text-lg leading-relaxed text-fg-muted">{closing.body}</p>
               </Reveal>
             </>
           )}
 
           <Reveal delay={0.15} className={headless ? "" : "mt-10"}>
-            <p className="font-display text-3xl font-semibold tracking-tight text-lime sm:text-4xl">
+            <p className="font-display text-3xl font-semibold tracking-tight text-accent sm:text-4xl">
               {closing.kicker}
             </p>
-            <p className="mt-4 font-display text-base font-medium text-white/70">
+            <p className="mt-4 font-display text-base font-medium text-fg/70">
               {closing.tagline}
             </p>
           </Reveal>
@@ -72,9 +72,9 @@ export function Closing({ headless = false }: { headless?: boolean }) {
           <Reveal delay={0.2} className="mt-10">
             <a
               href={`mailto:${brand.email}`}
-              className="group inline-flex items-center gap-3 text-sm text-white/70 transition-colors hover:text-lime"
+              className="group inline-flex items-center gap-3 text-sm text-fg/70 transition-colors hover:text-accent"
             >
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/12 transition-colors group-hover:border-lime/50">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-fg/12 transition-colors group-hover:border-accent/50">
                 <Mail className="h-4 w-4" aria-hidden="true" />
               </span>
               {brand.email}
@@ -84,7 +84,8 @@ export function Closing({ headless = false }: { headless?: boolean }) {
 
         <Reveal
           delay={0.1}
-          className="relative overflow-hidden rounded-3xl border border-white/12 bg-white/[0.03] p-8 backdrop-blur-sm sm:p-10"
+          data-tone="dark"
+          className="relative overflow-hidden rounded-3xl border border-fg/12 bg-surface p-8 text-fg sm:p-10"
         >
           <span
             aria-hidden="true"
@@ -100,18 +101,18 @@ export function Closing({ headless = false }: { headless?: boolean }) {
                 transition={{ duration: reduced ? 0 : 0.4, ease: easeBrand }}
                 className="flex min-h-[24rem] flex-col items-start justify-center"
               >
-                <CheckCircle2 className="h-10 w-10 text-lime" aria-hidden="true" />
-                <h3 className="mt-6 font-display text-2xl font-semibold tracking-tight text-white">
+                <CheckCircle2 className="h-10 w-10 text-accent" aria-hidden="true" />
+                <h3 className="mt-6 font-display text-2xl font-semibold tracking-tight text-fg">
                   Your brief is ready to send.
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-cool">
+                <p className="mt-3 text-sm leading-relaxed text-fg-muted">
                   We opened your mail client with the details filled in. If nothing appeared,
                   write to {brand.email} and we will pick it up from there.
                 </p>
                 <button
                   type="button"
                   onClick={() => setSent(false)}
-                  className="mt-8 cursor-pointer font-display text-sm font-semibold text-lime underline underline-offset-4"
+                  className="mt-8 cursor-pointer font-display text-sm font-semibold text-accent underline underline-offset-4"
                 >
                   Edit the brief
                 </button>
@@ -126,11 +127,11 @@ export function Closing({ headless = false }: { headless?: boolean }) {
                 transition={{ duration: reduced ? 0 : 0.3, ease: easeBrand }}
                 className="relative flex flex-col gap-4"
               >
-                <p className="eyebrow text-gray-cool">Start with the commercial target</p>
+                <p className="eyebrow text-fg-muted">Start with the commercial target</p>
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="flex flex-col gap-2">
-                    <span className="text-xs font-medium text-white/60">Name</span>
+                    <span className="text-xs font-medium text-fg/60">Name</span>
                     <input
                       name="name"
                       required
@@ -140,7 +141,7 @@ export function Closing({ headless = false }: { headless?: boolean }) {
                     />
                   </label>
                   <label className="flex flex-col gap-2">
-                    <span className="text-xs font-medium text-white/60">Company</span>
+                    <span className="text-xs font-medium text-fg/60">Company</span>
                     <input
                       name="company"
                       required
@@ -152,7 +153,7 @@ export function Closing({ headless = false }: { headless?: boolean }) {
                 </div>
 
                 <label className="flex flex-col gap-2">
-                  <span className="text-xs font-medium text-white/60">Work email</span>
+                  <span className="text-xs font-medium text-fg/60">Work email</span>
                   <input
                     name="email"
                     type="email"
@@ -164,13 +165,13 @@ export function Closing({ headless = false }: { headless?: boolean }) {
                 </label>
 
                 <label className="flex flex-col gap-2">
-                  <span className="text-xs font-medium text-white/60">Primary NRI market</span>
+                  <span className="text-xs font-medium text-fg/60">Primary NRI market</span>
                   <select name="market" required defaultValue="" className={fieldClass}>
                     <option value="" disabled>
                       Select a market
                     </option>
                     {markets.regions.map((region) => (
-                      <option key={region.name} value={region.name} className="bg-ink">
+                      <option key={region.name} value={region.name} className="bg-surface">
                         {region.name}
                       </option>
                     ))}
@@ -178,7 +179,7 @@ export function Closing({ headless = false }: { headless?: boolean }) {
                 </label>
 
                 <label className="flex flex-col gap-2">
-                  <span className="text-xs font-medium text-white/60">
+                  <span className="text-xs font-medium text-fg/60">
                     What are you launching?
                   </span>
                   <textarea
@@ -194,7 +195,7 @@ export function Closing({ headless = false }: { headless?: boolean }) {
                   {closing.cta}
                 </Button>
 
-                <p className="text-xs leading-relaxed text-white/40">
+                <p className="text-xs leading-relaxed text-fg/40">
                   We reply with a point of view on the market, not a deck of credentials.
                 </p>
               </motion.form>

@@ -41,17 +41,17 @@ export function Positioning() {
             <RevealItem key={pillar.title} as="article" className="h-full">
               <GlowCard className="h-full p-7">
                 <div className="flex items-start justify-between">
-                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/[0.05] text-lime transition-colors duration-300 group-hover:border-lime/40">
+                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-fg/10 bg-fg/[0.05] text-accent transition-colors duration-300 group-hover:border-accent/40">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </span>
-                  <span className="eyebrow text-white/25">
+                  <span className="eyebrow text-fg/25">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                 </div>
-                <h3 className="mt-6 font-display text-lg font-semibold tracking-tight text-white">
+                <h3 className="mt-6 font-display text-lg font-semibold tracking-tight text-fg">
                   {pillar.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-cool">{pillar.body}</p>
+                <p className="mt-3 text-sm leading-relaxed text-fg-muted">{pillar.body}</p>
               </GlowCard>
             </RevealItem>
           );

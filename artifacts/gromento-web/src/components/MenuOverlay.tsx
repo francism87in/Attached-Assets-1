@@ -53,7 +53,8 @@ export function MenuOverlay({
           role="dialog"
           aria-modal="true"
           aria-label="Site navigation"
-          className="fixed inset-0 z-50 flex flex-col overflow-y-auto"
+          data-tone="dark"
+          className="fixed inset-0 z-50 flex flex-col overflow-y-auto text-fg"
           initial={reduced ? { opacity: 0 } : undefined}
           animate={reduced ? { opacity: 1 } : undefined}
           exit={reduced ? { opacity: 0 } : undefined}
@@ -72,7 +73,7 @@ export function MenuOverlay({
               />
               <motion.span
                 aria-hidden="true"
-                className="absolute inset-0 origin-top bg-ink"
+                className="absolute inset-0 origin-top bg-surface"
                 initial={{ scaleY: 0 }}
                 animate={{ scaleY: 1 }}
                 exit={{ scaleY: 0 }}
@@ -80,7 +81,7 @@ export function MenuOverlay({
               />
             </>
           ) : (
-            <span aria-hidden="true" className="absolute inset-0 bg-ink" />
+            <span aria-hidden="true" className="absolute inset-0 bg-surface" />
           )}
 
           <span
@@ -89,16 +90,16 @@ export function MenuOverlay({
           />
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute bottom-0 right-0 h-[28rem] w-[28rem] rounded-full bg-lime/10 blur-[150px]"
+            className="pointer-events-none absolute bottom-0 right-0 h-[28rem] w-[28rem] rounded-full bg-accent/10 blur-[150px]"
           />
 
           <div className="relative flex min-h-full flex-col">
             <div className="flex items-center justify-between px-6 py-5 lg:px-10">
-              <span className="eyebrow text-white/40">Menu</span>
+              <span className="eyebrow text-fg/40">Menu</span>
               <button
                 type="button"
                 onClick={onClose}
-                className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/15 px-4 py-2.5 font-display text-sm font-semibold text-white transition-colors duration-200 hover:border-lime hover:text-lime"
+                className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-fg/15 px-4 py-2.5 font-display text-sm font-semibold text-fg transition-colors duration-200 hover:border-accent hover:text-accent"
               >
                 Close
                 <X className="h-4 w-4" aria-hidden="true" />
@@ -132,14 +133,14 @@ export function MenuOverlay({
                           onClick={onClose}
                           onMouseEnter={() => setHovered(route.path)}
                           className={cn(
-                            "group flex items-baseline gap-4 border-b border-white/10 py-4 transition-opacity duration-300 sm:gap-6 sm:py-5",
+                            "group flex items-baseline gap-4 border-b border-fg/10 py-4 transition-opacity duration-300 sm:gap-6 sm:py-5",
                             dimmed ? "opacity-35" : "opacity-100",
                           )}
                         >
                           <span
                             className={cn(
                               "eyebrow shrink-0 transition-colors duration-300",
-                              active ? "text-lime" : "text-white/30",
+                              active ? "text-accent" : "text-fg/30",
                             )}
                           >
                             {route.index}
@@ -147,14 +148,14 @@ export function MenuOverlay({
                           <span
                             className={cn(
                               "font-display text-[clamp(2rem,7vw,4.5rem)] font-semibold leading-[1.05] tracking-[-0.03em] transition-colors duration-300",
-                              active ? "text-lime" : "text-white group-hover:text-lime",
+                              active ? "text-accent" : "text-fg group-hover:text-accent",
                             )}
                           >
                             {route.label}
                           </span>
                           <ArrowUpRight
                             aria-hidden="true"
-                            className="ml-auto h-5 w-5 shrink-0 translate-y-1 text-white/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-lime sm:h-7 sm:w-7"
+                            className="ml-auto h-5 w-5 shrink-0 translate-y-1 text-fg/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-accent sm:h-7 sm:w-7"
                           />
                         </Link>
                       </motion.div>
@@ -168,17 +169,17 @@ export function MenuOverlay({
               initial={reduced ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: reduced ? 0 : 0.6, ease: easeCine, delay: reduced ? 0 : 0.6 }}
-              className="flex flex-col gap-6 border-t border-white/10 px-6 py-8 sm:flex-row sm:items-end sm:justify-between lg:px-10"
+              className="flex flex-col gap-6 border-t border-fg/10 px-6 py-8 sm:flex-row sm:items-end sm:justify-between lg:px-10"
             >
               <div>
-                <p className="eyebrow text-white/35">Markets we build for</p>
-                <p className="mt-3 max-w-lg text-sm leading-relaxed text-gray-cool">
+                <p className="eyebrow text-fg/35">Markets we build for</p>
+                <p className="mt-3 max-w-lg text-sm leading-relaxed text-fg-muted">
                   {tickerMarkets.slice(0, 8).join(" · ")} and other high-intent NRI markets.
                 </p>
               </div>
               <a
                 href={`mailto:${brand.email}`}
-                className="font-display text-lg font-semibold text-white transition-colors hover:text-lime"
+                className="font-display text-lg font-semibold text-fg transition-colors hover:text-accent"
               >
                 {brand.email}
               </a>

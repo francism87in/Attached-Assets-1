@@ -30,7 +30,7 @@ export function PageTeasers() {
               <motion.div
                 whileHover={reduced ? undefined : { y: -4 }}
                 transition={{ duration: 0.35, ease: easeBrand }}
-                className="relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-7 transition-colors duration-300 group-hover:border-lime/40 sm:p-8"
+                className="relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-fg/10 bg-fg/[0.02] p-7 transition-colors duration-300 group-hover:border-accent/40 sm:p-8"
               >
                 <span
                   aria-hidden="true"
@@ -39,18 +39,18 @@ export function PageTeasers() {
 
                 <div className="relative flex items-start justify-between gap-6">
                   <div>
-                    <span className="eyebrow text-white/30">{route.index}</span>
-                    <h3 className="mt-4 font-display text-2xl font-semibold tracking-tight text-white transition-colors duration-300 group-hover:text-lime sm:text-3xl">
+                    <span className="eyebrow text-fg/30">{route.index}</span>
+                    <h3 className="mt-4 font-display text-2xl font-semibold tracking-tight text-fg transition-colors duration-300 group-hover:text-accent sm:text-3xl">
                       {route.label}
                     </h3>
                   </div>
                   <ArrowUpRight
                     aria-hidden="true"
-                    className="h-5 w-5 shrink-0 text-white/25 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-lime"
+                    className="h-5 w-5 shrink-0 text-fg/25 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-accent"
                   />
                 </div>
 
-                <p className="relative mt-8 max-w-md text-sm leading-relaxed text-gray-cool">
+                <p className="relative mt-8 max-w-md text-sm leading-relaxed text-fg-muted">
                   {route.lede}
                 </p>
               </motion.div>
