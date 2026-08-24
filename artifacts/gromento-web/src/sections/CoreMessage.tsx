@@ -8,7 +8,7 @@ export function CoreMessage() {
     <Section id="core" className="border-y border-white/[0.07] bg-ink-sunken/40">
       <div className="mx-auto max-w-4xl">
         <Reveal className="flex items-center gap-3">
-          <span className="eyebrow text-lime">10</span>
+          <span aria-hidden="true" className="h-px w-8 bg-lime" />
           <span className="eyebrow text-gray-cool">{coreMessage.eyebrow}</span>
           <span aria-hidden="true" className="h-px flex-1 bg-line" />
         </Reveal>

@@ -12,7 +12,6 @@ export function ContentEngine() {
   return (
     <Section id="content" className="border-y border-white/[0.07] bg-ink-sunken/40">
       <SectionHeading
-        index="04"
         eyebrow={contentEngine.eyebrow}
         title={contentEngine.title}
         highlight={["reasons", "buy."]}

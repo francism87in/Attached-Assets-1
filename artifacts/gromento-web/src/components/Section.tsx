@@ -17,7 +17,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={cn("relative scroll-mt-24 py-24 sm:py-32 lg:py-40", className)}
+      className={cn("relative scroll-mt-24 py-20 sm:py-24 lg:py-28", className)}
     >
       <div className={cn("mx-auto w-full max-w-6xl px-6 lg:px-8", containerClassName)}>
         {children}
@@ -26,9 +26,8 @@ export function Section({
   );
 }
 
-/** Numbered eyebrow + headline pair, echoing the brand-kit index style. */
+/** Eyebrow + headline pair. Numbering lives on page title cards, not here. */
 export function SectionHeading({
-  index,
   eyebrow,
   title,
   highlight,
@@ -36,7 +35,6 @@ export function SectionHeading({
   titleClassName,
   children,
 }: {
-  index?: string;
   eyebrow: string;
   title: string;
   highlight?: readonly string[];
@@ -47,7 +45,7 @@ export function SectionHeading({
   return (
     <div className={cn("max-w-3xl", className)}>
       <Reveal className="flex items-center gap-3">
-        {index ? <span className="eyebrow text-lime">{index}</span> : null}
+        <span aria-hidden="true" className="h-px w-8 bg-lime" />
         <span className="eyebrow text-gray-cool">{eyebrow}</span>
         <span aria-hidden="true" className="h-px flex-1 bg-line" />
       </Reveal>

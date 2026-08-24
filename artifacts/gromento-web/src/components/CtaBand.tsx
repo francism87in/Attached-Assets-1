@@ -30,7 +30,7 @@ export function CtaBand({
   const shift = useTransform(scrollYProgress, [0, 1], ["6%", "-6%"]);
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-24 sm:py-32">
+    <section ref={ref} className="relative overflow-hidden py-20 sm:py-28">
       <motion.span
         aria-hidden="true"
         style={reduced ? { opacity: 0.22 } : { opacity: glow, y: shift }}

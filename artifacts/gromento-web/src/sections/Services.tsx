@@ -34,7 +34,6 @@ export function Services({ headless = false }: { headless?: boolean }) {
     <Section id="services">
       {headless ? null : (
         <SectionHeading
-          index="05"
           eyebrow={services.eyebrow}
           title={services.title}
           highlight={["end", "to", "end."]}

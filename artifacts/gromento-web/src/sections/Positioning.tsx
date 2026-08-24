@@ -25,7 +25,6 @@ export function Positioning() {
   return (
     <Section id="positioning">
       <SectionHeading
-        index="02"
         eyebrow={positioning.eyebrow}
         title={positioning.title}
         highlight={["global", "indian", "buyers."]}

@@ -44,7 +44,7 @@ export function Closing({ headless = false }: { headless?: boolean }) {
           {headless ? null : (
             <>
               <Reveal className="flex items-center gap-3">
-                <span className="eyebrow text-lime">11</span>
+                <span aria-hidden="true" className="h-px w-8 bg-lime" />
                 <span className="eyebrow text-gray-cool">{closing.eyebrow}</span>
               </Reveal>
 

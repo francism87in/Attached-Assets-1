@@ -19,7 +19,6 @@ export function Developers() {
       <div ref={ref} className="grid gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
         <div>
           <SectionHeading
-            index="07"
             eyebrow={developers.eyebrow}
             title={developers.title}
             highlight={["market", "around", "it."]}

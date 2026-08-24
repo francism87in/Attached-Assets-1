@@ -16,7 +16,6 @@ export function Markets({ headless = false }: { headless?: boolean }) {
     <Section id="markets" className="border-y border-white/[0.07] bg-ink-sunken/40">
       {headless ? null : (
         <SectionHeading
-          index="06"
           eyebrow={markets.eyebrow}
           title={markets.title}
           highlight={["different", "markets.", "motivations."]}

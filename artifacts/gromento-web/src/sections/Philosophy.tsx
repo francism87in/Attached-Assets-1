@@ -19,7 +19,7 @@ export function Philosophy() {
     <Section id="philosophy">
       <div ref={ref} className="mx-auto max-w-4xl text-center">
         <Reveal className="flex items-center justify-center gap-3">
-          <span className="eyebrow text-lime">08</span>
+          <span aria-hidden="true" className="h-px w-8 bg-lime" />
           <span className="eyebrow text-gray-cool">{philosophy.eyebrow}</span>
         </Reveal>
 

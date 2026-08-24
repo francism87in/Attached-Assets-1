@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { Section, SectionHeading, Lede } from "@/components/Section";
 import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { usp } from "@/data/site";
+import { cn } from "@/lib/utils";
 
 export function Usp({ headless = false }: { headless?: boolean }) {
   const reduced = useReducedMotion();
@@ -18,14 +19,19 @@ export function Usp({ headless = false }: { headless?: boolean }) {
     <Section id="usp">
       {headless ? null : (
         <SectionHeading
-          index="01"
           eyebrow={usp.eyebrow}
           title={usp.title}
           highlight={["buyer", "before"]}
         />
       )}
 
-      <div ref={ref} className="grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
+      <div
+        ref={ref}
+        className={cn(
+          "grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20",
+          !headless && "mt-16",
+        )}
+      >
         <div>
           <RevealGroup className="flex flex-col gap-3">
             {usp.lead.map((line, index) => (

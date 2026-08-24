@@ -7,7 +7,6 @@ export function Why() {
   return (
     <Section id="why">
       <SectionHeading
-        index="09"
         eyebrow={why.eyebrow}
         title={why.title}
         highlight={["room."]}

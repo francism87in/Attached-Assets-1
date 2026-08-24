@@ -136,13 +136,14 @@ export function SplitText({
 
   return (
     <Tag className={cn("font-display", className)}>
+      <span className="sr-only">{text}</span>
       <motion.span
+        aria-hidden="true"
         className="inline"
         initial="hidden"
         whileInView="show"
         viewport={viewportOnce}
         variants={reduced ? undefined : stagger(0.038, delay)}
-        aria-label={text}
       >
         {words.map((word, index) => (
           <span

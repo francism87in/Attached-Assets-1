@@ -65,7 +65,6 @@ export function Difference({ headless = false }: { headless?: boolean }) {
     <Section id="difference">
       {headless ? null : (
         <SectionHeading
-          index="03"
           eyebrow={difference.eyebrow}
           title={difference.title}
           highlight={["demand."]}
