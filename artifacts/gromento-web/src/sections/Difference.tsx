@@ -52,7 +52,14 @@ function FunnelStep({
   );
 }
 
-export function Difference({ headless = false }: { headless?: boolean }) {
+export function Difference({
+  headless = false,
+  compact = false,
+}: {
+  headless?: boolean;
+  /** Hide the demand chain — it belongs to the Approach page. */
+  compact?: boolean;
+}) {
   const reduced = useReducedMotion() ?? false;
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -104,6 +111,7 @@ export function Difference({ headless = false }: { headless?: boolean }) {
       </div>
 
       {/* Scroll-linked demand chain */}
+      {compact ? null : (
       <div ref={ref} className="mt-16">
         <RevealGroup className="flex flex-wrap items-center gap-2">
           <RevealItem className="flex items-center gap-2">
@@ -134,6 +142,7 @@ export function Difference({ headless = false }: { headless?: boolean }) {
           </ul>
         </div>
       </div>
+      )}
     </Section>
   );
 }

@@ -5,13 +5,13 @@ import { Philosophy } from "@/sections/Philosophy";
 import { CtaBand } from "@/components/CtaBand";
 import { routeFor } from "@/routes";
 
-/** How the demand gets built: the chain, the content engine, the philosophy. */
+/** How demand gets built: the full chain, the questions content answers, the philosophy. */
 export function Approach() {
   return (
     <>
       <PageHeader route={routeFor("/approach")} />
       <Difference headless />
-      <ContentEngine />
+      <ContentEngine variant="questions" />
       <Philosophy />
       <CtaBand />
     </>

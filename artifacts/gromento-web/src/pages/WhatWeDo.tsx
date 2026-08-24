@@ -4,13 +4,13 @@ import { ContentEngine } from "@/sections/ContentEngine";
 import { CtaBand } from "@/components/CtaBand";
 import { routeFor } from "@/routes";
 
-/** The service surface, then the content engine that feeds it. */
+/** The service surface, then the formats those services produce. */
 export function WhatWeDo() {
   return (
     <>
       <PageHeader route={routeFor("/what-we-do")} />
       <Services headless />
-      <ContentEngine />
+      <ContentEngine variant="formats" />
       <CtaBand />
     </>
   );
