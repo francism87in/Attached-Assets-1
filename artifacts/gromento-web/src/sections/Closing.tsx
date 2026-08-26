@@ -8,7 +8,7 @@ import { brand, closing, markets } from "@/data/site";
 import { easeBrand } from "@/lib/motion";
 
 const fieldClass =
-  "w-full rounded-xl border border-fg/12 bg-fg/[0.03] px-4 py-3.5 text-sm text-fg placeholder:text-fg/35 transition-colors duration-200 focus:border-accent/60 focus:outline-none";
+  "w-full rounded-xl border border-fg/12 bg-fg/[0.03] px-4 py-3.5 text-sm text-fg placeholder:text-fg-muted transition-colors duration-200 focus:border-accent/60 focus:outline-none";
 
 export function Closing({ headless = false }: { headless?: boolean }) {
   const reduced = useReducedMotion();
@@ -131,7 +131,7 @@ export function Closing({ headless = false }: { headless?: boolean }) {
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="flex flex-col gap-2">
-                    <span className="text-xs font-medium text-fg/60">Name</span>
+                    <span className="text-xs font-medium text-fg-muted">Name</span>
                     <input
                       name="name"
                       required
@@ -141,7 +141,7 @@ export function Closing({ headless = false }: { headless?: boolean }) {
                     />
                   </label>
                   <label className="flex flex-col gap-2">
-                    <span className="text-xs font-medium text-fg/60">Company</span>
+                    <span className="text-xs font-medium text-fg-muted">Company</span>
                     <input
                       name="company"
                       required
@@ -153,7 +153,7 @@ export function Closing({ headless = false }: { headless?: boolean }) {
                 </div>
 
                 <label className="flex flex-col gap-2">
-                  <span className="text-xs font-medium text-fg/60">Work email</span>
+                  <span className="text-xs font-medium text-fg-muted">Work email</span>
                   <input
                     name="email"
                     type="email"
@@ -165,7 +165,7 @@ export function Closing({ headless = false }: { headless?: boolean }) {
                 </label>
 
                 <label className="flex flex-col gap-2">
-                  <span className="text-xs font-medium text-fg/60">Primary NRI market</span>
+                  <span className="text-xs font-medium text-fg-muted">Primary NRI market</span>
                   <select name="market" required defaultValue="" className={fieldClass}>
                     <option value="" disabled>
                       Select a market
@@ -179,7 +179,7 @@ export function Closing({ headless = false }: { headless?: boolean }) {
                 </label>
 
                 <label className="flex flex-col gap-2">
-                  <span className="text-xs font-medium text-fg/60">
+                  <span className="text-xs font-medium text-fg-muted">
                     What are you launching?
                   </span>
                   <textarea
@@ -195,7 +195,7 @@ export function Closing({ headless = false }: { headless?: boolean }) {
                   {closing.cta}
                 </Button>
 
-                <p className="text-xs leading-relaxed text-fg/40">
+                <p className="text-xs leading-relaxed text-fg-muted">
                   We reply with a point of view on the market, not a deck of credentials.
                 </p>
               </motion.form>

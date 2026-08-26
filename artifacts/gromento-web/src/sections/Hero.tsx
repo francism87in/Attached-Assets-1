@@ -53,7 +53,7 @@ export function Hero() {
             <SplitText
               as="span"
               text="Move Upward."
-              className="block text-fg/60"
+              className="block text-fg-muted"
               highlight={["upward"]}
               delay={0.15}
             />
@@ -78,7 +78,7 @@ export function Hero() {
             className="mt-8 flex flex-col gap-2 border-l-2 border-accent/60 pl-5"
           >
             {hero.negations.map((line) => (
-              <li key={line} className="font-display text-sm font-medium text-fg/55 sm:text-base">
+              <li key={line} className="font-display text-sm font-medium text-fg-muted sm:text-base">
                 {line}
               </li>
             ))}

@@ -95,7 +95,7 @@ export function MenuOverlay({
 
           <div className="relative flex min-h-full flex-col">
             <div className="flex items-center justify-between px-6 py-5 lg:px-10">
-              <span className="eyebrow text-fg/40">Menu</span>
+              <span className="eyebrow text-fg-muted">Menu</span>
               <button
                 type="button"
                 onClick={onClose}
@@ -140,7 +140,7 @@ export function MenuOverlay({
                           <span
                             className={cn(
                               "eyebrow shrink-0 transition-colors duration-300",
-                              active ? "text-accent" : "text-fg/30",
+                              active ? "text-accent" : "text-fg-muted",
                             )}
                           >
                             {route.index}
@@ -155,7 +155,7 @@ export function MenuOverlay({
                           </span>
                           <ArrowUpRight
                             aria-hidden="true"
-                            className="ml-auto h-5 w-5 shrink-0 translate-y-1 text-fg/25 transition-all duration-300 group-hover:translate-x-1 group-hover:text-accent sm:h-7 sm:w-7"
+                            className="ml-auto h-5 w-5 shrink-0 translate-y-1 text-fg-muted transition-all duration-300 group-hover:translate-x-1 group-hover:text-accent sm:h-7 sm:w-7"
                           />
                         </Link>
                       </motion.div>
@@ -172,7 +172,7 @@ export function MenuOverlay({
               className="flex flex-col gap-6 border-t border-fg/10 px-6 py-8 sm:flex-row sm:items-end sm:justify-between lg:px-10"
             >
               <div>
-                <p className="eyebrow text-fg/35">Markets we build for</p>
+                <p className="eyebrow text-fg-muted">Markets we build for</p>
                 <p className="mt-3 max-w-lg text-sm leading-relaxed text-fg-muted">
                   {tickerMarkets.slice(0, 8).join(" · ")} and other high-intent NRI markets.
                 </p>

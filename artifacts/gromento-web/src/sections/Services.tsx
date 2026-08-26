@@ -65,7 +65,7 @@ export function Services({ headless = false }: { headless?: boolean }) {
                     className="h-5 w-5 text-accent transition-transform duration-300 group-hover:scale-110"
                     aria-hidden="true"
                   />
-                  <span className="eyebrow text-fg/20">
+                  <span className="eyebrow text-fg-muted">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                 </div>

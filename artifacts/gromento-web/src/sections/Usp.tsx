@@ -41,7 +41,7 @@ export function Usp({ headless = false }: { headless?: boolean }) {
                 className={
                   index === usp.lead.length - 1
                     ? "font-display text-2xl font-semibold tracking-tight text-accent sm:text-3xl"
-                    : "font-display text-2xl font-semibold tracking-tight text-fg/45 sm:text-3xl"
+                    : "font-display text-2xl font-semibold tracking-tight text-fg-muted sm:text-3xl"
                 }
               >
                 {line}

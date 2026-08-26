@@ -17,7 +17,7 @@ export function Footer() {
               <span className="font-display text-2xl font-semibold tracking-tight text-fg/85 sm:text-3xl">
                 Move <span className="text-accent">Upward.</span>
               </span>
-              <span className="font-display text-2xl font-semibold tracking-tight text-fg/30 sm:text-3xl">
+              <span className="font-display text-2xl font-semibold tracking-tight text-fg/45 sm:text-3xl">
                 Every single time.
               </span>
             </span>
@@ -37,13 +37,13 @@ export function Footer() {
         </div>
 
         <nav aria-label="Footer">
-          <p className="eyebrow text-fg/35">Pages</p>
+          <p className="eyebrow text-fg-muted">Pages</p>
           <ul className="mt-5 flex flex-col gap-3">
             {routes.map((route) => (
               <li key={route.path}>
                 <Link
                   href={route.path}
-                  className="text-sm text-fg/65 transition-colors hover:text-accent"
+                  className="text-sm text-fg-muted transition-colors hover:text-accent"
                 >
                   {route.label}
                 </Link>
@@ -53,18 +53,18 @@ export function Footer() {
         </nav>
 
         <div>
-          <p className="eyebrow text-fg/35">Contact</p>
+          <p className="eyebrow text-fg-muted">Contact</p>
           <ul className="mt-5 flex flex-col gap-3 text-sm">
             <li>
               <a
                 href={`mailto:${brand.email}`}
-                className="text-fg/65 transition-colors hover:text-accent"
+                className="text-fg-muted transition-colors hover:text-accent"
               >
                 {brand.email}
               </a>
             </li>
             <li>
-              <Link href="/contact" className="text-fg/65 transition-colors hover:text-accent">
+              <Link href="/contact" className="text-fg-muted transition-colors hover:text-accent">
                 Talk to Gromento
               </Link>
             </li>
@@ -72,7 +72,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 border-t border-fg/10 px-6 py-8 text-xs text-fg/40 sm:flex-row sm:items-center sm:justify-between lg:px-8">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 border-t border-fg/10 px-6 py-8 text-xs text-fg-muted sm:flex-row sm:items-center sm:justify-between lg:px-8">
         <p>
           © {new Date().getFullYear()} {brand.name}. Trend-led marketing for NRI real estate
           demand.

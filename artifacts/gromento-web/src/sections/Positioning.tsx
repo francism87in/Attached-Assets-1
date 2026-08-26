@@ -44,7 +44,7 @@ export function Positioning() {
                   <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-fg/10 bg-fg/[0.05] text-accent transition-colors duration-300 group-hover:border-accent/40">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </span>
-                  <span className="eyebrow text-fg/25">
+                  <span className="eyebrow text-fg-muted">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                 </div>

@@ -57,7 +57,7 @@ export function Markets({ headless = false }: { headless?: boolean }) {
                   aria-pressed={selected}
                   className={cn(
                     "group relative flex w-full cursor-pointer items-center justify-between gap-4 border-b border-fg/10 py-5 text-left transition-colors duration-300",
-                    selected ? "text-fg" : "text-fg/50 hover:text-fg/80",
+                    selected ? "text-fg" : "text-fg-muted hover:text-fg/80",
                   )}
                 >
                   {selected ? (
@@ -73,7 +73,7 @@ export function Markets({ headless = false }: { headless?: boolean }) {
                   <span className="font-display text-lg font-medium tracking-tight sm:text-xl">
                     {item.name}
                   </span>
-                  <span className="eyebrow shrink-0 text-fg/25">
+                  <span className="eyebrow shrink-0 text-fg-muted">
                     {item.cities.length > 0 ? `${item.cities.length} cities` : "Market"}
                   </span>
                 </button>

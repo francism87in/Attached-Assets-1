@@ -39,14 +39,14 @@ export function PageTeasers() {
 
                 <div className="relative flex items-start justify-between gap-6">
                   <div>
-                    <span className="eyebrow text-fg/30">{route.index}</span>
+                    <span className="eyebrow text-fg-muted">{route.index}</span>
                     <h3 className="mt-4 font-display text-2xl font-semibold tracking-tight text-fg transition-colors duration-300 group-hover:text-accent sm:text-3xl">
                       {route.label}
                     </h3>
                   </div>
                   <ArrowUpRight
                     aria-hidden="true"
-                    className="h-5 w-5 shrink-0 text-fg/25 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-accent"
+                    className="h-5 w-5 shrink-0 text-fg-muted transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-accent"
                   />
                 </div>
 

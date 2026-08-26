@@ -31,7 +31,7 @@ export function CoreMessage() {
               className={
                 index === coreMessage.lines.length - 1
                   ? "font-display text-2xl font-semibold tracking-tight text-accent sm:text-3xl"
-                  : "font-display text-2xl font-semibold tracking-tight text-fg/35 sm:text-3xl"
+                  : "font-display text-2xl font-semibold tracking-tight text-fg-muted sm:text-3xl"
               }
             >
               {line}

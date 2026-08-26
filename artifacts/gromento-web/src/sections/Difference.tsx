@@ -81,10 +81,10 @@ export function Difference({
       <div className={cn("grid gap-6 lg:grid-cols-2", !headless && "mt-16")}>
         {/* The old way */}
         <Reveal className="rounded-2xl border border-fg/10 bg-fg/[0.02] p-8">
-          <p className="eyebrow text-fg/35">{difference.oldWayLabel}</p>
+          <p className="eyebrow text-fg-muted">{difference.oldWayLabel}</p>
           <ul className="mt-6 flex flex-col gap-3">
             {difference.oldWay.map((line) => (
-              <li key={line} className="flex items-center gap-3 text-fg/45">
+              <li key={line} className="flex items-center gap-3 text-fg-muted">
                 <span aria-hidden="true" className="h-px w-5 bg-fg/20" />
                 <span className="font-display text-base line-through decoration-fg/25">
                   {line}

@@ -9,7 +9,8 @@
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "deploy": "wrangler pages deploy dist/public --project-name=gromento",
-    "deploy:preview": "wrangler pages deploy dist/public --project-name=gromento --branch=preview"
+    "deploy:preview": "wrangler pages deploy dist/public --project-name=gromento --branch=preview",
+    "a11y": "node scripts/contrast-audit.mjs"
   },
   "devDependencies": {
     "@tailwindcss/vite": "catalog:",

@@ -100,6 +100,21 @@ Two rules worth keeping:
 The header follows the same rule dynamically: it stamps the dark tone only while
 it sits over Home's hero, and reverts to paper once it condenses on scroll.
 
+## Accessibility check
+
+```bash
+pnpm --filter @workspace/gromento-web serve     # preview on :21784
+pnpm --filter @workspace/gromento-web a11y      # contrast audit
+```
+
+`scripts/contrast-audit.mjs` walks every text element on all six routes and
+reports anything under WCAG AA (4.5:1 body, 3:1 large), composited through a
+canvas so Tailwind's `oklab()`/`color-mix()` output resolves correctly. It runs
+three passes because backgrounds resolve differently for ordinary text, for
+labels on filled controls, and for the fixed header over scrolling content.
+
+Current state: **0 failures** across the six routes, controls at 16.7–18.0:1.
+
 ## Imagery
 
 Original SVG artwork in [`public/media`](public/media) — no stock photography:

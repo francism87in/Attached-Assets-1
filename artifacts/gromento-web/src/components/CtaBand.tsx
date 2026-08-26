@@ -60,7 +60,7 @@ export function CtaBand({
         </Reveal>
 
         <Reveal delay={0.2} className="mt-10">
-          <p className="font-display text-sm font-medium tracking-tight text-fg/45">
+          <p className="font-display text-sm font-medium tracking-tight text-fg-muted">
             {closing.tagline}
           </p>
         </Reveal>
