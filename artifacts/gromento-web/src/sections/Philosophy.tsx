@@ -48,7 +48,7 @@ export function Philosophy() {
           />
           <blockquote
             data-tone="dark"
-            className="rounded-3xl border border-fg/12 bg-surface px-8 py-12"
+            className="rounded-3xl border border-fg/12 bg-surface px-8 py-12 text-fg"
           >
             <p className="text-balance font-display text-2xl font-semibold leading-snug tracking-tight text-fg sm:text-3xl">
               “{philosophy.quote}”

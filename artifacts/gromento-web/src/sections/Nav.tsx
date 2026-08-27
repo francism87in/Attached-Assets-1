@@ -29,7 +29,10 @@ export function Nav() {
           transition={{ duration: 0.8, ease: easeCine, delay: 0.2 }}
           data-tone={overHero ? "dark" : undefined}
           className={cn(
-            "relative mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 transition-all duration-300 lg:px-10",
+            // text-fg must sit on the tone-carrying element: data-tone only
+            // swaps the token, so anything that merely inherits colour would
+            // keep the resolved light value and paint dark-on-dark over the hero
+            "relative mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 text-fg transition-all duration-300 lg:px-10",
             condensed ? "py-3" : "py-5",
           )}
         >

@@ -21,6 +21,7 @@
     "clsx": "catalog:",
     "lucide-react": "catalog:",
     "motion": "^12.43.0",
+    "playwright-core": "^1.62.1",
     "react": "catalog:",
     "react-dom": "catalog:",
     "tailwind-merge": "catalog:",

@@ -96,6 +96,14 @@ Two rules worth keeping:
 - **Lime is not a text colour on paper** (`#D4FF00` on white fails contrast
   badly). The accent token resolves to deep violet `#4B0FA6` on light and lime
   on dark; lime stays a fill — CTA buttons, rules, the hero's live dot.
+- **Put `text-fg` on the element that carries `data-tone`.** The attribute only
+  swaps the tokens; `color` is inherited as an already-resolved value, so a
+  descendant with no `text-*` class of its own keeps the colour it inherited
+  from *outside* the dark scope. That is how the header's Menu label ended up
+  near-black on a near-black pill over the hero.
+
+`pnpm a11y` catches all three of these and exits non-zero, so it is worth
+running after any change to the tone system.
 
 The header follows the same rule dynamically: it stamps the dark tone only while
 it sits over Home's hero, and reverts to paper once it condenses on scroll.
@@ -109,11 +117,33 @@ pnpm --filter @workspace/gromento-web a11y      # contrast audit
 
 `scripts/contrast-audit.mjs` walks every text element on all six routes and
 reports anything under WCAG AA (4.5:1 body, 3:1 large), composited through a
-canvas so Tailwind's `oklab()`/`color-mix()` output resolves correctly. It runs
-three passes because backgrounds resolve differently for ordinary text, for
-labels on filled controls, and for the fixed header over scrolling content.
+canvas so Tailwind's `oklab()`/`color-mix()` output resolves correctly. It exits
+non-zero on any failure, so it works as a gate.
 
-Current state: **0 failures** across the six routes, controls at 16.7–18.0:1.
+Three passes, because the ground resolves differently in each case:
+
+| Pass | Covers | How the ground is found |
+|---|---|---|
+| 1 | ordinary text | composite the ancestor backgrounds |
+| 2 | labels on filled controls | composite the control's own fill |
+| 3 | the fixed header | **read off the screen** |
+
+Pass 3 cannot walk the DOM: the bar floats over whatever scrolled beneath it,
+and the layer directly under it is the grain overlay, whose own ancestor chain
+leads back to the light `body` rather than to the dark plate the bar sits on.
+Walking it reported the Menu pill at 1.05:1 when it actually rendered at 19:1.
+So each control is screenshotted with its glyphs made transparent — the dominant
+colour of that shot is the true painted ground, blur and translucency included —
+and the foreground is the computed colour composited over it. Sampling glyph
+pixels directly does not work either: at 14px the anti-aliased fringe outweighs
+the ink, which reads as a false ~1:1.
+
+It needs a Chromium. `playwright-core` is a devDependency and the script picks up
+`PLAYWRIGHT_BROWSERS_PATH`, `/opt/pw-browsers`, or a system install, falling back
+to playwright's own lookup after `npx playwright install chromium`.
+
+Current state: **0 failures** across the six routes — page 0, controls 0,
+header 0; filled controls at 18.0:1, the header at 5.3–9.6:1.
 
 ## Imagery
 
