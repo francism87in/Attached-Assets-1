@@ -6,7 +6,9 @@ import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
 const port = Number(process.env.PORT ?? 5000);
 
-if (Number.isNaN(port) || port <= 0) {
+// Vite needs a finite integer here; NaN, Infinity and 3000.5 would all fail
+// later, during startup, with a much less obvious message.
+if (!Number.isInteger(port) || port <= 0 || port > 65535) {
   throw new Error(`Invalid PORT value: "${process.env.PORT}"`);
 }
 

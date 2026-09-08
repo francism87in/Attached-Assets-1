@@ -34,7 +34,7 @@ export function AppHome() {
               <MapPin className="size-3.5" aria-hidden /> Delivering to
             </p>
             <p className="font-display truncate text-lg font-extrabold">
-              {prefs.address || `${city.areas[0] ?? city.name}, ${city.name}`}
+              {prefs.address || [prefs.area || city.areas[0], city.name].filter(Boolean).join(", ")}
             </p>
           </div>
           <Link

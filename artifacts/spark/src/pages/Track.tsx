@@ -35,18 +35,30 @@ export function Track() {
     return () => window.clearInterval(t);
   }, []);
 
-  const etaSeconds = useMemo(() => {
+  // An instant booking sets off immediately; a scheduled one sets off so that
+  // she lands at the slot the customer picked.
+  const departureMs = useMemo(() => {
     if (!booking) return 0;
-    const elapsed = (now - new Date(booking.createdAt).getTime()) / 1000;
-    return Math.max(0, Math.round(ARRIVAL_SECONDS - elapsed));
-  }, [booking, now]);
+    return booking.when === "now"
+      ? new Date(booking.createdAt).getTime()
+      : new Date(booking.when).getTime() - ARRIVAL_SECONDS * 1000;
+  }, [booking]);
 
-  // Instant bookings flip to "arrived" on their own once the ETA runs out.
+  const etaSeconds = useMemo(
+    () => Math.max(0, Math.round((departureMs + ARRIVAL_SECONDS * 1000 - now) / 1000)),
+    [departureMs, now],
+  );
+
+  // Bookings walk themselves forward: a scheduled one starts travelling when
+  // its slot comes round, and any travelling one arrives when the ETA runs out.
   useEffect(() => {
-    if (booking?.status === "on_the_way" && etaSeconds === 0) {
+    if (!booking) return;
+    if (booking.status === "assigned" && booking.when !== "now" && now >= departureMs) {
+      updateBooking(booking.id, { status: "on_the_way" });
+    } else if (booking.status === "on_the_way" && etaSeconds === 0) {
       updateBooking(booking.id, { status: "arrived" });
     }
-  }, [booking, etaSeconds, updateBooking]);
+  }, [booking, departureMs, etaSeconds, now, updateBooking]);
 
   if (!booking) {
     return (
@@ -271,7 +283,7 @@ function StatusCard({
       title: scheduledAt
         ? `Scheduled for ${scheduledAt.toLocaleDateString("en-IN", { day: "numeric", month: "short" })}`
         : "Expert assigned",
-      body: "We'll assign the nearest expert on shift 20 minutes before your slot and ping you.",
+      body: "She sets off ten minutes before your slot, and this screen starts tracking her then.",
     },
     on_the_way: {
       title: `Arriving in ${mmss(etaSeconds)}`,

@@ -60,7 +60,7 @@ export function Book() {
 
   const [step, setStep] = useState(preselected && prefs.address.trim().length > 3 ? 2 : 0);
   const [city, setCity] = useState(prefs.city);
-  const [area, setArea] = useState("");
+  const [area, setArea] = useState(prefs.area);
   const [address, setAddress] = useState(prefs.address);
   const [serviceSlug, setServiceSlug] = useState(preselected ?? "");
   const [hours, setHours] = useState(
@@ -88,7 +88,7 @@ export function Book() {
 
   function handleContinue() {
     if (!canContinue) return;
-    if (step === 0) setPrefs({ city, address: address.trim() });
+    if (step === 0) setPrefs({ city, area, address: address.trim() });
     if (step < 3) {
       setStep(step + 1);
       return;
@@ -159,7 +159,12 @@ export function Book() {
           {step === 0 ? (
             <LocationStep
               city={city}
-              setCity={setCity}
+              setCity={(next) => {
+                setCity(next);
+                // Clusters are city-specific; keeping the old one would file the
+                // booking under an area that isn't in the selected city.
+                setArea("");
+              }}
               area={area}
               setArea={setArea}
               address={address}

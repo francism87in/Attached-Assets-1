@@ -81,7 +81,9 @@ function Hero() {
             className="mt-8 flex max-w-xl flex-col gap-2 rounded-4xl bg-white p-2 shadow-xl shadow-ink-900/5 ring-1 ring-ink-900/5 sm:flex-row sm:items-center sm:rounded-full"
             onSubmit={(e) => {
               e.preventDefault();
-              if (area.trim()) setPrefs({ address: area.trim() });
+              // This field is an area, not a doorstep — the booking flow still
+              // asks for flat and building before anything is dispatched.
+              if (area.trim()) setPrefs({ area: area.trim() });
               navigate("/book");
             }}
           >

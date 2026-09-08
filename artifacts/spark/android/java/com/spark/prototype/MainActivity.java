@@ -1,9 +1,12 @@
 package com.spark.prototype;
 
 import android.app.Activity;
+import android.graphics.Insets;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.WindowInsets;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -41,6 +44,24 @@ public class MainActivity extends Activity {
         web.setWebViewClient(new WebViewClient());
         web.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
 
+        // Targeting API 35 makes the window edge-to-edge on Android 15, so the
+        // page would otherwise run under the status and navigation bars.
+        web.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+            @Override
+            public WindowInsets onApplyWindowInsets(View view, WindowInsets insets) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    applyBarInsets(view, insets);
+                } else {
+                    view.setPadding(
+                            insets.getSystemWindowInsetLeft(),
+                            insets.getSystemWindowInsetTop(),
+                            insets.getSystemWindowInsetRight(),
+                            insets.getSystemWindowInsetBottom());
+                }
+                return insets;
+            }
+        });
+
         setContentView(web);
 
         if (savedState == null) {
@@ -48,6 +69,16 @@ public class MainActivity extends Activity {
         } else {
             web.restoreState(savedState);
         }
+    }
+
+    /**
+     * Kept in its own method so devices below API 30 never verify a body that
+     * references {@link WindowInsets.Type}.
+     */
+    private static void applyBarInsets(View view, WindowInsets insets) {
+        Insets bars =
+                insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+        view.setPadding(bars.left, bars.top, bars.right, bars.bottom);
     }
 
     @Override

@@ -36,9 +36,18 @@ export function CityPage() {
           title={`SPARK is coming to ${city.name}`}
           body="We're hiring and training experts here right now. Clusters go live one at a time, starting with the first buildings where we have enough experts to hold the ten-minute promise."
         />
-        <ButtonLink href="/book" className="mt-8">
-          Join the waitlist
-        </ButtonLink>
+        {/* Booking here would fail — nothing is dispatched in this city yet. */}
+        <div className="mt-8 flex flex-wrap gap-3">
+          <SectionLink
+            section="cities"
+            className="inline-flex h-11 items-center rounded-full bg-brand-600 px-5 font-semibold text-white"
+          >
+            See where we're live
+          </SectionLink>
+          <ButtonLink href="/experts" variant="outline">
+            Work with us in {city.name}
+          </ButtonLink>
+        </div>
       </Section>
     );
   }
