@@ -53,11 +53,12 @@ export function Book() {
   const [, navigate] = useLocation();
   const { prefs, setPrefs } = usePrefs();
   const { createBooking } = useBookings();
-  // /book/:service jumps straight past the service picker.
+  // /book/:service skips the service picker — but only once we know where to
+  // send the expert, otherwise the booking would carry an empty address.
   const { service: routeService } = useParams<{ service?: string }>();
   const preselected = routeService && serviceBySlug(routeService) ? routeService : null;
 
-  const [step, setStep] = useState(preselected ? 2 : 0);
+  const [step, setStep] = useState(preselected && prefs.address.trim().length > 3 ? 2 : 0);
   const [city, setCity] = useState(prefs.city);
   const [area, setArea] = useState("");
   const [address, setAddress] = useState(prefs.address);
@@ -142,7 +143,7 @@ export function Book() {
         title={STEPS[step]}
         subtitle={`Step ${step + 1} of ${STEPS.length}`}
         onBack={step === 0 ? undefined : () => setStep(step - 1)}
-        backHref="/"
+        backHref="/app"
       />
       <ProgressBar step={step} total={STEPS.length} />
 

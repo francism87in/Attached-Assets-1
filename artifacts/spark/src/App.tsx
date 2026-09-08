@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { Account } from "@/pages/Account";
+import { AppHome } from "@/pages/AppHome";
 import { Book } from "@/pages/Book";
 import { Bookings } from "@/pages/Bookings";
 import { CityPage } from "@/pages/CityPage";
@@ -17,7 +18,7 @@ import { useBookings } from "@/store/bookings";
 import { usePrefs } from "@/store/prefs";
 
 /** App surfaces render bare (no marketing chrome). */
-const APP_ROUTES = ["/book", "/track", "/bookings", "/account"];
+const APP_ROUTES = ["/app", "/book", "/track", "/bookings", "/account"];
 
 export function App() {
   const [location] = useLocation();
@@ -30,6 +31,7 @@ export function App() {
   if (isAppRoute) {
     return (
       <Switch>
+        <Route path="/app" component={AppHome} />
         <Route path="/book" component={Book} />
         <Route path="/book/:service" component={Book} />
         <Route path="/track/:id" component={Track} />

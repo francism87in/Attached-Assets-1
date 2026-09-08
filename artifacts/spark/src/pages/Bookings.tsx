@@ -1,6 +1,7 @@
 import { Link } from "wouter";
-import { CalendarClock, ChevronRight, Inbox } from "lucide-react";
+import { CalendarClock, ChevronRight, Inbox, Plus } from "lucide-react";
 import { AppHeader, AppScreen } from "@/components/AppScreen";
+import { BottomNav } from "@/components/BottomNav";
 import { ButtonLink } from "@/components/ui";
 import { serviceBySlug } from "@/data/services";
 import { useBookings, type BookingStatus } from "@/store/bookings";
@@ -28,14 +29,17 @@ export function Bookings() {
   const { bookings } = useBookings();
 
   return (
-    <AppScreen
-      footer={
-        <ButtonLink href="/book" className="w-full" size="lg">
-          New booking
-        </ButtonLink>
-      }
-    >
-      <AppHeader title="Your bookings" subtitle={`${bookings.length} total`} backHref="/" />
+    <AppScreen footer={<BottomNav />}>
+      <AppHeader
+        title="Your bookings"
+        subtitle={`${bookings.length} total`}
+        backHref="/app"
+        right={
+          <ButtonLink href="/book" size="sm" aria-label="New booking">
+            <Plus className="size-4" aria-hidden /> New
+          </ButtonLink>
+        }
+      />
 
       <div className="space-y-3 px-5 pt-2 pb-8">
         {bookings.length === 0 ? (

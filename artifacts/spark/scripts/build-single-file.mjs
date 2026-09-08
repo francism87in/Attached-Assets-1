@@ -6,14 +6,14 @@
  * Routing switches to hash mode (VITE_HASH_ROUTER=1) because pushState paths
  * cannot be relied on in those environments.
  *
- * Output: dist/spark-prototype.html
- *
- * The fragment carries no <html>/<head>/<body> wrapper — hosts that expect a
- * full document should wrap it; standalone use needs only a doctype and a
- * viewport meta around it.
+ * Outputs:
+ *   dist/spark-prototype.html     fragment, for hosts that supply their own
+ *                                 <html>/<head>/<body> skeleton
+ *   dist/standalone/index.html    the same page as a complete document — open
+ *                                 it directly, or ship it as the APK's asset
  */
 import { execFileSync } from "node:child_process";
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 const pkgRoot = path.resolve(import.meta.dirname, "..");
@@ -39,21 +39,28 @@ execFileSync("npx", ["vite", "build", "--config", "vite.config.ts", "--outDir", 
   stdio: "inherit",
 });
 
-console.log("inlining fonts…");
-// The stylesheet is one @font-face per unicode subset; we only ship latin.
-const latinBlocks = fetchUrl(FONT_CSS_URL)
-  .split("/*")
-  .filter((block) => /^\s*latin\s*\*\//.test(block));
+// Inlined faces don't change between builds, so keep them out of the hot path.
+const fontCache = path.join(pkgRoot, "dist", ".fonts.css");
+let fontCss = existsSync(fontCache) ? readFileSync(fontCache, "utf8") : "";
 
-let fontCss = "";
-for (const block of latinBlocks) {
-  const face = `@font-face${block.split("@font-face")[1]}`;
-  const url = face.match(/url\((https:\/\/[^)]+\.woff2)\)/)?.[1];
-  if (!url) continue;
-  const woff2 = fetchUrl(url, true).toString("base64");
-  fontCss += `${face.replace(url, `data:font/woff2;base64,${woff2}`)}\n`;
+if (!fontCss) {
+  console.log("inlining fonts…");
+  // The stylesheet is one @font-face per unicode subset; we only ship latin.
+  const latinBlocks = fetchUrl(FONT_CSS_URL)
+    .split("/*")
+    .filter((block) => /^\s*latin\s*\*\//.test(block));
+
+  for (const block of latinBlocks) {
+    const face = `@font-face${block.split("@font-face")[1]}`;
+    const url = face.match(/url\((https:\/\/[^)]+\.woff2)\)/)?.[1];
+    if (!url) continue;
+    const woff2 = fetchUrl(url, true).toString("base64");
+    fontCss += `${face.replace(url, `data:font/woff2;base64,${woff2}`)}\n`;
+  }
+  if (!fontCss) throw new Error("No latin @font-face rules found — the CSS API response changed");
+  mkdirSync(path.dirname(fontCache), { recursive: true });
+  writeFileSync(fontCache, fontCss);
 }
-if (!fontCss) throw new Error("No latin @font-face rules found — the CSS API response changed");
 
 const assets = readdirSync(path.join(buildDir, "assets"));
 const readAsset = (ext) => {
@@ -62,17 +69,38 @@ const readAsset = (ext) => {
   return readFileSync(path.join(buildDir, "assets", name), "utf8");
 };
 
-const page = `<title>SPARK — House help in 10 minutes</title>
+const head = `<title>SPARK — House help in 10 minutes</title>
 <style>
 ${fontCss}
 ${readAsset(".css")}
-</style>
-<div id="root"></div>
+</style>`;
+
+const body = `<div id="root"></div>
 <script type="module">
 ${readAsset(".js").replaceAll("</script", "<\\/script")}
-</script>
-`;
+</script>`;
 
-mkdirSync(path.dirname(outFile), { recursive: true });
-writeFileSync(outFile, page);
-console.log(`wrote ${outFile} — ${(page.length / 1024 / 1024).toFixed(2)} MB`);
+const write = (file, contents) => {
+  mkdirSync(path.dirname(file), { recursive: true });
+  writeFileSync(file, contents);
+  console.log(`wrote ${file} — ${(contents.length / 1024 / 1024).toFixed(2)} MB`);
+};
+
+write(outFile, `${head}\n${body}\n`);
+
+write(
+  path.join(pkgRoot, "dist", "standalone", "index.html"),
+  `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#150b2e" />
+${head}
+  </head>
+  <body>
+${body}
+  </body>
+</html>
+`,
+);

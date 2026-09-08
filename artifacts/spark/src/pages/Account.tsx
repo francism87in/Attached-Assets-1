@@ -10,6 +10,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { AppHeader, AppScreen } from "@/components/AppScreen";
+import { BottomNav } from "@/components/BottomNav";
 import { Button, StarRating } from "@/components/ui";
 import { cities, experts } from "@/data/content";
 import { useBookings } from "@/store/bookings";
@@ -36,8 +37,8 @@ export function Account() {
   ];
 
   return (
-    <AppScreen>
-      <AppHeader title="Account" backHref="/" />
+    <AppScreen footer={<BottomNav />}>
+      <AppHeader title="Account" backHref="/app" />
 
       <div className="space-y-4 px-5 pb-8">
         <div className="rounded-3xl bg-ink-900 p-5 text-white">

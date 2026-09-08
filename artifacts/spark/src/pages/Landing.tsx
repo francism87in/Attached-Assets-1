@@ -486,8 +486,8 @@ function DownloadCta() {
               Book a service
               <ArrowRight className="size-4" aria-hidden />
             </ButtonLink>
-            <ButtonLink href="/bookings" variant="outline" size="lg">
-              View my bookings
+            <ButtonLink href="/app" variant="outline" size="lg">
+              Open the app
             </ButtonLink>
           </div>
           <p className="mt-6 text-xs font-semibold tracking-wide text-ink-600 uppercase">
