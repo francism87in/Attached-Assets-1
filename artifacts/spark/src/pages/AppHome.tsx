@@ -14,7 +14,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { ButtonLink } from "@/components/ui";
 import { cities, experts } from "@/data/content";
 import { serviceBySlug, services } from "@/data/services";
-import { useBookings } from "@/store/bookings";
+import { STATUS_HEADLINES, useBookings } from "@/store/bookings";
 import { usePrefs } from "@/store/prefs";
 import { rupees } from "@/lib/utils";
 
@@ -59,7 +59,8 @@ export function AppHome() {
             </span>
             <span className="min-w-0 flex-1">
               <span className="block truncate text-sm font-bold">
-                {serviceBySlug(activeBooking.serviceSlug)?.name} in progress
+                {serviceBySlug(activeBooking.serviceSlug)?.name} ·{" "}
+                {STATUS_HEADLINES[activeBooking.status]}
               </span>
               <span className="block truncate text-xs text-white/70">
                 {activeBooking.expert.name} · #{activeBooking.id}

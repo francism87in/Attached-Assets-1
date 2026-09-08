@@ -14,7 +14,7 @@ import { NotFound } from "@/pages/NotFound";
 import { ServiceDetail } from "@/pages/ServiceDetail";
 import { Track } from "@/pages/Track";
 import { serviceBySlug } from "@/data/services";
-import { useBookings } from "@/store/bookings";
+import { STATUS_HEADLINES, useBookings } from "@/store/bookings";
 import { usePrefs } from "@/store/prefs";
 
 /** App surfaces render bare (no marketing chrome). */
@@ -71,14 +71,7 @@ function ActiveBookingBar() {
   if (!activeBooking) return null;
 
   const service = serviceBySlug(activeBooking.serviceSlug);
-  const label =
-    activeBooking.status === "in_progress"
-      ? "Work in progress"
-      : activeBooking.status === "arrived"
-        ? "She's at your door"
-        : activeBooking.status === "assigned"
-          ? "Booking scheduled"
-          : "Expert on the way";
+  const label = STATUS_HEADLINES[activeBooking.status];
 
   return (
     <div className="sticky bottom-0 z-40 px-4 pb-4">

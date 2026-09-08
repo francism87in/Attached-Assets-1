@@ -39,6 +39,16 @@ export type Booking = {
   rating?: number;
 };
 
+/** Headline for a booking, shared by the home card and the site-wide tracking bar. */
+export const STATUS_HEADLINES: Record<BookingStatus, string> = {
+  assigned: "Booking scheduled",
+  on_the_way: "Expert on the way",
+  arrived: "She's at your door",
+  in_progress: "Work in progress",
+  completed: "Completed",
+  cancelled: "Cancelled",
+};
+
 export type DraftBooking = Omit<
   Booking,
   "id" | "otp" | "expert" | "status" | "createdAt" | "rate" | "total"
