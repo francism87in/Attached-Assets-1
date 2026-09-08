@@ -1,0 +1,32 @@
+{
+  "name": "@workspace/gromento-web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --config vite.config.ts --host 0.0.0.0",
+    "build": "vite build --config vite.config.ts",
+    "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "deploy": "wrangler pages deploy dist/public --project-name=gromento",
+    "deploy:preview": "wrangler pages deploy dist/public --project-name=gromento --branch=preview",
+    "a11y": "node scripts/contrast-audit.mjs"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "clsx": "catalog:",
+    "lucide-react": "catalog:",
+    "motion": "^12.43.0",
+    "playwright-core": "^1.62.1",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "tailwind-merge": "catalog:",
+    "tailwindcss": "catalog:",
+    "vite": "catalog:",
+    "wouter": "catalog:"
+  }
+}

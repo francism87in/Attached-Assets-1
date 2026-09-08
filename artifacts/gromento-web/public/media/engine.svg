@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" width="1000" height="640" role="img" aria-label="Diagram of the content engine turning questions into campaign assets">
+  <defs>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7B2FFF"/>
+      <stop offset="100%" stop-color="#D4FF00"/>
+    </linearGradient>
+  </defs>
+
+  <!-- orbit rings -->
+  <g fill="none" stroke="#4B0FA6" stroke-opacity="0.18" stroke-width="2">
+    <circle cx="500" cy="320" r="120"/>
+    <circle cx="500" cy="320" r="200"/>
+    <circle cx="500" cy="320" r="280"/>
+  </g>
+  <circle cx="500" cy="320" r="200" fill="none" stroke="url(#ring)" stroke-width="3" stroke-dasharray="14 18" opacity="0.7"/>
+
+  <!-- core -->
+  <circle cx="500" cy="320" r="92" fill="#14131A"/>
+  <text x="500" y="308" text-anchor="middle" font-family="Poppins, sans-serif" font-size="24" font-weight="700" fill="#D4FF00">Content</text>
+  <text x="500" y="340" text-anchor="middle" font-family="Poppins, sans-serif" font-size="24" font-weight="700" fill="#FFFFFF">engine</text>
+
+  <!-- satellites -->
+  <g font-family="Poppins, sans-serif" font-size="17" font-weight="600" fill="#14131A" text-anchor="middle">
+    <g>
+      <circle cx="500" cy="120" r="46" fill="#FFFFFF" stroke="#4B0FA6" stroke-opacity="0.35" stroke-width="2"/>
+      <text x="500" y="126">Films</text>
+    </g>
+    <g>
+      <circle cx="700" cy="200" r="46" fill="#FFFFFF" stroke="#4B0FA6" stroke-opacity="0.35" stroke-width="2"/>
+      <text x="700" y="206">Reels</text>
+    </g>
+    <g>
+      <circle cx="700" cy="440" r="46" fill="#FFFFFF" stroke="#4B0FA6" stroke-opacity="0.35" stroke-width="2"/>
+      <text x="700" y="446">Guides</text>
+    </g>
+    <g>
+      <circle cx="500" cy="520" r="46" fill="#FFFFFF" stroke="#4B0FA6" stroke-opacity="0.35" stroke-width="2"/>
+      <text x="500" y="526">Events</text>
+    </g>
+    <g>
+      <circle cx="300" cy="440" r="46" fill="#FFFFFF" stroke="#4B0FA6" stroke-opacity="0.35" stroke-width="2"/>
+      <text x="300" y="446">Reports</text>
+    </g>
+    <g>
+      <circle cx="300" cy="200" r="46" fill="#FFFFFF" stroke="#4B0FA6" stroke-opacity="0.35" stroke-width="2"/>
+      <text x="300" y="206">Ads</text>
+    </g>
+  </g>
+
+  <!-- spokes -->
+  <g stroke="#7B2FFF" stroke-opacity="0.45" stroke-width="2">
+    <path d="M500 212 V166"/>
+    <path d="M576 268 L660 218"/>
+    <path d="M576 372 L660 422"/>
+    <path d="M500 412 V474"/>
+    <path d="M424 372 L340 422"/>
+    <path d="M424 268 L340 218"/>
+  </g>
+</svg>

@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 620" width="1600" height="620" role="img" aria-label="Illustrated city skyline of towers and cranes">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7B2FFF" stop-opacity="0.16"/>
+      <stop offset="55%" stop-color="#7B2FFF" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#D4FF00" stop-opacity="0.10"/>
+    </linearGradient>
+    <linearGradient id="farTower" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4B0FA6" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#4B0FA6" stop-opacity="0.34"/>
+    </linearGradient>
+    <linearGradient id="midTower" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4B0FA6" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#2C0A63" stop-opacity="0.62"/>
+    </linearGradient>
+    <linearGradient id="nearTower" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#191233" stop-opacity="0.86"/>
+      <stop offset="100%" stop-color="#0D0D12" stop-opacity="0.95"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="620" fill="url(#sky)"/>
+
+  <!-- sun / moon disc -->
+  <circle cx="1210" cy="150" r="66" fill="#D4FF00" opacity="0.22"/>
+  <circle cx="1210" cy="150" r="66" fill="none" stroke="#D4FF00" stroke-opacity="0.5" stroke-width="2"/>
+
+  <!-- far skyline -->
+  <g fill="url(#farTower)">
+    <rect x="40" y="330" width="70" height="290"/>
+    <rect x="128" y="286" width="52" height="334"/>
+    <rect x="200" y="352" width="86" height="268"/>
+    <rect x="306" y="248" width="60" height="372"/>
+    <rect x="386" y="318" width="44" height="302"/>
+    <rect x="452" y="276" width="78" height="344"/>
+    <rect x="742" y="300" width="66" height="320"/>
+    <rect x="828" y="256" width="48" height="364"/>
+    <rect x="896" y="330" width="82" height="290"/>
+    <rect x="1002" y="286" width="56" height="334"/>
+    <rect x="1188" y="316" width="74" height="304"/>
+    <rect x="1284" y="268" width="52" height="352"/>
+    <rect x="1356" y="340" width="88" height="280"/>
+    <rect x="1462" y="296" width="60" height="324"/>
+  </g>
+
+  <!-- mid skyline -->
+  <g fill="url(#midTower)">
+    <rect x="96" y="404" width="96" height="216"/>
+    <rect x="248" y="372" width="72" height="248"/>
+    <rect x="560" y="336" width="90" height="284"/>
+    <path d="M660 300 h64 v320 h-64 z"/>
+    <path d="M660 300 l32 -46 l32 46 z"/>
+    <rect x="960" y="392" width="104" height="228"/>
+    <rect x="1092" y="356" width="68" height="264"/>
+    <rect x="1400" y="400" width="96" height="220"/>
+  </g>
+
+  <!-- crane: the market being built -->
+  <g stroke="#D4FF00" stroke-opacity="0.75" stroke-width="4" fill="none" stroke-linecap="round">
+    <path d="M1320 214 v206"/>
+    <path d="M1236 214 h150"/>
+    <path d="M1320 214 l-52 -34"/>
+    <path d="M1268 214 v34"/>
+  </g>
+
+  <!-- near towers with lit windows -->
+  <g fill="url(#nearTower)">
+    <rect x="0" y="446" width="132" height="174"/>
+    <rect x="352" y="424" width="150" height="196"/>
+    <rect x="792" y="452" width="128" height="168"/>
+    <rect x="1140" y="430" width="140" height="190"/>
+    <rect x="1520" y="462" width="80" height="158"/>
+  </g>
+  <g fill="#D4FF00" opacity="0.55">
+    <rect x="24" y="476" width="10" height="14"/><rect x="52" y="476" width="10" height="14"/>
+    <rect x="24" y="512" width="10" height="14"/><rect x="80" y="512" width="10" height="14"/>
+    <rect x="380" y="456" width="10" height="14"/><rect x="410" y="456" width="10" height="14"/>
+    <rect x="440" y="492" width="10" height="14"/><rect x="380" y="528" width="10" height="14"/>
+    <rect x="820" y="486" width="10" height="14"/><rect x="850" y="522" width="10" height="14"/>
+    <rect x="1168" y="462" width="10" height="14"/><rect x="1200" y="498" width="10" height="14"/>
+    <rect x="1232" y="462" width="10" height="14"/><rect x="1168" y="534" width="10" height="14"/>
+  </g>
+
+  <!-- ground line -->
+  <rect x="0" y="616" width="1600" height="4" fill="#0D0D12" opacity="0.35"/>
+</svg>

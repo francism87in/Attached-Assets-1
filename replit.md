@@ -11,6 +11,7 @@ A full-stack SaaS tool for real estate developers in India to manage project lis
 | `@workspace/propgent-os` | `artifacts/propgent-os` | React + Vite frontend (port 21783, previewPath `/`) |
 | `@workspace/api-server` | `artifacts/api-server` | Express 5 API server (port 8080, path `/api`) |
 | `@workspace/db` | `lib/db` | Drizzle ORM schema + migrations |
+| `@workspace/gromento-web` | `artifacts/gromento-web` | Gromento marketing site — React + Vite + Motion (port 21784, standalone) |
 | `@workspace/api-spec` | `lib/api-spec` | OpenAPI spec (contract-first) |
 | `@workspace/api-client-react` | `lib/api-client-react` | Generated React Query hooks (Orval) |
 | `@workspace/api-zod` | `lib/api-zod` | Generated Zod schemas (Orval) |
