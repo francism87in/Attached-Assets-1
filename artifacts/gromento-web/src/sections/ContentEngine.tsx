@@ -6,6 +6,7 @@ import { Marquee } from "@/components/Marquee";
 import { Figure } from "@/components/Figure";
 import { contentEngine } from "@/data/site";
 import { easeBrand } from "@/lib/motion";
+import { asset } from "@/lib/utils";
 
 /**
  * The content engine splits cleanly in two, so each half can carry its own page
@@ -74,7 +75,7 @@ export function ContentEngine({ variant = "full" }: { variant?: Variant }) {
       {showFormats && !showQuestions ? (
         <Reveal className="mt-14">
           <Figure
-            src="/media/engine.svg"
+            src={asset("media/engine.svg")}
             alt="A content engine at the centre, ringed by films, reels, guides, events, reports and ads"
             caption="Every answer becomes a piece of work that runs."
             className="mx-auto max-w-2xl"

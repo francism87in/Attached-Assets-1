@@ -6,6 +6,7 @@ import { LogoMark } from "@/components/Logo";
 import { SplitText } from "@/components/Reveal";
 import { stagger, fadeUp, pick } from "@/lib/motion";
 import { hero, tickerMarkets } from "@/data/site";
+import { asset } from "@/lib/utils";
 
 export function Hero() {
   const reduced = useReducedMotion();
@@ -120,7 +121,7 @@ export function Hero() {
         className="pointer-events-none absolute inset-x-0 bottom-0 select-none"
       >
         <img
-          src="/media/skyline.svg"
+          src={asset("media/skyline.svg")}
           alt=""
           className="h-[17vh] w-full object-cover object-bottom opacity-55 sm:h-[21vh]"
         />

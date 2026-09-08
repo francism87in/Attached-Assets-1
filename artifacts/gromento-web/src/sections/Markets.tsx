@@ -6,7 +6,7 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/Reveal";
 import { Figure } from "@/components/Figure";
 import { markets } from "@/data/site";
 import { easeBrand } from "@/lib/motion";
-import { cn } from "@/lib/utils";
+import { asset, cn } from "@/lib/utils";
 
 export function Markets({ headless = false }: { headless?: boolean }) {
   const reduced = useReducedMotion();
@@ -33,7 +33,7 @@ export function Markets({ headless = false }: { headless?: boolean }) {
 
       <Reveal className={headless ? "" : "mt-12"}>
         <Figure
-          src="/media/routes-map.svg"
+          src={asset("media/routes-map.svg")}
           alt="Demand routes running from New York, Dallas, London, Dubai and Singapore into a single Indian project"
           caption="Five markets, five narratives, one project at the centre."
           imageClassName="bg-surface-raised"
