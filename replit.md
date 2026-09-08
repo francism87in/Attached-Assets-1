@@ -11,6 +11,7 @@ A full-stack SaaS tool for real estate developers in India to manage project lis
 | `@workspace/propgent-os` | `artifacts/propgent-os` | React + Vite frontend (port 21783, previewPath `/`) |
 | `@workspace/api-server` | `artifacts/api-server` | Express 5 API server (port 8080, path `/api`) |
 | `@workspace/db` | `lib/db` | Drizzle ORM schema + migrations |
+| `@workspace/spark` | `artifacts/spark` | SPARK home-services app prototype (React + Vite, standalone, port 5000) |
 | `@workspace/api-spec` | `lib/api-spec` | OpenAPI spec (contract-first) |
 | `@workspace/api-client-react` | `lib/api-client-react` | Generated React Query hooks (Orval) |
 | `@workspace/api-zod` | `lib/api-zod` | Generated Zod schemas (Orval) |
@@ -87,6 +88,19 @@ pnpm --filter @workspace/api-spec run codegen
 ```
 
 Regenerates `lib/api-client-react/src/generated/api.ts` and `lib/api-zod/src/generated/api.ts`.
+
+## SPARK Prototype (`artifacts/spark`)
+
+A standalone, front-end-only prototype of SPARK — an on-demand home-services app (10-minute
+house help, hourly pricing) in the mould of Snabbit. It does not touch the API server or the
+database; bookings live in `localStorage`.
+
+- Marketing routes: `/`, `/services/:slug`, `/city/:slug`, `/experts`
+- App routes (phone bezel on desktop): `/book`, `/track/:id`, `/bookings`, `/account`
+- Stack: React 19 + Vite + Tailwind v4 + wouter + framer-motion (no shadcn dependency)
+- Run: `pnpm --filter @workspace/spark run dev` (defaults to port 5000; honours `PORT`/`BASE_PATH`)
+
+See `artifacts/spark/README.md` for the screen-by-screen breakdown.
 
 ## CSS Notes
 

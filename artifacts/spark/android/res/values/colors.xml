@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Mirrors the web palette in src/index.css -->
+    <color name="brand">#5B21E0</color>
+    <color name="ink">#150B2E</color>
+    <color name="cream">#FFF7EF</color>
+</resources>

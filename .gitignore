@@ -3,6 +3,8 @@
 # compiled output
 dist
 tmp
+# Android toolchain cache (aapt2, android.jar, dx, apksig, debug keystore)
+artifacts/spark/android/.tools/
 out-tsc
 *.tsbuildinfo
 .expo
