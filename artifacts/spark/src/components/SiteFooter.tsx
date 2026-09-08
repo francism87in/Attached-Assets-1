@@ -39,16 +39,17 @@ export function SiteFooter() {
               Trained, background-verified home experts at your door in ten minutes. Billed by
               the hour, from ₹99.
             </p>
-            <div className="mt-5 flex gap-2">
+            {/* Not links: this prototype has no social accounts to point at,
+                and sending them anywhere else would just mislead. */}
+            <div className="mt-5 flex gap-2" aria-hidden>
               {[Instagram, Twitter, Linkedin].map((Icon, i) => (
-                <SectionLink
+                <span
                   key={i}
-                  section="why"
-                  className="grid size-9 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-spark-400 hover:text-ink-900"
-                  aria-label="SPARK on social media"
+                  title="Prototype — no social accounts yet"
+                  className="grid size-9 place-items-center rounded-full bg-white/10 text-white/50"
                 >
                   <Icon className="size-4" />
-                </SectionLink>
+                </span>
               ))}
             </div>
           </div>

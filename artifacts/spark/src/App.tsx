@@ -22,7 +22,9 @@ const APP_ROUTES = ["/app", "/book", "/track", "/bookings", "/account"];
 
 export function App() {
   const [location] = useLocation();
-  const isAppRoute = APP_ROUTES.some((r) => location.startsWith(r));
+  // Match whole segments: a bare prefix test sends "/bookkeeping" into the app
+  // branch, where nothing matches and the page renders blank instead of a 404.
+  const isAppRoute = APP_ROUTES.some((r) => location === r || location.startsWith(`${r}/`));
 
   useEffect(() => {
     window.scrollTo(0, 0);
