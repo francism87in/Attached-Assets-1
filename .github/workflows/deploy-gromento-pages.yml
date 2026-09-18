@@ -1,0 +1,75 @@
+name: Deploy Gromento site to GitHub Pages
+
+# Publishes artifacts/gromento-web to GitHub Pages.
+#
+# One-time setup: repository Settings -> Pages -> Source: "GitHub Actions".
+# Until that is set, this workflow builds fine but the deploy step fails.
+#
+# The site is served from a project subpath (https://<owner>.github.io/<repo>/),
+# so BASE_PATH is passed to the build; Vite rewrites asset URLs and the router
+# reads the same value back from import.meta.env.BASE_URL.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "artifacts/gromento-web/**"
+      - ".github/workflows/deploy-gromento-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it half-published.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter @workspace/gromento-web typecheck
+
+      - name: Build
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}/
+        run: pnpm --filter @workspace/gromento-web build
+
+      # Pages has no SPA rewrite rule. Serving the same document as 404.html
+      # makes a deep link like /why-gromento boot the app, which then resolves
+      # the route client-side. (public/_redirects is the Cloudflare equivalent
+      # and is simply ignored here.)
+      - name: Add SPA fallback
+        run: cp artifacts/gromento-web/dist/public/index.html artifacts/gromento-web/dist/public/404.html
+
+      # Jekyll would otherwise drop files and folders beginning with an underscore.
+      - name: Disable Jekyll
+        run: touch artifacts/gromento-web/dist/public/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: artifacts/gromento-web/dist/public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

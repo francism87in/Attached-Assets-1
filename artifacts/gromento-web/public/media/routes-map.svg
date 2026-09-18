@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="60 90 1120 460" width="1120" height="460" role="img" aria-label="Diagram of demand routes from NRI markets into Indian real estate">
+  <defs>
+    <linearGradient id="arc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7B2FFF" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#D4FF00" stop-opacity="0.9"/>
+    </linearGradient>
+    <radialGradient id="hub" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#D4FF00" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#D4FF00" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- dot field standing in for the globe -->
+  <g fill="#4B0FA6" opacity="0.16">
+    <!-- rows of dots, denser toward the centre -->
+    <g id="dots">
+      <circle cx="80" cy="180" r="3"/><circle cx="130" cy="180" r="3"/><circle cx="180" cy="180" r="3"/>
+      <circle cx="230" cy="150" r="3"/><circle cx="280" cy="150" r="3"/><circle cx="330" cy="160" r="3"/>
+      <circle cx="120" cy="230" r="3"/><circle cx="170" cy="230" r="3"/><circle cx="220" cy="230" r="3"/>
+      <circle cx="270" cy="215" r="3"/><circle cx="320" cy="215" r="3"/><circle cx="370" cy="220" r="3"/>
+      <circle cx="150" cy="290" r="3"/><circle cx="200" cy="290" r="3"/><circle cx="250" cy="285" r="3"/>
+      <circle cx="300" cy="285" r="3"/><circle cx="350" cy="280" r="3"/><circle cx="400" cy="290" r="3"/>
+      <circle cx="470" cy="200" r="3"/><circle cx="520" cy="200" r="3"/><circle cx="570" cy="210" r="3"/>
+      <circle cx="620" cy="210" r="3"/><circle cx="670" cy="220" r="3"/><circle cx="720" cy="230" r="3"/>
+      <circle cx="500" cy="260" r="3"/><circle cx="550" cy="260" r="3"/><circle cx="600" cy="265" r="3"/>
+      <circle cx="650" cy="270" r="3"/><circle cx="700" cy="280" r="3"/><circle cx="750" cy="285" r="3"/>
+      <circle cx="820" cy="240" r="3"/><circle cx="870" cy="245" r="3"/><circle cx="920" cy="250" r="3"/>
+      <circle cx="970" cy="260" r="3"/><circle cx="1020" cy="270" r="3"/><circle cx="1070" cy="280" r="3"/>
+      <circle cx="850" cy="300" r="3"/><circle cx="900" cy="305" r="3"/><circle cx="950" cy="310" r="3"/>
+      <circle cx="1000" cy="320" r="3"/><circle cx="1050" cy="330" r="3"/><circle cx="1100" cy="340" r="3"/>
+      <circle cx="560" cy="380" r="3"/><circle cx="610" cy="385" r="3"/><circle cx="660" cy="390" r="3"/>
+      <circle cx="710" cy="400" r="3"/><circle cx="760" cy="410" r="3"/><circle cx="810" cy="420" r="3"/>
+      <circle cx="600" cy="450" r="3"/><circle cx="650" cy="455" r="3"/><circle cx="700" cy="465" r="3"/>
+      <circle cx="750" cy="470" r="3"/><circle cx="800" cy="480" r="3"/>
+    </g>
+  </g>
+
+  <!-- destination: India -->
+  <circle cx="820" cy="430" r="120" fill="url(#hub)" opacity="0.5"/>
+
+  <!-- demand routes -->
+  <g fill="none" stroke="url(#arc)" stroke-width="2.5" stroke-linecap="round">
+    <path d="M200 200 C 420 120, 660 220, 812 424" opacity="0.9"/>
+    <path d="M330 300 C 500 250, 690 300, 814 426" opacity="0.75"/>
+    <path d="M1060 250 C 980 300, 890 350, 828 424" opacity="0.9"/>
+    <path d="M1100 350 C 1010 380, 910 400, 830 428" opacity="0.7"/>
+    <path d="M700 150 C 760 240, 800 330, 818 422" opacity="0.8"/>
+  </g>
+
+  <!-- market nodes -->
+  <g>
+    <g>
+      <circle cx="200" cy="200" r="7" fill="#7B2FFF"/>
+      <circle cx="200" cy="200" r="15" fill="none" stroke="#7B2FFF" stroke-opacity="0.35" stroke-width="2"/>
+      <text x="200" y="172" text-anchor="middle" font-family="Poppins, sans-serif" font-size="19" font-weight="600" fill="#14131A">New York</text>
+    </g>
+    <g>
+      <circle cx="330" cy="300" r="7" fill="#7B2FFF"/>
+      <circle cx="330" cy="300" r="15" fill="none" stroke="#7B2FFF" stroke-opacity="0.35" stroke-width="2"/>
+      <text x="330" y="336" text-anchor="middle" font-family="Poppins, sans-serif" font-size="19" font-weight="600" fill="#14131A">Dallas</text>
+    </g>
+    <g>
+      <circle cx="700" cy="150" r="7" fill="#7B2FFF"/>
+      <circle cx="700" cy="150" r="15" fill="none" stroke="#7B2FFF" stroke-opacity="0.35" stroke-width="2"/>
+      <text x="700" y="122" text-anchor="middle" font-family="Poppins, sans-serif" font-size="19" font-weight="600" fill="#14131A">London</text>
+    </g>
+    <g>
+      <circle cx="1060" cy="250" r="7" fill="#7B2FFF"/>
+      <circle cx="1060" cy="250" r="15" fill="none" stroke="#7B2FFF" stroke-opacity="0.35" stroke-width="2"/>
+      <text x="1060" y="222" text-anchor="middle" font-family="Poppins, sans-serif" font-size="19" font-weight="600" fill="#14131A">Dubai</text>
+    </g>
+    <g>
+      <circle cx="1100" cy="350" r="7" fill="#7B2FFF"/>
+      <circle cx="1100" cy="350" r="15" fill="none" stroke="#7B2FFF" stroke-opacity="0.35" stroke-width="2"/>
+      <text x="1100" y="386" text-anchor="middle" font-family="Poppins, sans-serif" font-size="19" font-weight="600" fill="#14131A">Singapore</text>
+    </g>
+  </g>
+
+  <!-- the project -->
+  <g>
+    <circle cx="820" cy="430" r="13" fill="#D4FF00" stroke="#14131A" stroke-width="2"/>
+    <text x="820" y="482" text-anchor="middle" font-family="Poppins, sans-serif" font-size="22" font-weight="700" fill="#14131A">Your project</text>
+    <text x="820" y="510" text-anchor="middle" font-family="Inter, sans-serif" font-size="16" fill="#56536A">One asset. Five narratives.</text>
+  </g>
+</svg>
